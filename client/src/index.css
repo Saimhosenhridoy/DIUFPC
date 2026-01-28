@@ -1,0 +1,523 @@
+ @import "tailwindcss";
+
+/* Root height */
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* App background (theme) */
+body {
+  background-color: #a8b2d1;
+}
+
+/* =========================
+   GLOBAL CARD (NORMAL)
+   ========================= */
+.app-card {
+  position: relative;
+  border-radius: 1rem;
+
+  /* card color stays SAME */
+  background: #e6f1ff;
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(99, 140, 255, 0.25);
+
+  /* normal shadow */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.10);
+
+  /* smooth animation */
+  transform: translateY(0);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+/* =========================
+   HOVER = LIFT + BORDER GLOW
+   ========================= */
+.app-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 14px 30px rgba(20, 20, 20, 0.16),
+    0 0 0 1px rgba(93, 133, 243, 0.55),
+    0 0 30px 8px rgba(93, 132, 239, 0.28);
+
+  border-color: rgba(99, 140, 255, 0.75);
+}
+
+/* =========================
+   CLICK / ACTIVE (STRONGER)
+   ========================= */
+.app-card:active {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 18px 40px rgba(15, 18, 30, 0.35),
+    0 0 0 1px rgba(55, 85, 210, 0.95),
+    0 0 48px 14px rgba(55, 85, 210, 0.55);
+
+  border-color: rgba(55, 85, 210, 0.95);
+}
+
+/* =================================
+   JOIN PAGE - SUB CARDS
+   ================================= */
+.join-subcard {
+  position: relative;
+  border-radius: 14px;
+
+  background: rgba(230, 241, 255, 0.92);
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(99, 140, 255, 0.22);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+
+  padding: 14px;
+
+  transform: translateY(0);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.join-subcard:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 14px 30px rgba(20, 20, 20, 0.14),
+    0 0 0 1px rgba(93, 133, 243, 0.45),
+    0 0 26px 6px rgba(93, 132, 239, 0.22);
+
+  border-color: rgba(99, 140, 255, 0.65);
+}
+
+.join-subcard:active {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 18px 40px rgba(15, 18, 30, 0.22),
+    0 0 0 1px rgba(55, 85, 210, 0.85),
+    0 0 40px 10px rgba(55, 85, 210, 0.35);
+
+  border-color: rgba(55, 85, 210, 0.85);
+}
+
+.join-subcardLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 900;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   JOIN - FILE UPLOAD (SMALL + BLUE)
+   ========================= */
+.join-fileWrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.join-fileBtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 6px 10px;
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(120, 150, 255, 0.95),
+    rgba(90, 120, 240, 0.95)
+  );
+
+  border: 1px solid rgba(70, 110, 235, 0.9);
+
+  box-shadow:
+    0 6px 14px rgba(40, 60, 180, 0.28),
+    0 0 0 1px rgba(120, 150, 255, 0.45);
+
+  font-size: 14px;
+  font-weight: 900;
+  color: #ffffff;
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.join-fileBtn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+
+  box-shadow:
+    0 12px 26px rgba(40, 60, 180, 0.35),
+    0 0 18px 5px rgba(120, 150, 255, 0.55);
+}
+
+.join-fileBtn:active {
+  transform: translateY(-1px);
+}
+
+.join-fileHidden {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.join-fileMeta {
+  font-size: 13px;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+/* =========================
+   CENTER POP-OUT (AUTO HIDE via JS)
+   ========================= */
+.toast-center {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(10, 15, 30, 0.35);
+  backdrop-filter: blur(6px);
+
+  animation: fadeIn 0.25s ease forwards;
+}
+
+.toast-center-content {
+  max-width: 520px;
+  width: calc(100% - 48px);
+
+  padding: 22px 24px;
+  border-radius: 22px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(230, 241, 255, 0.98),
+    rgba(210, 225, 255, 0.98)
+  );
+
+  border: 1px solid rgba(90, 130, 255, 0.65);
+
+  box-shadow:
+    0 30px 70px rgba(20, 40, 120, 0.45),
+    0 0 45px 14px rgba(120, 160, 255, 0.55);
+
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+
+  font-weight: 900;
+  font-size: 16px;
+  color: #0f172a;
+
+  animation: popIn 0.35s ease forwards;
+}
+
+.toast-center.success .toast-center-content {
+  border-color: rgba(70, 180, 110, 0.8);
+}
+
+.toast-center.error .toast-center-content {
+  border-color: rgba(220, 90, 90, 0.8);
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* =================================
+   TEAM PHOTO CARD (CLEAN + BACK LIGHT)
+   ================================= */
+.team-photoCard {
+  position: relative;
+  height: 460px;
+  border-radius: 28px;
+  overflow: hidden;
+
+  background: rgba(230, 241, 255, 0.78);
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(99, 140, 255, 0.35);
+  box-shadow:
+    0 16px 44px rgba(15, 18, 30, 0.22),
+    0 0 0 1px rgba(93, 133, 243, 0.18);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.team-photoCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(99, 140, 255, 0.75);
+  box-shadow:
+    0 26px 65px rgba(15, 18, 30, 0.28),
+    0 0 0 1px rgba(93, 133, 243, 0.45),
+    0 0 28px 8px rgba(93, 132, 239, 0.22);
+}
+
+/* soft back spotlight (ONLY ONE) */
+.team-photoCard::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  z-index: 1;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 28%,
+      rgba(150, 180, 255, 0.45),
+      rgba(93, 132, 239, 0.22) 38%,
+      transparent 70%
+    );
+
+  mix-blend-mode: screen;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.team-photoCardImg {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  transform: scale(1.02);
+  filter:
+    saturate(1.08)
+    contrast(1.08)
+    brightness(0.98);
+
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.team-photoCard:hover .team-photoCardImg {
+  transform: scale(1.05);
+}
+
+.team-photoCardOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(10, 12, 22, 0.75),
+      rgba(10, 12, 22, 0.12) 55%
+    );
+}
+
+.team-photoCardContent {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  padding: 0 18px;
+  text-align: center;
+  z-index: 3;
+}
+
+.team-photoCardName {
+  font-size: 28px;
+  font-weight: 900;
+  color: #e6f1ff;
+  text-shadow: 0 10px 22px rgba(0, 0, 0, 0.65);
+  margin-bottom: 10px;
+}
+
+.team-photoCardRole {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 999px;
+
+  background: rgba(93, 133, 243, 0.95);
+  color: #fff;
+  font-weight: 800;
+
+  box-shadow: 0 12px 26px rgba(93, 132, 239, 0.35);
+}
+
+.team-photoCardDept {
+  margin-top: 12px;
+  color: rgba(230, 241, 255, 0.85);
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .team-photoCard { height: 420px; }
+  .team-photoCardName { font-size: 24px; }
+}
+
+/* Hide Clerk "Don't have an account? Sign up" footer */
+.cl-footer,
+.cl-footerAction,
+.cl-footerActionLink {
+  display: none !important;
+}
+
+/* =========================================================
+   ✅ HOME PREMIUM ADDONS (Floating BG, Gradient Text, Spinner)
+   ========================================================= */
+
+/* Premium gradient text */
+.home-gradient-text {
+  background: linear-gradient(90deg, #0f172a, #2563eb, #0f172a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Spinner */
+.home-spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 4px solid rgba(15, 23, 42, 0.15);
+  border-top-color: rgba(15, 23, 42, 0.8);
+  animation: homeSpin 0.9s linear infinite;
+}
+@keyframes homeSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Floating background layer */
+.home-floating-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Each float element */
+.home-float {
+  position: absolute;
+  opacity: 0.55;
+  filter: blur(0.2px);
+  transform: translate3d(0, 0, 0);
+}
+
+/* bubbles */
+.home-float.bubble {
+  width: 180px;
+  height: 180px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.55), rgba(59,130,246,0.18), transparent 70%);
+  animation: floatUp 12s ease-in-out infinite;
+}
+.home-float.b1 { left: -40px; top: 120px; animation-duration: 14s; }
+.home-float.b2 { right: -60px; top: 240px; width: 220px; height: 220px; animation-duration: 16s; }
+.home-float.b3 { left: 20%; top: 620px; width: 160px; height: 160px; animation-duration: 13s; }
+.home-float.b4 { right: 18%; top: 820px; width: 140px; height: 140px; animation-duration: 15s; }
+
+/* icons-like shapes */
+.home-float.camera,
+.home-float.lens,
+.home-float.aperture {
+  width: 120px;
+  height: 120px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(37,99,235,0.20), rgba(255,255,255,0.25));
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
+  animation: drift 10s ease-in-out infinite;
+}
+.home-float.camera { left: 8%; top: 980px; transform: rotate(8deg); }
+.home-float.lens { right: 7%; top: 1120px; border-radius: 999px; }
+.home-float.aperture { left: 55%; top: 1400px; transform: rotate(-10deg); }
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-28px); }
+}
+@keyframes drift {
+  0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.55; }
+  50% { transform: translateY(-18px) rotate(6deg); opacity: 0.75; }
+}
+
+/* =========================================================
+   ✅ COUNTDOWN THEME STYLES (GLOBAL + match your UI)
+   - Used by Countdown.jsx components
+   ========================================================= */
+
+.countdown-shell {
+  border-radius: 22px;
+  border: 1px solid rgba(99, 140, 255, 0.30);
+  background: rgba(230, 241, 255, 0.70);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 10px 24px rgba(15, 18, 30, 0.12),
+    0 0 0 1px rgba(93, 133, 243, 0.18);
+}
+
+.countdown-badge-open {
+  background: rgba(230, 241, 255, 0.85);
+  color: #0f172a;
+  border: 1px solid rgba(99, 140, 255, 0.28);
+  box-shadow: 0 10px 22px rgba(93, 132, 239, 0.12);
+}
+
+.countdown-badge-closed {
+  background: rgba(15, 23, 42, 0.92);
+  color: #e6f1ff;
+  border: 1px solid rgba(15, 23, 42, 0.55);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.22);
+}
+
+.countdown-box {
+  border-radius: 18px;
+  border: 1px solid rgba(99, 140, 255, 0.25);
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow:
+    0 12px 26px rgba(93, 132, 239, 0.14),
+    0 0 0 1px rgba(93, 133, 243, 0.10);
+}
+
+.countdown-num-blue {
+  background: linear-gradient(180deg, #0f172a, #1e40af, #2563eb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.countdown-num-orange {
+  background: linear-gradient(180deg, #c2410c, #f97316, #f59e0b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
