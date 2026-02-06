@@ -76,26 +76,26 @@ The **DIUFPC Official Club Website** serves as the digital hub for the **DIU Fil
 
 ### Architecture Highlights
 
-```
-┌─────────────┐      HTTPS      ┌──────────────────┐
-│   Browser   │ ←─────────────→ │  React + Vite    │
-│  (Client)   │                 │   (Frontend)     │
-└─────────────┘                 └────────┬─────────┘
-                                         │
-                                         │ API Calls
-                                         ▼
-                                ┌──────────────────┐
-                                │ Google Apps      │
-                                │ Script Web App   │
-                                └────────┬─────────┘
-                                         │
-                                         │ Read/Write
-                                         ▼
-                                ┌──────────────────┐
-                                │ Google Sheets    │
-                                │   (Database)     │
-                                └──────────────────┘
-```
+  ```
+                            ┌─────────────┐      HTTPS      ┌──────────────────┐
+                            │   Browser   │ ←─────────────→ │  React + Vite    │
+                            │  (Client)   │                 │   (Frontend)     │
+                            └─────────────┘                 └────────┬─────────┘
+                                                                     │
+                                                                     │ API Calls
+                                                                     ▼
+                                                            ┌──────────────────┐
+                                                            │ Google Apps      │
+                                                            │ Script Web App   │
+                                                            └────────┬─────────┘
+                                                                     │
+                                                                     │ Read/Write
+                                                                     ▼
+                                                            ┌──────────────────┐
+                                                            │ Google Sheets    │
+                                                            │   (Database)     │
+                                                            └──────────────────┘
+  ```
 
 ---
 
