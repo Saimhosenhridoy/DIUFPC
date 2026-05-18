@@ -634,10 +634,10 @@ export default function Login() {
               {paymentMethod === "online" && (
                 <div className="join-subcard mt-4">
                   <div className="text-sm text-slate-700 mb-3">
-                    (Replace these lines with DIUFPC payment details)
-                    <br />• Method: bKash/Nagad/Bank
-                    <br />• Amount: ___ BDT
-                    <br />• Number: ___
+            
+                    <br />• Method: bKash/Nagad
+                    <br />• Amount: 50 BDT
+                    <br />• Number: 01581458127
                   </div>
                   <label className="join-subcardLabel flex items-center gap-2">
                     <CreditCard size={16} /> Transaction ID *

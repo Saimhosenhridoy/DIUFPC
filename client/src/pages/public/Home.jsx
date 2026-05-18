@@ -3,14 +3,19 @@ import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
 // ===== HERO SLIDER IMAGES =====
-import hero1 from "../../assets/hero/hero_banner_1.jpg";
-import hero2 from "../../assets/hero/hero_banner_2.jpg";
-import hero3 from "../../assets/hero/hero_banner_3.jpg";
-import hero4 from "../../assets/hero/hero_banner_4.jpg";
+import hero1 from "../../assets/hero/hero_banner_1.jpeg";
+import hero2 from "../../assets/hero/hero_banner_2.jpeg";
+import hero3 from "../../assets/hero/hero_banner_3.jpeg";
+import hero4 from "../../assets/hero/hero_banner_4.jpeg";
+import hero5 from "../../assets/hero/hero_banner_5.jpeg";
+import hero6 from "../../assets/hero/hero_banner_6.jpeg";
+import hero7 from "../../assets/hero/hero_banner_7.jpeg";
+import hero8 from "../../assets/hero/hero_banner_8.jpeg";
+import hero9 from "../../assets/hero/hero_banner_9.jpeg";
 
 // ===== BOT & VC IMAGES =====
-import botPic from "../../assets/bot.jpg";
-import vcPic from "../../assets/vc.jpg";
+import botPic from "../../assets/bot.jpeg";
+import vcPic from "../../assets/vc.jpeg";
 
 // ✅ public API
 import { gsPublic } from "../../api/public.gs";
@@ -98,7 +103,7 @@ function pickUpcoming_(arr) {
 
 /* ================= HOME ================= */
 export default function Home() {
-  const slides = useMemo(() => [hero1, hero2, hero3, hero4], []);
+  const slides = useMemo(() => [hero1, hero2,   hero5, hero6, hero7, hero8, hero9], []);
   const [index, setIndex] = useState(0);
   const total = slides.length;
 
@@ -162,16 +167,14 @@ export default function Home() {
                 {slides.map((img, i) => (
                   <div key={i} className="min-w-full relative">
                     <img src={img} alt={`Hero ${i + 1}`} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-transparent" />
-                  </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/42 to-black/8" />                  </div>
                 ))}
               </div>
 
               {/* ✅ MINIMAL OVERLAY */}
               <div className="absolute inset-0 flex items-center justify-center text-center px-6">
                 <div className="max-w-3xl">
-                  <h1 className="text-3xl md:text-6xl font-extrabold drop-shadow home-gradient-text">
-                    Welcome to DIU Film &amp; Photography Club
+<h1 className="text-4xl md:text-7xl font-black hero-slider-title leading-tight">                    Welcome to DIU Film &amp; Photography Club
                   </h1>
 
                   <div className="mt-3 text-lg md:text-2xl font-semibold text-white drop-shadow">
@@ -513,7 +516,7 @@ export default function Home() {
             designationLine1="Vice-Chancellor"
             designationLine2="Dhaka International University (DIU)"
             title="Message from the Vice Chancellor"
-            body={`The DIU Film & Photography Club represents a dynamic initiative that promotes creativity, innovation, and critical observation within the academic environment. By engaging students in film and photography, the club encourages them to view society, culture, and human experiences through thoughtful and artistic lenses. This initiative not only enhances creative competence but also builds leadership, teamwork, and ethical responsibility. I strongly support the activities of the DIU Film & Photography Club and believe it will play an important role in enriching student life and strengthening the creative identity of Dhaka International University.`}
+            body={`Dhaka International University Film & Photography Club (DIUFPC) has emerged as one of our most active and successful student organizations. Over the past years, they have organized several significant exhibitions that have greatly enriched our campus culture and student engagement.The club's achievements extend far beyond our campus. They have covered over five national exhibitions and numerous international events with professional precision. Their consistent success in national competitions, securing top-tier positions (1st, 2nd, and 3rd), and winning prestigious National Awards reflects their hard work and excellence.I commend DIUFPC for their professional approach in documenting every steps of the  university  and for their vision to establish photography and cinematography as viable professional careers for our students. Their progress over the last years is truly remarkable. `}
           />
         </div>
       </section>

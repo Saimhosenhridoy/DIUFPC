@@ -521,3 +521,34 @@ body {
   background-clip: text;
   color: transparent;
 }
+
+
+
+
+ .hero-slider-title {
+background: linear-gradient(
+  180deg,
+  #ffffff 0%,
+  #dbeafe 18%,
+  #60a5fa 38%,
+  #2563eb 58%,
+  #1d4ed8 78%,
+  #0f172a 100%
+);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  /* clean glossy border */
+  -webkit-text-stroke: 0.8px rgba(255,255,255,0.32);
+
+  /* readability on all images */
+  text-shadow:
+    0 2px 6px rgba(0,0,0,0.38),
+    0 4px 12px rgba(0,0,0,0.18);
+
+  letter-spacing: 0.4px;
+}

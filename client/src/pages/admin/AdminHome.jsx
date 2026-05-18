@@ -11,7 +11,7 @@ function TitleForPath(pathname) {
   if (pathname === "/admin") return "Dashboard";
   if (pathname.includes("/admin/join-applications")) return "Join Applications";
   if (pathname.includes("/admin/events")) return "Events";
-  if (pathname.includes("/admin/submissions")) return "Photo Submissions";
+  
   if (pathname.includes("/admin/announcements")) return "Announcements";
   if (pathname.includes("/admin/results")) return "Results";
   return "Admin";
@@ -37,7 +37,7 @@ export default function AdminHome() {
       { to: "/admin", label: "Dashboard", badge: "" },
       { to: "/admin/join-applications", label: "Join Applications", badge: "" },
       { to: "/admin/events", label: "Events", badge: "" },
-      { to: "/admin/submissions", label: "Photo Submissions", badge: "" },
+       
       { to: "/admin/announcements", label: "Announcements", badge: "" },
       { to: "/admin/results", label: "Results", badge: "" },
     ],
@@ -157,7 +157,7 @@ export default function AdminHome() {
                   ) : (
                     <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                       <Stat title="Events" value={metrics.events} />
-                      <Stat title="Submissions" value={metrics.submissions} />
+                       
                       <Stat title="Results" value={metrics.results} />
                     </div>
                   )}
