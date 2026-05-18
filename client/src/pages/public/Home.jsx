@@ -103,7 +103,7 @@ function pickUpcoming_(arr) {
 
 /* ================= HOME ================= */
 export default function Home() {
-  const slides = useMemo(() => [hero1, hero2,   hero5, hero6, hero7, hero8, hero9], []);
+  const slides = useMemo(() => [hero1,  hero7,hero5, hero6, hero8, hero9, hero2], []);
   const [index, setIndex] = useState(0);
   const total = slides.length;
 
