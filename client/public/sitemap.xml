@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-<url>
-<loc>https://diufpc.vercel.app/</loc>
-</url>
-
-<url>
-<loc>https://diufpc.vercel.app/about</loc>
-</url>
-
-<url>
-<loc>https://diufpc.vercel.app/events</loc>
-</url>
-
-<url>
-<loc>https://diufpc.vercel.app/gallery</loc>
-</url>
-
-<url>
-<loc>https://diufpc.vercel.app/team</loc>
-</url>
-
-<url>
-<loc>https://diufpc.vercel.app/contact</loc>
-</url>
-
-<url>
-<loc>https://diufpc.vercel.app/results</loc>
-</url>
-
-<url>
-<loc>https://diufpc.vercel.app/announcements</loc>
-</url>
-
+  <url>
+    <loc>https://diufpc.vercel.app/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://diufpc.vercel.app/about</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diufpc.vercel.app/events</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diufpc.vercel.app/gallery</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diufpc.vercel.app/team</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diufpc.vercel.app/contact</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://diufpc.vercel.app/results</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://diufpc.vercel.app/announcements</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://diufpc.vercel.app/joinus</loc>
+    <priority>0.6</priority>
+  </url>
 </urlset>
