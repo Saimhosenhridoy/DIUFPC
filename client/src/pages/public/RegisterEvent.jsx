@@ -177,7 +177,7 @@ export default function RegisterEvent() {
     if (!name.trim() || !email.trim() || !phone.trim() || !institute.trim()) {
       setSubmitStatus("error");
       setSubmitMessage(
-        "Please fill required fields (Name, Email, Phone, Institute)."
+        "Please fill required fields (Name, Email, Phone (WhatsApp), Institution Name / Freelancer)."
       );
       setShowRulesPopup(false);
       return;
@@ -425,7 +425,7 @@ export default function RegisterEvent() {
 
                   <div>
                     <label className="join-subcardLabel text-slate-50">
-                      Phone *
+                      Phone (WhatsApp) *
                     </label>
 
                     <input
@@ -438,7 +438,7 @@ export default function RegisterEvent() {
 
                   <div className="md:col-span-2">
                     <label className="join-subcardLabel text-slate-50">
-                      Institute *
+                      Institution Name / Freelancer *
                     </label>
 
                     <input

@@ -164,7 +164,7 @@ export default function Home() {
       {/* ================= CINEMATIC FULL-WIDTH HERO SLIDER ================= */}
       <section className="relative z-[1] w-full overflow-hidden" aria-label="DIUFPC cinematic hero">
         <div
-          className="relative isolate h-[520px] sm:h-[570px] md:h-[660px] lg:h-[700px] w-full overflow-hidden bg-[#020711] outline-none"
+          className="relative isolate h-[390px] sm:h-[440px] md:h-[490px] lg:h-[520px] w-full overflow-hidden bg-[#020711] outline-none"
           role="region"
           tabIndex={0}
           aria-label="Hero slideshow. Click the left half for previous slide, right half for next slide, or use arrow keys."
@@ -241,7 +241,13 @@ export default function Home() {
             alt=""
             aria-hidden="true"
             draggable="false"
-            className="pointer-events-none select-none absolute right-[3%] top-[15%] z-[2] hidden w-[200px] opacity-100 brightness-125 contrast-125 drop-shadow-[0_0_20px_rgba(40,140,255,.9)] md:block lg:right-[8%] lg:w-[275px]"
+            className="pointer-events-none select-none absolute right-[3%] top-[14%] z-[2] hidden w-[205px] opacity-95 md:block lg:right-[8%] lg:w-[275px]"
+            style={{
+              mixBlendMode: "screen",
+              filter: "brightness(1.3) contrast(1.26) drop-shadow(0 0 20px rgba(39,135,255,.65))",
+              WebkitMaskImage: "radial-gradient(ellipse 68% 72% at 50% 50%, black 38%, transparent 100%)",
+              maskImage: "radial-gradient(ellipse 68% 72% at 50% 50%, black 38%, transparent 100%)",
+            }}
           />
 
           {/* Pagination: active slide is a glowing electric-blue line. */}

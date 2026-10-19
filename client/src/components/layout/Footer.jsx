@@ -11,13 +11,13 @@ export default function Footer() {
         src={photographerWatermark}
         alt=""
         aria-hidden="true"
-        className="pointer-events-none select-none absolute -left-8 bottom-0 z-0 h-44 w-44 md:h-64 md:w-64 object-contain opacity-[0.10]"
+        className="pointer-events-none select-none absolute -left-8 bottom-0 z-0 h-44 w-44 md:h-64 md:w-64 object-contain opacity-[0.34] brightness-125 contrast-125 drop-shadow-[0_0_22px_rgba(25,120,255,0.58)]"
       />
       <img
         src={filmStripWatermark}
         alt=""
         aria-hidden="true"
-        className="pointer-events-none select-none absolute -right-12 top-0 z-0 h-36 w-64 md:h-52 md:w-96 object-contain opacity-[0.08]"
+        className="pointer-events-none select-none absolute -right-12 top-0 z-0 h-36 w-64 md:h-52 md:w-96 object-contain opacity-[0.30] brightness-125 contrast-125 drop-shadow-[0_0_20px_rgba(25,120,255,0.55)]"
       />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_50%_100%,rgba(19,120,255,0.13),transparent_65%)]" />
 
