@@ -1,4 +1,4 @@
- @import "tailwindcss";
+  @import "tailwindcss";
 
 /* Root height */
 html,
@@ -715,7 +715,7 @@ body {
   height: min(42vw, 520px);
   right: 0;
   top: 38%;
-  opacity: .12;
+  opacity: .28;
   background: url('./assets/watermarks/01_photographer_silhouette.png') center / contain no-repeat;
   filter: drop-shadow(0 0 22px rgba(19,120,255,.58));
 }
@@ -724,7 +724,7 @@ body {
   height: 240px;
   left: -6%;
   bottom: 5%;
-  opacity: .15;
+  opacity: .30;
   background: url('./assets/watermarks/02_film_strip_top.png') center / contain no-repeat;
   filter: drop-shadow(0 0 18px rgba(19,120,255,.4));
 }
@@ -732,7 +732,7 @@ body {
    No markup is inserted or content replaced. */
 .home-float.lens {
   background: url('./assets/watermarks/04_camera_lens.png') center / contain no-repeat;
-  opacity: .25;
+  opacity: .38;
 }
 /* Utility for existing or future decorative markup only; no feature impact. */
 .diu-signature-art {
@@ -741,6 +741,12 @@ body {
 }
 
 @media (max-width: 640px) {
-  .home-floating-wrap::before { width: 200px; height: 280px; opacity: .07; }
-  .home-floating-wrap::after { width: 170px; height: 130px; opacity: .09; }
+  .home-floating-wrap::before { width: 200px; height: 280px; opacity: .16; }
+  .home-floating-wrap::after { width: 170px; height: 130px; opacity: .18; }
 }
+
+/* DIUFPC watermark intensity boost: decorative layers only, no image tint. */
+.home-floating-wrap::before { filter: brightness(1.18) contrast(1.15) drop-shadow(0 0 26px rgba(35,130,255,.72)); }
+.home-floating-wrap::after { filter: brightness(1.18) contrast(1.12) drop-shadow(0 0 24px rgba(35,130,255,.66)); }
+.home-float.lens { filter: brightness(1.18) drop-shadow(0 0 18px rgba(35,130,255,.65)); }
+.diu-signature-art { filter: brightness(1.25) contrast(1.15) drop-shadow(0 0 19px rgba(35,130,255,.70)); }

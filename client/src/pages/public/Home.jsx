@@ -1,4 +1,4 @@
-  // src/pages/public/Home.jsx
+ // src/pages/public/Home.jsx
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
@@ -161,100 +161,105 @@ export default function Home() {
         <div className="home-float aperture" />
       </div>
 
-      {/* ================= HERO SLIDER ================= */}
-      <section className="w-full pt-8 relative z-[1]">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="relative app-card overflow-hidden">
-            <div
-              className="relative h-[360px] md:h-[520px] cursor-pointer"
-              role="region"
-              aria-label="Hero slideshow: click left for previous, right for next; use keyboard arrow keys to navigate"
-              tabIndex={0}
-              onClick={(e) => {
-                // Keep existing CTA links and slide dots fully clickable.
-                if (e.target.closest("a, button")) return;
-                const bounds = e.currentTarget.getBoundingClientRect();
-                const isRightHalf = e.clientX - bounds.left >= bounds.width / 2;
-                setIndex((current) =>
-                  isRightHalf ? (current + 1) % total : (current - 1 + total) % total
-                );
-              }}
-              onKeyDown={(e) => {
-                if (e.target !== e.currentTarget) return;
-                if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-                  e.preventDefault();
-                  setIndex((current) =>
-                    e.key === "ArrowRight"
-                      ? (current + 1) % total
-                      : (current - 1 + total) % total
-                  );
-                }
-              }}
-            >
-              <div
-                className="absolute inset-0 flex transition-transform duration-700"
-                style={{ transform: `translateX(-${index * 100}%)` }}
-              >
-                {slides.map((img, i) => (
-                  <div key={i} className="min-w-full relative">
-                    <img src={img} alt={`Hero ${i + 1}`} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/42 to-black/8" />                  </div>
-                ))}
+      {/* ================= CINEMATIC FULL-WIDTH HERO SLIDER ================= */}
+      <section className="relative z-[1] w-full overflow-hidden" aria-label="DIUFPC cinematic hero">
+        <div
+          className="relative isolate h-[520px] sm:h-[570px] md:h-[660px] lg:h-[700px] w-full overflow-hidden bg-[#020711] outline-none"
+          role="region"
+          tabIndex={0}
+          aria-label="Hero slideshow. Click the left half for previous slide, right half for next slide, or use arrow keys."
+          onClick={(e) => {
+            // CTA buttons, navigation links, and slide dots remain independent.
+            if (e.target.closest("a, button")) return;
+            const bounds = e.currentTarget.getBoundingClientRect();
+            const goForward = e.clientX - bounds.left >= bounds.width / 2;
+            setIndex((v) => goForward ? (v + 1) % total : (v - 1 + total) % total);
+          }}
+          onKeyDown={(e) => {
+            if (e.target !== e.currentTarget) return;
+            if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+            e.preventDefault();
+            setIndex((v) => e.key === "ArrowRight" ? (v + 1) % total : (v - 1 + total) % total);
+          }}
+        >
+          {/* Photo layer: grayscale only. Blue lighting is an independent CSS overlay. */}
+          <div
+            className="absolute inset-0 flex transition-transform duration-700 ease-in-out"
+            style={{ transform: `translateX(-${index * 100}%)` }}
+            aria-hidden="true"
+          >
+            {slides.map((img, i) => (
+              <div key={i} className="relative h-full w-full min-w-full overflow-hidden">
+                <img
+                  src={img}
+                  alt=""
+                  draggable="false"
+                  className="absolute inset-0 h-full w-full object-cover object-center"
+                  style={{ filter: "grayscale(100%) contrast(1.13) brightness(.82)" }}
+                />
               </div>
+            ))}
+          </div>
 
-              {/* ✅ MINIMAL OVERLAY */}
-              <div className="absolute inset-0 flex items-center justify-center text-center px-6">
-                <div className="max-w-3xl">
-<h1 className="text-4xl md:text-7xl font-black hero-slider-title leading-tight">                    Welcome to DIU Film &amp; Photography Club
-                  </h1>
+          {/* Photo-safe overlays: black gradient + subtle electric-blue light */}
+          <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#01050e]/95 via-[#020915]/75 to-[#020814]/20" />
+          <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-[#020711]/85 via-transparent to-[#01050c]/45" />
+          <div className="pointer-events-none absolute -left-28 bottom-[-160px] z-[1] h-[370px] w-[390px] rounded-full bg-[#006dff]/35 blur-[92px]" />
+          <div className="pointer-events-none absolute -right-24 bottom-[-110px] z-[1] h-[300px] w-[420px] rounded-full bg-[#006bff]/25 blur-[90px]" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-px bg-gradient-to-r from-transparent via-blue-400/80 to-transparent shadow-[0_0_22px_4px_rgba(22,112,255,0.6)]" />
 
-                  <div className="relative mt-3">
-                    <img src={showcaseWatermark} alt="" aria-hidden="true" draggable="false"
-                      className="absolute pointer-events-none select-none left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 md:w-96 h-16 object-contain opacity-[0.16]" />
-                  <div className="relative text-lg md:text-2xl font-semibold text-white drop-shadow">
-                    Showcase Your Vision
-                  </div>
-                  </div>
-
-                  <div className="mt-7 flex items-center justify-center gap-3 flex-wrap">
-                    <Link
-                      to="/about"
-                      className="px-6 py-3 rounded-xl bg-[#1266d8] text-white font-extrabold hover:bg-[#17549d] transition"
-                    >
-                      About Us
-                    </Link>
-
-                    <Link
-                      to="/team"
-                      className="px-6 py-3 rounded-xl border border-blue-200/70 text-white font-extrabold hover:bg-blue-400/15 transition"
-                    >
-                      Team
-                    </Link>
-
-                    <Link
-                      to="/joinus"
-                      className="px-6 py-3 rounded-xl bg-[#09254a]/90 text-white font-extrabold hover:bg-[#123e73] transition"
-                    >
-                      Join Us
-                    </Link>
-                  </div>
+          {/* Content stays LEFT aligned, as in reference image. */}
+          <div className="pointer-events-none absolute inset-0 z-[2] flex items-center">
+            <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-14">
+              <div className="pointer-events-auto max-w-[680px] pt-4 sm:pt-0">
+                <p className="mb-4 text-[10px] sm:text-xs font-extrabold uppercase tracking-[.35em] text-[#73b5ff] drop-shadow-[0_0_12px_rgba(35,120,255,.9)]">
+                  DIU Film &amp; Photography Club
+                </p>
+                <p className="mb-1 text-xl sm:text-2xl md:text-3xl font-light uppercase tracking-[.18em] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,.85)]">
+                  Welcome to
+                </p>
+                <h1 className="font-black uppercase leading-[.96] tracking-[-.035em] text-[clamp(2.7rem,6.6vw,6.1rem)] drop-shadow-[0_4px_14px_rgba(0,0,0,.75)]">
+                  <span className="block text-white">DIU Film &amp;</span>
+                  <span className="block text-[#1b82ff] drop-shadow-[0_0_19px_rgba(13,105,255,.65)]">Photography</span>
+                  <span className="flex items-center gap-5 text-white">Club <span className="mt-2 h-[3px] w-14 sm:w-20 rounded-full bg-[#1886ff] shadow-[0_0_14px_3px_rgba(20,124,255,.8)]" /></span>
+                </h1>
+                <p className="mt-5 sm:mt-7 text-xs sm:text-sm md:text-base font-medium text-slate-200 drop-shadow-[0_2px_7px_#000]">
+                  Frame Stories <span className="px-1 text-blue-400">|</span> Create Change <span className="px-1 text-blue-400">|</span> Build Together
+                </p>
+                <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3">
+                  <Link to="/about" className="rounded-xl bg-[#086dff] px-5 sm:px-7 py-3 text-sm font-extrabold text-white shadow-[0_0_22px_rgba(0,102,255,.48)] transition hover:bg-[#2187ff] hover:shadow-[0_0_30px_rgba(0,102,255,.7)]">About Us →</Link>
+                  <Link to="/team" className="rounded-xl border border-[#72b6ff]/40 bg-[#031021]/80 px-5 sm:px-7 py-3 text-sm font-extrabold text-white backdrop-blur-sm transition hover:border-blue-400 hover:bg-[#102c53]">Our Team</Link>
+                  <Link to="/joinus" className="rounded-xl border border-[#72b6ff]/40 bg-[#031021]/80 px-5 sm:px-7 py-3 text-sm font-extrabold text-white backdrop-blur-sm transition hover:border-blue-400 hover:bg-[#102c53]">Join Us →</Link>
                 </div>
               </div>
-
-              {/* DOTS */}
-              <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                {slides.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setIndex(i)}
-                    className={`h-2.5 rounded-full transition-all ${
-                      i === index ? "w-7 bg-white" : "w-2.5 bg-white/55 hover:bg-blue-100/80"
-                    }`}
-                    aria-label={`Go to slide ${i + 1}`}
-                  />
-                ))}
-              </div>
             </div>
+          </div>
+
+          {/* Right-side visual branding. Decorative; no text overlay covering CTA. */}
+          <img
+            src={showcaseWatermark}
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+            className="pointer-events-none select-none absolute right-[3%] top-[15%] z-[2] hidden w-[200px] opacity-100 brightness-125 contrast-125 drop-shadow-[0_0_20px_rgba(40,140,255,.9)] md:block lg:right-[8%] lg:w-[275px]"
+          />
+
+          {/* Pagination: active slide is a glowing electric-blue line. */}
+          <div className="absolute bottom-5 inset-x-0 z-[3] flex justify-center gap-2.5" aria-label="Slideshow pagination">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setIndex(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                aria-current={index === i ? "true" : undefined}
+                className={`h-[6px] rounded-full transition-all duration-300 ${
+                  i === index
+                    ? "w-10 bg-[#1686ff] shadow-[0_0_11px_3px_rgba(16,122,255,.8)]"
+                    : "w-[7px] bg-slate-400/70 hover:bg-blue-200"
+                }`}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -265,8 +270,8 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-7 app-card p-7 relative overflow-hidden">
               <img src={photographerWatermark} alt="" aria-hidden="true" draggable="false"
-                className="pointer-events-none select-none absolute right-[-25px] bottom-[-25px] w-48 md:w-64 max-w-none object-contain opacity-[0.12]"
-                style={{ filter: "drop-shadow(0 0 24px rgba(23,119,255,.7))" }} />
+                className="pointer-events-none select-none absolute right-[-25px] bottom-[-25px] w-48 md:w-64 max-w-none object-contain opacity-[0.30]"
+                style={{ filter: "brightness(1.15) contrast(1.12) drop-shadow(0 0 32px rgba(23,119,255,.8))" }} />
               <div className="text-sm font-bold text-slate-300">About</div>
               <h2 className="mt-1 text-2xl md:text-3xl font-extrabold home-gradient-text">
                 DIU Film & Photography Club
@@ -296,7 +301,7 @@ export default function Home() {
 
             <div className="lg:col-span-5 app-card p-7 relative overflow-hidden">
               <img src={cameraLensWatermark} alt="" aria-hidden="true" draggable="false"
-                className="pointer-events-none select-none absolute right-[-50px] top-[-55px] w-48 md:w-56 max-w-none object-contain opacity-[0.12]" />
+                className="pointer-events-none select-none absolute right-[-50px] top-[-55px] w-48 md:w-56 max-w-none object-contain opacity-[0.30] brightness-125 drop-shadow-[0_0_24px_rgba(25,115,255,.7)]" />
               <div className="text-sm font-bold text-slate-300">Our Impact</div>
               <h3 className="mt-1 text-xl md:text-2xl font-extrabold home-gradient-text">
                 What We Do
@@ -335,7 +340,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 pb-14">
           <div className="app-card p-7 relative overflow-hidden">
             <img src={filmStripWatermark} alt="" aria-hidden="true" draggable="false"
-              className="pointer-events-none select-none absolute right-[-30px] top-[-25px] w-56 md:w-80 max-w-none object-contain opacity-[0.10]" />
+              className="pointer-events-none select-none absolute right-[-30px] top-[-25px] w-56 md:w-80 max-w-none object-contain opacity-[0.26] brightness-125 drop-shadow-[0_0_24px_rgba(25,115,255,.65)]" />
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <div>
                 <div className="text-sm font-bold text-slate-300">Latest Updates</div>
