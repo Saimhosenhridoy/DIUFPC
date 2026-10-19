@@ -20,9 +20,9 @@ function CoverPhoto({ src, alt, badgeText, badgeTone = "open" }) {
 
   if (!url || bad) {
     return (
-      <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white/60">
+      <div className="w-full overflow-hidden rounded-2xl border border-blue-400/25 bg-[#102746]/85">
         <div className="aspect-[16/10] md:aspect-[16/9] flex items-center justify-center">
-          <div className="text-slate-600 font-bold">No Cover Image</div>
+          <div className="text-slate-300 font-bold">No Cover Image</div>
         </div>
       </div>
     );
@@ -30,11 +30,11 @@ function CoverPhoto({ src, alt, badgeText, badgeTone = "open" }) {
 
   const badgeClass =
     badgeTone === "closed"
-      ? "bg-slate-900/90 text-white border-slate-900/40"
-      : "bg-white/70 text-slate-900 border-slate-200";
+      ? "bg-[#07152D]/95 text-white border-blue-400/30"
+      : "bg-[#102746]/85 text-slate-50 border-blue-400/25";
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-slate-200">
+    <div className="w-full overflow-hidden rounded-2xl border border-blue-400/25">
       <div className="relative aspect-[16/10] md:aspect-[16/9]">
         <img
           src={url}
@@ -114,8 +114,8 @@ export default function EventDetails() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-10">
         <div className="app-card p-6">
-          <h2 className="text-xl font-extrabold text-slate-900">Event not found</h2>
-          <p className="mt-2 text-slate-700">
+          <h2 className="text-xl font-extrabold text-slate-50">Event not found</h2>
+          <p className="mt-2 text-slate-300">
             {err || "The event you're looking for doesn't exist."}
           </p>
           <Link to="/events" className="inline-block mt-4 underline font-bold">
@@ -150,20 +150,20 @@ export default function EventDetails() {
 
         <div className="mt-6 flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <h2 className="text-3xl font-extrabold text-slate-900">{event.title}</h2>
+            <h2 className="text-3xl font-extrabold text-slate-50">{event.title}</h2>
             {event.subtitle ? (
-              <p className="mt-2 text-slate-700 font-semibold">{event.subtitle}</p>
+              <p className="mt-2 text-slate-300 font-semibold">{event.subtitle}</p>
             ) : null}
           </div>
 
           {deadlineStr ? (
-            <div className="text-sm text-slate-700">
+            <div className="text-sm text-slate-300">
               Deadline: <span className="font-extrabold">{deadlineStr}</span>
             </div>
           ) : null}
         </div>
 
-        <div className="mt-4 text-sm text-slate-700 space-y-1">
+        <div className="mt-4 text-sm text-slate-300 space-y-1">
           {event.location ? (
             <div>
               <span className="font-bold">Location:</span> {event.location}
@@ -202,21 +202,21 @@ export default function EventDetails() {
         </div>
 
         {event.shortDescription ? (
-          <p className="mt-4 text-slate-700">{event.shortDescription}</p>
+          <p className="mt-4 text-slate-300">{event.shortDescription}</p>
         ) : null}
 
         <div className="mt-6 flex gap-3 flex-wrap">
           {regClosed ? (
             <button
               disabled
-              className="px-5 py-3 rounded-xl bg-slate-300 text-slate-600 font-extrabold cursor-not-allowed"
+              className="px-5 py-3 rounded-xl bg-slate-700 text-slate-300 font-extrabold cursor-not-allowed"
             >
               Registration Closed
             </button>
           ) : (
             <Link
               to={`/register/${event.slug}`}
-              className="px-5 py-3 rounded-xl bg-slate-900 text-white font-extrabold hover:bg-slate-800 transition"
+              className="px-5 py-3 rounded-xl bg-blue-600 text-white font-extrabold hover:bg-blue-500 transition"
             >
               Register Now
             </Link>
@@ -224,7 +224,7 @@ export default function EventDetails() {
 
           <Link
             to="/events"
-            className="px-5 py-3 rounded-xl border font-extrabold text-slate-900 hover:bg-white/60 transition"
+            className="px-5 py-3 rounded-xl border font-extrabold text-slate-50 hover:bg-blue-800/30 transition"
           >
             Back
           </Link>
@@ -233,9 +233,9 @@ export default function EventDetails() {
 
       {event.fullDescription ? (
         <div className="app-card p-7">
-          <div className="text-xl font-extrabold text-slate-900">About</div>
+          <div className="text-xl font-extrabold text-slate-50">About</div>
           <div className="contact-underline mt-2" />
-          <p className="mt-4 text-slate-700 leading-relaxed whitespace-pre-line text-justify">
+          <p className="mt-4 text-slate-300 leading-relaxed whitespace-pre-line text-justify">
             {event.fullDescription}
           </p>
         </div>
@@ -243,13 +243,13 @@ export default function EventDetails() {
 
       {categories.length > 0 ? (
         <div className="app-card p-7">
-          <div className="text-xl font-extrabold text-slate-900">Categories</div>
+          <div className="text-xl font-extrabold text-slate-50">Categories</div>
           <div className="contact-underline mt-2" />
           <div className="mt-4 flex flex-wrap gap-2">
             {categories.map((c) => (
               <span
                 key={c}
-                className="text-xs px-3 py-1 rounded-full border font-bold text-slate-800 bg-white/60"
+                className="text-xs px-3 py-1 rounded-full border font-bold text-blue-100 bg-[#102746]/85"
               >
                 {c}
               </span>
@@ -260,9 +260,9 @@ export default function EventDetails() {
 
       {rules.length > 0 ? (
         <div className="app-card p-7">
-          <div className="text-xl font-extrabold text-slate-900">Rules</div>
+          <div className="text-xl font-extrabold text-slate-50">Rules</div>
           <div className="contact-underline mt-2" />
-          <ul className="mt-4 list-disc pl-6 text-slate-700 space-y-2">
+          <ul className="mt-4 list-disc pl-6 text-slate-300 space-y-2">
             {rules.map((r, idx) => (
               <li key={idx}>{r}</li>
             ))}
@@ -272,12 +272,12 @@ export default function EventDetails() {
 
       {highlights.length > 0 ? (
         <div className="app-card p-7">
-          <div className="text-xl font-extrabold text-slate-900">Highlights</div>
+          <div className="text-xl font-extrabold text-slate-50">Highlights</div>
           <div className="contact-underline mt-2" />
           <div className="mt-4 grid sm:grid-cols-2 gap-3">
             {highlights.map((h, idx) => (
               <div key={idx} className="app-card p-4">
-                <div className="text-slate-800 font-bold">{h}</div>
+                <div className="text-blue-100 font-bold">{h}</div>
               </div>
             ))}
           </div>
@@ -286,11 +286,11 @@ export default function EventDetails() {
 
       {gallery.length > 0 ? (
         <div className="app-card p-7">
-          <div className="text-xl font-extrabold text-slate-900">Gallery</div>
+          <div className="text-xl font-extrabold text-slate-50">Gallery</div>
           <div className="contact-underline mt-2" />
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {gallery.map((img, idx) => (
-              <div key={idx} className="overflow-hidden rounded-2xl border border-slate-200">
+              <div key={idx} className="overflow-hidden rounded-2xl border border-blue-400/25">
                 <div className="relative aspect-[16/10]">
                   <img
                     src={img}

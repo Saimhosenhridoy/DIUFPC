@@ -79,14 +79,14 @@ export default function AdminJoinApplications() {
     <div className="app-card p-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
-          <div className="text-xl font-extrabold text-slate-900">Join Applications</div>
+          <div className="text-xl font-extrabold text-[#f4f8ff]">Join Applications</div>
            
         </div>
 
         <div className="flex gap-2">
           <button
             onClick={load}
-            className="app-card px-4 py-2 font-bold text-slate-900 hover:bg-white/60 transition"
+            className="app-card px-4 py-2 font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition"
           >
             Refresh
           </button>
@@ -94,7 +94,7 @@ export default function AdminJoinApplications() {
             onClick={toggleJoin}
             className={`px-4 py-2 rounded-lg font-bold transition ${
               joinStatus === "enabled"
-                ? "bg-slate-900 text-white hover:bg-slate-800"
+                ? "bg-[#126de9] text-white hover:bg-[#2588ff]"
                 : "bg-red-600 text-white hover:bg-red-500"
             }`}
           >
@@ -104,7 +104,7 @@ export default function AdminJoinApplications() {
       </div>
 
       <div className="mt-4 app-card p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-        <div className="text-sm text-slate-700">
+        <div className="text-sm text-[#b8cce8]">
           Current Join Status:{" "}
           <b className={joinStatus === "enabled" ? "text-green-700" : "text-red-700"}>
             {joinStatus.toUpperCase()}
@@ -130,11 +130,11 @@ export default function AdminJoinApplications() {
       {err && <div className="mt-4 text-red-700 font-bold">{err}</div>}
 
       {loading ? (
-        <div className="mt-4 text-slate-700">Loading applications...</div>
+        <div className="mt-4 text-[#b8cce8]">Loading applications...</div>
       ) : (
         <div className="mt-4 space-y-3">
           {filtered.length === 0 ? (
-            <div className="text-slate-700">No applications found.</div>
+            <div className="text-[#b8cce8]">No applications found.</div>
           ) : (
             filtered.map((a) => {
               const ts = a.Timestamp || a["Timestamp"];
@@ -151,11 +151,11 @@ export default function AdminJoinApplications() {
                 <div key={ts} className="app-card p-5">
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
                     <div className="min-w-0">
-                      <div className="text-lg font-extrabold text-slate-900">{name || "(No name)"}</div>
-                      <div className="text-sm text-slate-700 mt-1">
+                      <div className="text-lg font-extrabold text-[#f4f8ff]">{name || "(No name)"}</div>
+                      <div className="text-sm text-[#b8cce8] mt-1">
                         <b>Email:</b> {email} • <b>ID:</b> {sid} • <b>Dept:</b> {dept}
                       </div>
-                      <div className="text-sm text-slate-700 mt-1">
+                      <div className="text-sm text-[#b8cce8] mt-1">
                         <b>Status:</b>{" "}
                         <span
                           className={`font-extrabold ${
@@ -165,12 +165,12 @@ export default function AdminJoinApplications() {
                           {st.toUpperCase()}
                         </span>
                       </div>
-                      <div className="text-xs text-slate-600 mt-1">Timestamp: {String(ts)}</div>
+                      <div className="text-xs text-[#98b4d7] mt-1">Timestamp: {String(ts)}</div>
 
                       <div className="mt-3 flex flex-wrap gap-2">
                         {photoUrl ? (
                           <a
-                            className="app-card px-3 py-2 font-bold text-slate-900 hover:bg-white/60 transition"
+                            className="app-card px-3 py-2 font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition"
                             href={photoUrl}
                             target="_blank"
                             rel="noreferrer"
@@ -181,7 +181,7 @@ export default function AdminJoinApplications() {
 
                         {fb ? (
                           <a
-                            className="app-card px-3 py-2 font-bold text-slate-900 hover:bg-white/60 transition"
+                            className="app-card px-3 py-2 font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition"
                             href={fb.startsWith("http") ? fb : `https://${fb}`}
                             target="_blank"
                             rel="noreferrer"
@@ -207,7 +207,7 @@ export default function AdminJoinApplications() {
                       </button>
                       <button
                         onClick={() => updateStatus(ts, "pending")}
-                        className="app-card px-4 py-2 font-bold text-slate-900 hover:bg-white/60 transition"
+                        className="app-card px-4 py-2 font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition"
                       >
                         Pending
                       </button>

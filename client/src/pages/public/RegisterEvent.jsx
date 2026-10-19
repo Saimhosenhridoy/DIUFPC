@@ -12,7 +12,7 @@ import {
 import Countdown, { isPast, dateOnly } from "../../components/ui/Countdown";
 
 const inputClass =
-  "contact-input w-full bg-white border-2 border-slate-300 rounded-xl px-4 py-3 shadow-sm focus:border-slate-900 focus:ring-2 focus:ring-slate-200 outline-none text-slate-900";
+  "contact-input w-full bg-[#0B213E] border-2 border-blue-400/35 rounded-xl px-4 py-3 shadow-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/25 outline-none text-slate-50";
 
 export default function RegisterEvent() {
   const { slug } = useParams();
@@ -249,9 +249,9 @@ export default function RegisterEvent() {
     return (
       <div className="min-h-screen px-4 py-10 max-w-4xl mx-auto">
         <div className="app-card p-6">
-          <div className="text-xl font-extrabold text-red-700">Error</div>
+          <div className="text-xl font-extrabold text-red-300">Error</div>
 
-          <div className="mt-2 text-slate-700">{err}</div>
+          <div className="mt-2 text-slate-300">{err}</div>
 
           <Link to="/events" className="inline-block mt-4 underline">
             Back to Events
@@ -265,7 +265,7 @@ export default function RegisterEvent() {
     return (
       <div className="min-h-screen px-4 py-10 max-w-4xl mx-auto">
         <div className="app-card p-6">
-          <div className="text-xl font-extrabold text-slate-900">
+          <div className="text-xl font-extrabold text-slate-50">
             Event not found
           </div>
 
@@ -294,7 +294,7 @@ export default function RegisterEvent() {
       )}
 
       <div className="max-w-4xl mx-auto space-y-8">
-        <div className="app-card p-8 text-center text-slate-900">
+        <div className="app-card p-8 text-center text-slate-50">
           <h1 className="text-3xl md:text-5xl font-extrabold">
             {event.title}
           </h1>
@@ -302,7 +302,7 @@ export default function RegisterEvent() {
           <div className="contact-underline mx-auto mt-3" />
 
           {event.subtitle ? (
-            <p className="mt-3 text-slate-700">{event.subtitle}</p>
+            <p className="mt-3 text-slate-300">{event.subtitle}</p>
           ) : null}
 
           <div className="mt-4 flex flex-col gap-3">
@@ -328,7 +328,7 @@ export default function RegisterEvent() {
               />
             ) : null}
 
-            <p className="text-slate-700">
+            <p className="text-slate-300">
               Deadline: <b>{deadlineStr || "N/A"}</b> • Location:{" "}
               <b>{event.location || "N/A"}</b>
             </p>
@@ -338,8 +338,8 @@ export default function RegisterEvent() {
                 <span
                   className={`text-xs px-4 py-2 rounded-full font-extrabold border ${
                     regClosed
-                      ? "bg-slate-900/90 text-white border-slate-900/40"
-                      : "bg-white/70 text-slate-900 border-slate-200"
+                      ? "bg-[#07152D]/95 text-white border-blue-400/30"
+                      : "bg-[#102746]/85 text-slate-50 border-blue-400/25"
                   }`}
                 >
                   {regClosed ? "Registration Closed" : "Registration Open"}
@@ -350,31 +350,31 @@ export default function RegisterEvent() {
         </div>
 
         {regClosed ? (
-          <div className="app-card p-7 text-center text-slate-900">
+          <div className="app-card p-7 text-center text-slate-50">
             <div className="text-2xl font-extrabold">Registration Closed</div>
 
-            <p className="mt-2 text-slate-700 font-semibold">
+            <p className="mt-2 text-slate-300 font-semibold">
               The deadline has passed. You can still view event details.
             </p>
 
             <div className="mt-5 flex justify-center gap-3 flex-wrap">
               <Link
                 to={`/events/${event.slug}`}
-                className="px-5 py-3 rounded-xl border font-extrabold text-slate-900 hover:bg-white/60 transition"
+                className="px-5 py-3 rounded-xl border font-extrabold text-slate-50 hover:bg-blue-800/30 transition"
               >
                 View Details
               </Link>
 
               <Link
                 to="/events"
-                className="px-5 py-3 rounded-xl bg-slate-900 text-white font-extrabold hover:bg-slate-800 transition"
+                className="px-5 py-3 rounded-xl bg-blue-600 text-white font-extrabold hover:bg-blue-500 transition"
               >
                 Back to Events
               </Link>
             </div>
           </div>
         ) : (
-          <div className="app-card p-7 text-slate-900">
+          <div className="app-card p-7 text-slate-50">
             <h2 className="text-2xl font-extrabold text-center">
               Event Registration
             </h2>
@@ -382,10 +382,10 @@ export default function RegisterEvent() {
             <div className="contact-underline mx-auto mt-2" />
 
             <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
-              <div className="app-card p-5 text-slate-900">
+              <div className="app-card p-5 text-slate-50">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="join-subcardLabel text-slate-900">
+                    <label className="join-subcardLabel text-slate-50">
                       Full Name *
                     </label>
 
@@ -398,7 +398,7 @@ export default function RegisterEvent() {
                   </div>
 
                   <div>
-                    <label className="join-subcardLabel text-slate-900">
+                    <label className="join-subcardLabel text-slate-50">
                       Student ID (Optional)
                     </label>
 
@@ -411,7 +411,7 @@ export default function RegisterEvent() {
                   </div>
 
                   <div>
-                    <label className="join-subcardLabel text-slate-900">
+                    <label className="join-subcardLabel text-slate-50">
                       Email *
                     </label>
 
@@ -424,7 +424,7 @@ export default function RegisterEvent() {
                   </div>
 
                   <div>
-                    <label className="join-subcardLabel text-slate-900">
+                    <label className="join-subcardLabel text-slate-50">
                       Phone *
                     </label>
 
@@ -437,7 +437,7 @@ export default function RegisterEvent() {
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="join-subcardLabel text-slate-900">
+                    <label className="join-subcardLabel text-slate-50">
                       Institute *
                     </label>
 
@@ -450,7 +450,7 @@ export default function RegisterEvent() {
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="join-subcardLabel text-slate-900">
+                    <label className="join-subcardLabel text-slate-50">
                       Category (Optional)
                     </label>
 
@@ -472,7 +472,7 @@ export default function RegisterEvent() {
 
                   <div className="md:col-span-2">
                     <div className="flex items-center justify-between gap-3 mb-3">
-                      <label className="join-subcardLabel flex items-center gap-2 text-slate-900">
+                      <label className="join-subcardLabel flex items-center gap-2 text-slate-50">
                         <ImageIcon size={16} />
                         Submit Photos * (1 Required, Max 5)
                       </label>
@@ -481,7 +481,7 @@ export default function RegisterEvent() {
                         type="button"
                         onClick={addPhotoBox}
                         disabled={submitting || photos.length >= 5}
-                        className="app-card px-4 py-2 bg-white text-black border-2 border-slate-300 font-extrabold hover:bg-slate-100 transition disabled:opacity-50"
+                        className="app-card px-4 py-2 bg-[#0B213E] text-white border-2 border-blue-400/35 font-extrabold hover:bg-blue-700/30 transition disabled:opacity-50"
                       >
                         + Add Photo
                       </button>
@@ -491,7 +491,7 @@ export default function RegisterEvent() {
                       {photos.map((photo, index) => (
                         <div
                           key={index}
-                          className="app-card p-4 border-2 border-slate-200 bg-white text-slate-900"
+                          className="app-card p-4 border-2 border-blue-400/25 bg-[#0B213E] text-slate-50"
                         >
                           <div className="flex items-center justify-between gap-3 mb-3">
                             <div className="font-extrabold">
@@ -523,7 +523,7 @@ export default function RegisterEvent() {
                             />
 
                             <textarea
-                              className="contact-input w-full min-h-[90px] bg-white border-2 border-slate-300 rounded-xl px-4 py-3 shadow-sm focus:border-slate-900 focus:ring-2 focus:ring-slate-200 outline-none text-slate-900"
+                              className="contact-input w-full min-h-[90px] bg-[#0B213E] border-2 border-blue-400/35 rounded-xl px-4 py-3 shadow-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/25 outline-none text-slate-50"
                               placeholder="Photo caption / description (Optional)"
                               value={photo.caption}
                               onChange={(e) =>
@@ -566,11 +566,11 @@ export default function RegisterEvent() {
                 </div>
               </div>
 
-              <div className="app-card p-5 border-2 border-slate-200 shadow-md bg-white text-slate-900">
+              <div className="app-card p-5 border-2 border-blue-400/25 shadow-md bg-[#0B213E] text-slate-50">
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full app-card p-4 bg-white text-black border-2 border-slate-300 font-extrabold flex items-center justify-center gap-2 hover:bg-slate-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full app-card p-4 bg-[#0B213E] text-white border-2 border-blue-400/35 font-extrabold flex items-center justify-center gap-2 hover:bg-blue-700/30 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send size={18} />
 
@@ -579,7 +579,7 @@ export default function RegisterEvent() {
                   </span>
                 </button>
 
-                <p className="mt-3 text-sm text-slate-600 text-center">
+                <p className="mt-3 text-sm text-slate-300 text-center">
                   You will see the agreement before final submission.
                 </p>
               </div>
@@ -590,7 +590,7 @@ export default function RegisterEvent() {
 
       {showRulesPopup && (
         <div className="fixed inset-0 z-[999] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="app-card w-full max-w-2xl p-6 text-slate-900">
+          <div className="app-card w-full max-w-2xl p-6 text-slate-50">
             <div className="flex items-center gap-3">
               <div className="contact-badge">
                 <FileSignature size={18} />
@@ -601,10 +601,10 @@ export default function RegisterEvent() {
               </div>
             </div>
 
-            <div className="mt-4 app-card p-5 max-h-[50vh] overflow-y-auto text-slate-900">
+            <div className="mt-4 app-card p-5 max-h-[50vh] overflow-y-auto text-slate-50">
               <div className="font-bold mb-2">General Rules</div>
 
-              <ul className="list-disc pl-6 text-slate-700 space-y-1">
+              <ul className="list-disc pl-6 text-slate-300 space-y-1">
                 <li>Submitted work must be original.</li>
                 <li>No watermark/signature.</li>
                 <li>
@@ -620,7 +620,7 @@ export default function RegisterEvent() {
                   onChange={(e) => setAgreementAccepted(e.target.checked)}
                 />
 
-                <span className="font-bold text-slate-900">
+                <span className="font-bold text-slate-50">
                   I accept the agreement and terms
                 </span>
               </label>
@@ -631,7 +631,7 @@ export default function RegisterEvent() {
                 type="button"
                 onClick={handleFinalSubmit}
                 disabled={!agreementAccepted || submitting}
-                className="app-card flex-1 p-3 bg-white text-black border-2 border-slate-300 font-extrabold hover:bg-slate-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="app-card flex-1 p-3 bg-[#0B213E] text-white border-2 border-blue-400/35 font-extrabold hover:bg-blue-700/30 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Confirm & Submit
               </button>
@@ -639,7 +639,7 @@ export default function RegisterEvent() {
               <button
                 type="button"
                 onClick={() => setShowRulesPopup(false)}
-                className="app-card flex-1 p-3 font-bold text-slate-900 hover:bg-white/60 transition"
+                className="app-card flex-1 p-3 font-bold text-slate-50 hover:bg-blue-800/30 transition"
               >
                 Cancel
               </button>

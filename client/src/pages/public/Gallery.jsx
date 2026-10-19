@@ -1,5 +1,6 @@
  // src/pages/public/Gallery.jsx
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_GALLERY_API_URL;
 const PAGE_SIZE = 9; // 3x3 on desktop
@@ -22,9 +23,11 @@ function buildPageItems(total, current) {
 }
 
 export default function Gallery() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedAlbum = searchParams.get("album") || "all";
   const [photos, setPhotos] = useState([]);
   const [events, setEvents] = useState(["all"]);
-  const [active, setActive] = useState("all");
+  const [active, setActive] = useState(requestedAlbum);
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -70,6 +73,20 @@ export default function Gallery() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // A View Photos link from Events opens the corresponding album.
+  // Changing an existing Gallery filter continues to work normally.
+  useEffect(() => {
+    setActive(requestedAlbum);
+  }, [requestedAlbum]);
+
+  const chooseAlbum = (name) => {
+    setActive(name);
+    const next = new URLSearchParams(searchParams);
+    if (name === "all") next.delete("album");
+    else next.set("album", name);
+    setSearchParams(next);
+  };
+
   const filtered = useMemo(() => {
     return active === "all" ? photos : photos.filter((p) => p.event === active);
   }, [photos, active]);
@@ -88,7 +105,11 @@ export default function Gallery() {
   // show only first 15 filters by default
   const visibleFilters = useMemo(() => {
     if (showAllFilters) return events;
-    return events.slice(0, 15);
+    const first = events.slice(0, 15);
+    // Keep the deep-linked album visible even when there are 15+ filters.
+    return active !== "all" && events.includes(active) && !first.includes(active)
+      ? [...first, active]
+      : first;
   }, [events, showAllFilters]);
 
   const hasMoreFilters = events.length > 15;
@@ -106,16 +127,16 @@ export default function Gallery() {
               px-6 py-4
               text-center
               shadow-lg
-              border border-blue-200/70
-              bg-white/85
+              border border-blue-400/30
+              bg-[#102B50]/90
               backdrop-blur
             "
             style={{ minWidth: 320 }}
           >
-            <div className="text-[#112240] font-extrabold text-lg">
+            <div className="text-slate-50 font-extrabold text-lg">
               Please wait a moment…
             </div>
-            <div className="text-slate-600 text-sm mt-1">
+            <div className="text-slate-300 text-sm mt-1">
               We’re loading the photo gallery for you.
             </div>
           </div>
@@ -124,11 +145,11 @@ export default function Gallery() {
         {/* Skeleton Grid */}
         <div className="app-card p-5">
           <div className="text-center">
-            <h1 className="text-xl font-extrabold text-[#112240] inline-block">
+            <h1 className="text-xl font-extrabold text-slate-50 inline-block">
               Photo Gallery
-              <span className="block h-[3px] w-full bg-blue-500/80 rounded mt-2" />
+              <span className="block h-[3px] w-full bg-blue-500 rounded mt-2" />
             </h1>
-            <p className="text-slate-600 text-xs sm:text-sm mt-2">
+            <p className="text-slate-300 text-xs sm:text-sm mt-2">
               Moments captured through our lens — workshops, photowalks &
               exhibitions.
             </p>
@@ -139,7 +160,7 @@ export default function Gallery() {
             {Array.from({ length: 9 }).map((_, i) => (
               <div
                 key={i}
-                className="rounded-2xl bg-white/40 border border-blue-200/50 animate-pulse"
+                className="rounded-2xl bg-[#102746]/75 border border-blue-400/30 animate-pulse"
                 style={{ aspectRatio: "4 / 3" }}
               />
             ))}
@@ -157,12 +178,12 @@ export default function Gallery() {
       <div className="app-card p-4 mb-5">
         {/* Title Center */}
         <div className="text-center">
-          <h1 className="text-xl sm:text-2xl font-extrabold text-[#112240] inline-block">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-50 inline-block">
             Photo Gallery
-            <span className="block h-[3px] w-full bg-blue-500/80 rounded mt-2" />
+            <span className="block h-[3px] w-full bg-blue-500 rounded mt-2" />
           </h1>
 
-          <p className="text-slate-600 text-xs sm:text-sm mt-2">
+          <p className="text-slate-300 text-xs sm:text-sm mt-2">
             Moments captured through our lens — workshops, photowalks &
             exhibitions.
           </p>
@@ -176,14 +197,14 @@ export default function Gallery() {
               return (
                 <button
                   key={name}
-                  onClick={() => setActive(name)}
+                  onClick={() => chooseAlbum(name)}
                   className={[
                     "w-full text-left rounded-xl border transition",
                     "px-2.5 py-2",
                     "text-[11px] sm:text-xs font-semibold leading-snug",
                     isOn
-                      ? "border-blue-400 bg-blue-50 text-blue-700"
-                      : "border-blue-200 bg-blue-50/40 text-[#112240] hover:bg-blue-50",
+                      ? "border-blue-400/60 bg-[#102746] text-blue-300"
+                      : "border-blue-400/30 bg-[#0B2447]/75 text-slate-50 hover:bg-blue-900/45",
                   ].join(" ")}
                   title={name === "all" ? "All Albums" : name}
                 >
@@ -199,7 +220,7 @@ export default function Gallery() {
             <div className="mt-2 text-center">
               <button
                 onClick={() => setShowAllFilters((s) => !s)}
-                className="text-xs font-semibold text-blue-700 hover:underline"
+                className="text-xs font-semibold text-blue-300 hover:underline"
               >
                 {showAllFilters ? "Show less" : `Show more (${events.length - 15})`}
               </button>
@@ -217,8 +238,8 @@ export default function Gallery() {
             onClick={() => setSelected(p)}
             className="
               group relative overflow-hidden rounded-2xl
-              border border-blue-200/70 bg-white/50
-              hover:border-blue-400 transition
+              border border-blue-400/30 bg-[#102746]/85
+              hover:border-blue-300/80 transition
             "
             title={p.title || p.event}
           >
@@ -249,7 +270,7 @@ export default function Gallery() {
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="px-4 py-2 rounded-full border border-blue-200 bg-blue-50 text-[#112240] font-semibold disabled:opacity-40"
+              className="px-4 py-2 rounded-full border border-blue-400/30 bg-[#102746] text-slate-50 font-semibold disabled:opacity-40"
             >
               Prev
             </button>
@@ -260,7 +281,7 @@ export default function Gallery() {
                   return (
                     <span
                       key={it + idx}
-                      className="px-2 text-slate-500 font-bold"
+                      className="px-2 text-slate-400 font-bold"
                       aria-hidden="true"
                     >
                       ···
@@ -278,8 +299,8 @@ export default function Gallery() {
                     className={[
                       "min-w-9 h-9 px-3 rounded-full text-sm font-semibold border transition",
                       isOn
-                        ? "bg-blue-500 text-white border-blue-500"
-                        : "bg-white/60 text-[#112240] border-blue-200 hover:bg-blue-50",
+                        ? "bg-blue-600 text-white border-blue-500"
+                        : "bg-[#102746]/85 text-slate-50 border-blue-400/30 hover:bg-blue-900/45",
                     ].join(" ")}
                   >
                     {n}
@@ -291,7 +312,7 @@ export default function Gallery() {
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              className="px-4 py-2 rounded-full border border-blue-200 bg-blue-50 text-[#112240] font-semibold disabled:opacity-40"
+              className="px-4 py-2 rounded-full border border-blue-400/30 bg-[#102746] text-slate-50 font-semibold disabled:opacity-40"
             >
               Next
             </button>
@@ -306,13 +327,13 @@ export default function Gallery() {
           onClick={() => setSelected(null)}
         >
           <div
-            className="max-w-4xl w-full rounded-2xl overflow-hidden border border-white/20 bg-[#0b1530]"
+            className="max-w-4xl w-full rounded-2xl overflow-hidden border border-blue-400/30 bg-[#06162E]"
             onClick={(e) => e.stopPropagation()}
           >
             <img
               src={selected.imageUrl}
               alt={selected.title || "Photo"}
-              className="w-full max-h-[75vh] object-contain bg-black"
+              className="w-full max-h-[75vh] object-contain bg-blue-600"
             />
 
             <div className="p-4">
@@ -327,14 +348,14 @@ export default function Gallery() {
                     href={selected.facebookPost}
                     target="_blank"
                     rel="noreferrer"
-                    className="px-4 py-2 rounded-full bg-blue-500/90 text-white font-semibold hover:bg-blue-500 transition"
+                    className="px-4 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-400 transition"
                   >
                     View on Facebook
                   </a>
                 )}
                 <button
                   onClick={() => setSelected(null)}
-                  className="px-4 py-2 rounded-full border border-white/15 bg-white/5 text-white hover:bg-white/10 transition"
+                  className="px-4 py-2 rounded-full border border-blue-400/30 bg-blue-500/10 text-white hover:bg-blue-500/15 transition"
                 >
                   Close
                 </button>

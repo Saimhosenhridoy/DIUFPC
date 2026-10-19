@@ -1,4 +1,4 @@
- import { useEffect, useMemo, useState } from "react";
+  import { useEffect, useMemo, useState } from "react";
 import { gsAdmin } from "../../api/admin.gs";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -190,16 +190,16 @@ export default function AdminEvents() {
     <div className="app-card p-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <div className="text-xl font-extrabold text-slate-900">Events</div>
+          <div className="text-xl font-extrabold text-[#f4f8ff]">Events</div>
           <div className="contact-underline mt-2" />
-          <div className="text-sm text-slate-700 mt-2">
+          <div className="text-sm text-[#b8cce8] mt-2">
             Public page এ দেখাতে চাইলে Status অবশ্যই <b>PUBLISHED</b> দিতে হবে।
           </div>
         </div>
 
         <button
           onClick={resetForm}
-          className="px-4 py-2 rounded-lg border font-bold text-slate-900 hover:bg-white/60 transition"
+          className="px-4 py-2 rounded-lg border font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition"
           disabled={busy}
         >
           + New Event
@@ -211,11 +211,11 @@ export default function AdminEvents() {
       {/* FORM */}
       <div className="mt-6 app-card p-5">
         <div className="flex items-center justify-between gap-3 flex-wrap">
-          <div className="text-lg font-extrabold text-slate-900">
+          <div className="text-lg font-extrabold text-[#f4f8ff]">
             {editingId ? "Edit Event" : "Create New Event"}
           </div>
           {editingId ? (
-            <div className="text-sm text-slate-700">
+            <div className="text-sm text-[#b8cce8]">
               Editing ID: <span className="font-bold">{editingId}</span>
             </div>
           ) : null}
@@ -321,7 +321,7 @@ export default function AdminEvents() {
                   ev.currentTarget.style.display = "none";
                 }}
               />
-              <div className="p-3 text-xs text-slate-700">
+              <div className="p-3 text-xs text-[#b8cce8]">
                 যদি preview না আসে, লিংকটা সম্ভবত expire / private / hotlink blocked.
               </div>
             </div>
@@ -380,7 +380,7 @@ export default function AdminEvents() {
           <button
             onClick={createOrUpdate}
             disabled={busy}
-            className="px-5 py-3 rounded-xl bg-slate-900 text-white font-extrabold hover:bg-slate-800 transition disabled:opacity-50"
+            className="px-5 py-3 rounded-xl bg-[#126de9] text-white font-extrabold hover:bg-[#2588ff] transition disabled:opacity-50"
           >
             {busy ? "Saving..." : editingId ? "Update Event" : "Add Event"}
           </button>
@@ -389,7 +389,7 @@ export default function AdminEvents() {
             <button
               onClick={resetForm}
               disabled={busy}
-              className="px-5 py-3 rounded-xl border font-extrabold text-slate-900 hover:bg-white/60 transition disabled:opacity-50"
+              className="px-5 py-3 rounded-xl border font-extrabold text-[#f4f8ff] hover:bg-[#123762]/85 transition disabled:opacity-50"
             >
               Cancel Edit
             </button>
@@ -399,7 +399,7 @@ export default function AdminEvents() {
 
       {/* LIST */}
       <div className="mt-6">
-        <div className="text-lg font-extrabold text-slate-900">All Events</div>
+        <div className="text-lg font-extrabold text-[#f4f8ff]">All Events</div>
         <div className="contact-underline mt-2" />
 
         <div className="mt-4 space-y-3">
@@ -409,35 +409,35 @@ export default function AdminEvents() {
               className="app-card p-4 flex items-start justify-between gap-4 flex-wrap"
             >
               <div className="min-w-[240px]">
-                <div className="font-extrabold text-slate-900">{x.title}</div>
-                <div className="text-sm text-slate-700 mt-1">
+                <div className="font-extrabold text-[#f4f8ff]">{x.title}</div>
+                <div className="text-sm text-[#b8cce8] mt-1">
                   <span className="font-bold">Slug:</span> {x.slug || "-"}
                 </div>
-                <div className="text-sm text-slate-700">
+                <div className="text-sm text-[#b8cce8]">
                   {[x.startDate, x.endDate].filter(Boolean).join(" - ") || "-"}{" "}
                   {x.location ? `• ${x.location}` : ""}
                 </div>
                 {x.deadline ? (
-                  <div className="text-sm text-slate-700">
+                  <div className="text-sm text-[#b8cce8]">
                     <span className="font-bold">Deadline:</span> {x.deadline}
                   </div>
                 ) : null}
                 {x.shortDescription ? (
-                  <div className="text-sm text-slate-700 mt-1">
+                  <div className="text-sm text-[#b8cce8] mt-1">
                     {x.shortDescription}
                   </div>
                 ) : null}
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs px-3 py-1 rounded-full border font-bold text-slate-800">
+                <span className="text-xs px-3 py-1 rounded-full border font-bold text-[#e3efff]">
                   {String(x.status || "").toUpperCase()}
                 </span>
 
                 <button
                   onClick={() => fillForEdit(x)}
                   disabled={busy}
-                  className="px-3 py-2 rounded-lg border font-bold text-slate-900 hover:bg-white/60 transition disabled:opacity-50"
+                  className="px-3 py-2 rounded-lg border font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition disabled:opacity-50"
                 >
                   Edit
                 </button>
@@ -454,7 +454,7 @@ export default function AdminEvents() {
           ))}
 
           {!items.length && !err && (
-            <div className="app-card p-5 text-slate-700">
+            <div className="app-card p-5 text-[#b8cce8]">
               No events yet. Create your first event above.
             </div>
           )}

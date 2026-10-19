@@ -552,3 +552,195 @@ background: linear-gradient(
 
   letter-spacing: 0.4px;
 }
+
+
+/* ===========================================================================
+   DIUFPC CINEMATIC THEME | color & decorative layers ONLY
+   Original rules above are preserved verbatim: no feature/animation removed.
+   Put provided PNGs in src/assets/watermarks/ using their original names.
+   =========================================================================== */
+:root {
+  color-scheme: dark;
+  --diu-bg: #020916;
+  --diu-surface: #06162e;
+  --diu-card: #0c2343;
+  --diu-card-soft: rgba(9, 30, 57, .92);
+  --diu-accent: #1378ff;
+  --diu-accent-light: #64b5ff;
+  --diu-text: #f4f8ff;
+  --diu-muted: #b8cce8;
+  --diu-border: rgba(66, 151, 255, .35);
+  --diu-glow: rgba(19, 120, 255, .30);
+}
+
+html { background: var(--diu-bg); }
+body {
+  color: var(--diu-text);
+  background: radial-gradient(ellipse 65% 36% at 95% 2%, rgba(19,120,255,.13), transparent 75%),
+              radial-gradient(ellipse 50% 35% at 0% 62%, rgba(19,120,255,.09), transparent 80%),
+              var(--diu-bg);
+}
+
+/* Shared cards: dimensions, positioning and hover motions remain unchanged. */
+.app-card,
+.join-subcard,
+.team-photoCard,
+.countdown-shell {
+  background: var(--diu-card-soft);
+  border-color: var(--diu-border);
+  color: var(--diu-text);
+  box-shadow: 0 10px 30px rgba(0, 3, 14, .35), 0 0 0 1px rgba(19,120,255,.09);
+}
+.app-card:hover,
+.join-subcard:hover,
+.team-photoCard:hover {
+  border-color: rgba(100,181,255,.75);
+  box-shadow: 0 16px 36px rgba(0, 3, 14, .45),
+              0 0 0 1px rgba(19,120,255,.30),
+              0 0 32px 5px rgba(19,120,255,.20);
+}
+.app-card:active,
+.join-subcard:active {
+  border-color: var(--diu-accent-light);
+  box-shadow: 0 18px 40px rgba(0,3,14,.5), 0 0 40px 10px rgba(19,120,255,.36);
+}
+.join-subcardLabel,
+.join-fileMeta { color: var(--diu-text); }
+.join-fileBtn {
+  background: linear-gradient(135deg, #1378ff, #0950c0);
+  border-color: rgba(100,181,255,.7);
+  box-shadow: 0 6px 14px rgba(0,44,125,.4), 0 0 0 1px rgba(100,181,255,.2);
+}
+.join-fileBtn:hover { box-shadow: 0 12px 26px rgba(0,44,125,.5), 0 0 18px 5px rgba(19,120,255,.35); }
+
+/* Readable dark-mode inputs; do not touch input type, validation, interaction. */
+.app-card :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea),
+.join-subcard :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea) {
+  background-color: rgba(2, 12, 27, .88);
+  color: var(--diu-text);
+  border-color: rgba(100,181,255,.33);
+}
+.app-card :is(input, textarea)::placeholder,
+.join-subcard :is(input, textarea)::placeholder { color: rgba(184,204,232,.67); }
+.app-card :is(input, select, textarea):focus-visible,
+.join-subcard :is(input, select, textarea):focus-visible {
+  outline-color: var(--diu-accent-light);
+  border-color: var(--diu-accent);
+}
+.app-card :is(label, p, span),
+.join-subcard :is(label, p, span) { border-color: var(--diu-border); }
+
+/* Toast retains the existing popIn/fadeIn animation and status semantics. */
+.toast-center { background: rgba(0, 5, 17, .68); }
+.toast-center-content {
+  background: linear-gradient(140deg, #0d2a4c, #06162e);
+  border-color: rgba(100,181,255,.65);
+  color: var(--diu-text);
+  box-shadow: 0 30px 70px rgba(0,3,14,.6), 0 0 42px 8px rgba(19,120,255,.27);
+}
+
+/* Team images are NOT recolored or filtered by this theme. */
+.team-photoCard::before {
+  background: radial-gradient(ellipse at 50% 28%, rgba(19,120,255,.24), rgba(9,55,126,.12) 38%, transparent 70%);
+}
+.team-photoCardImg { filter: none; }
+.team-photoCardRole {
+  background: rgba(19,120,255,.95);
+  box-shadow: 0 12px 26px rgba(19,120,255,.35);
+}
+.team-photoCardName { color: var(--diu-text); }
+.team-photoCardDept { color: var(--diu-muted); }
+
+/* Retain gradient-text, glossy hero title, spinner and float animations. */
+.home-gradient-text {
+  background: linear-gradient(100deg, #f4f8ff 3%, #64b5ff 39%, #1378ff 67%, #f4f8ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.home-spinner { border-color: rgba(100,181,255,.17); border-top-color: var(--diu-accent-light); }
+.home-float.bubble {
+  background: radial-gradient(circle at 30% 30%, rgba(100,181,255,.24), rgba(19,120,255,.12), transparent 70%);
+}
+.home-float.camera,
+.home-float.lens,
+.home-float.aperture {
+  background: linear-gradient(135deg, rgba(19,120,255,.18), rgba(100,181,255,.06));
+  box-shadow: 0 10px 30px rgba(0,3,14,.18), 0 0 18px rgba(19,120,255,.15);
+}
+
+/* Original hero images remain untouched: overlay is its OWN decorative layer. */
+.hero-slider-title {
+  background: linear-gradient(180deg, #ffffff 0%, #dbeafe 22%, #64b5ff 44%, #1378ff 68%, #e5f2ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  -webkit-text-stroke: .8px rgba(255,255,255,.32);
+  text-shadow: 0 2px 6px rgba(0,0,0,.38), 0 4px 12px rgba(0,0,0,.18);
+}
+
+/* Countdown calculations and DOM unchanged; only visual appearance. */
+.countdown-badge-open {
+  background: rgba(6,32,64,.92);
+  color: var(--diu-text);
+  border-color: var(--diu-border);
+  box-shadow: 0 10px 22px rgba(19,120,255,.16);
+}
+.countdown-badge-closed {
+  background: rgba(2,9,22,.95);
+  color: var(--diu-muted);
+  border-color: rgba(100,181,255,.3);
+}
+.countdown-box {
+  background: rgba(2,14,35,.87);
+  border-color: var(--diu-border);
+  box-shadow: 0 12px 26px rgba(0,3,14,.38), 0 0 0 1px rgba(19,120,255,.10);
+}
+.countdown-num-blue {
+  background: linear-gradient(180deg, #f4f8ff, #64b5ff, #1378ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+/* Keep orange numbers where the existing code uses orange to signal urgency. */
+
+/* Non-interactive decorative assets. Paths are resolved relative to src/index.css. */
+.home-floating-wrap::before,
+.home-floating-wrap::after { content: ""; position: absolute; pointer-events: none; }
+.home-floating-wrap::before {
+  width: min(28vw, 380px);
+  height: min(42vw, 520px);
+  right: 0;
+  top: 38%;
+  opacity: .12;
+  background: url('./assets/watermarks/01_photographer_silhouette.png') center / contain no-repeat;
+  filter: drop-shadow(0 0 22px rgba(19,120,255,.58));
+}
+.home-floating-wrap::after {
+  width: min(29vw, 400px);
+  height: 240px;
+  left: -6%;
+  bottom: 5%;
+  opacity: .15;
+  background: url('./assets/watermarks/02_film_strip_top.png') center / contain no-repeat;
+  filter: drop-shadow(0 0 18px rgba(19,120,255,.4));
+}
+/* These 2 assets are available as optional backgrounds on EXISTING elements.
+   No markup is inserted or content replaced. */
+.home-float.lens {
+  background: url('./assets/watermarks/04_camera_lens.png') center / contain no-repeat;
+  opacity: .25;
+}
+/* Utility for existing or future decorative markup only; no feature impact. */
+.diu-signature-art {
+  background: url('./assets/watermarks/18_showcase_your_vision.png') center / contain no-repeat;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .home-floating-wrap::before { width: 200px; height: 280px; opacity: .07; }
+  .home-floating-wrap::after { width: 170px; height: 130px; opacity: .09; }
+}

@@ -1,4 +1,4 @@
- import { useEffect, useState } from "react";
+  import { useEffect, useState } from "react";
 import { gsAdmin } from "../../api/admin.gs";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -66,7 +66,7 @@ export default function AdminAnnouncements() {
 
   return (
     <div className="app-card p-6">
-      <div className="text-xl font-extrabold text-slate-900">Announcements</div>
+      <div className="text-xl font-extrabold text-[#f4f8ff]">Announcements</div>
       <div className="contact-underline mt-2" />
 
       {err && <div className="mt-4 text-red-700 font-bold">{err}</div>}
@@ -89,7 +89,7 @@ export default function AdminAnnouncements() {
         <button
           onClick={create}
           disabled={saving}
-          className="px-4 py-2 rounded-lg bg-slate-900 text-white font-bold hover:bg-slate-800 transition disabled:opacity-60"
+          className="px-4 py-2 rounded-lg bg-[#126de9] text-white font-bold hover:bg-[#2588ff] transition disabled:opacity-60"
         >
           {saving ? "Publishing..." : "Publish"}
         </button>
@@ -102,11 +102,11 @@ export default function AdminAnnouncements() {
             className="app-card p-4 flex items-start justify-between gap-3"
           >
             <div className="flex-1">
-              <div className="font-extrabold text-slate-900">{x.title}</div>
-              <div className="text-sm text-slate-700 mt-1 whitespace-pre-line">
+              <div className="font-extrabold text-[#f4f8ff]">{x.title}</div>
+              <div className="text-sm text-[#b8cce8] mt-1 whitespace-pre-line">
                 {x.message}
               </div>
-              <div className="text-xs text-slate-500 mt-2">
+              <div className="text-xs text-[#83a4cb] mt-2">
                 {x.createdAt ? String(x.createdAt) : ""}
               </div>
             </div>

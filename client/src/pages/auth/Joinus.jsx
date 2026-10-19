@@ -325,7 +325,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen px-4 py-10">
+    <div className="min-h-screen px-4 py-10 text-[#F4F8FF]">
       {/* ✅ CENTER POP-OUT (shows on current screen, auto hide 5s) */}
       {submitStatus && (
         <div className={`toast-center ${submitStatus}`}>
@@ -343,11 +343,11 @@ export default function Login() {
       <div className="max-w-4xl mx-auto space-y-10">
         {/* HERO */}
         <div className="app-card p-8 md:p-10 text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-[#F4F8FF]">
             Join DIUFPC
           </h1>
           <div className="contact-underline mx-auto mt-3" />
-          <p className="mt-4 text-slate-700 max-w-3xl mx-auto">
+          <p className="mt-4 text-[#B8CCE8] max-w-3xl mx-auto">
             Become part of our creative community—workshops, photo walks,
             exhibitions, competitions and more.
           </p>
@@ -355,7 +355,7 @@ export default function Login() {
 
         {/* BENEFITS */}
         <div className="app-card p-7">
-          <h2 className="text-2xl font-extrabold text-slate-900 text-center">
+          <h2 className="text-2xl font-extrabold text-[#F4F8FF] text-center">
             Why Join Us?
           </h2>
           <div className="contact-underline mx-auto mt-2" />
@@ -368,8 +368,8 @@ export default function Login() {
                     <b.icon size={18} />
                   </div>
                   <div>
-                    <div className="font-bold text-slate-900">{b.title}</div>
-                    <div className="text-sm text-slate-700 mt-1">{b.desc}</div>
+                    <div className="font-bold text-[#F4F8FF]">{b.title}</div>
+                    <div className="text-sm text-[#B8CCE8] mt-1">{b.desc}</div>
                   </div>
                 </div>
               </div>
@@ -379,7 +379,7 @@ export default function Login() {
 
         {/* FORM */}
         <div className="app-card p-7">
-          <h2 className="text-2xl font-extrabold text-slate-900 text-center">
+          <h2 className="text-2xl font-extrabold text-[#F4F8FF] text-center">
             Membership Application
           </h2>
           <div className="contact-underline mx-auto mt-2" />
@@ -387,7 +387,7 @@ export default function Login() {
           <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
             {/* Personal Information */}
             <div className="app-card p-5">
-              <div className="text-lg font-bold text-slate-900 mb-3">
+              <div className="text-lg font-bold text-[#F4F8FF] mb-3">
                 Personal Information
               </div>
 
@@ -476,7 +476,7 @@ export default function Login() {
 
             {/* Photography Background */}
             <div className="app-card p-5">
-              <div className="text-lg font-bold text-slate-900 mb-3">
+              <div className="text-lg font-bold text-[#F4F8FF] mb-3">
                 Photography Background
               </div>
 
@@ -523,7 +523,7 @@ export default function Login() {
                           checked={interests.includes(item)}
                           onChange={() => toggleInterest(item)}
                         />
-                        <span className="text-sm font-semibold text-slate-800">
+                        <span className="text-sm font-semibold text-[#DFECFF]">
                           {item}
                         </span>
                       </label>
@@ -568,7 +568,7 @@ export default function Login() {
 
             {/* Payment Information */}
             <div className="app-card p-5">
-              <div className="text-lg font-bold text-slate-900 mb-3">
+              <div className="text-lg font-bold text-[#F4F8FF] mb-3">
                 Payment Information
               </div>
 
@@ -582,14 +582,14 @@ export default function Login() {
                   }}
                   className={`app-card p-4 text-left transition ${
                     paymentMethod === "cash"
-                      ? "border-blue-500/60"
-                      : "hover:border-blue-500/40"
+                      ? "border-[#3998FF]/90"
+                      : "hover:border-[#3998FF]/60"
                   }`}
                 >
-                  <div className="flex items-center gap-2 font-bold text-slate-900">
+                  <div className="flex items-center gap-2 font-bold text-[#F4F8FF]">
                     <Receipt size={18} /> Cash Payment
                   </div>
-                  <div className="text-sm text-slate-700 mt-1">
+                  <div className="text-sm text-[#B8CCE8] mt-1">
                     Pay to club executive and write receiver name.
                   </div>
                 </button>
@@ -603,14 +603,14 @@ export default function Login() {
                   }}
                   className={`app-card p-4 text-left transition ${
                     paymentMethod === "online"
-                      ? "border-blue-500/60"
-                      : "hover:border-blue-500/40"
+                      ? "border-[#3998FF]/90"
+                      : "hover:border-[#3998FF]/60"
                   }`}
                 >
-                  <div className="flex items-center gap-2 font-bold text-slate-900">
+                  <div className="flex items-center gap-2 font-bold text-[#F4F8FF]">
                     <CreditCard size={18} /> Online Payment
                   </div>
-                  <div className="text-sm text-slate-700 mt-1">
+                  <div className="text-sm text-[#B8CCE8] mt-1">
                     Submit transaction ID after payment.
                   </div>
                 </button>
@@ -633,7 +633,7 @@ export default function Login() {
 
               {paymentMethod === "online" && (
                 <div className="join-subcard mt-4">
-                  <div className="text-sm text-slate-700 mb-3">
+                  <div className="text-sm text-[#B8CCE8] mb-3">
             
                     <br />• Method: bKash/Nagad
                     <br />• Amount: 50 BDT
@@ -663,7 +663,7 @@ export default function Login() {
                 <Send size={18} />
                 <span>{submitting ? "Submitting..." : "Submit Application"}</span>
               </button>
-              <p className="mt-3 text-sm text-slate-600 text-center">
+              <p className="mt-3 text-sm text-[#A1BADC] text-center">
                 You will see the membership agreement before final submission.
               </p>
             </div>
@@ -673,20 +673,20 @@ export default function Login() {
 
       {/* Rules & Agreement Popup */}
       {showRulesPopup && (
-        <div className="fixed inset-0 z-[999] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[999] bg-[#020916]/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="app-card w-full max-w-2xl p-6">
             <div className="flex items-center gap-3">
               <div className="contact-badge">
                 <FileSignature size={18} />
               </div>
-              <div className="text-xl font-extrabold text-slate-900">
+              <div className="text-xl font-extrabold text-[#F4F8FF]">
                 Membership Agreement & Code of Conduct
               </div>
             </div>
 
             <div className="mt-4 app-card p-5 max-h-[50vh] overflow-y-auto">
-              <div className="text-slate-800 font-bold mb-2">General Rules</div>
-              <ul className="list-disc pl-6 text-slate-700 space-y-1">
+              <div className="text-[#DFECFF] font-bold mb-2">General Rules</div>
+              <ul className="list-disc pl-6 text-[#B8CCE8] space-y-1">
                 <li>Respect all members, executives, and participants.</li>
                 <li>Maintain discipline and professionalism in activities.</li>
                 <li>No misconduct/harassment; violations may lead to action.</li>
@@ -694,10 +694,10 @@ export default function Login() {
                 <li>Club resources must be used for club purposes only.</li>
               </ul>
 
-              <div className="text-slate-800 font-bold mt-5 mb-2">
+              <div className="text-[#DFECFF] font-bold mt-5 mb-2">
                 Participation Expectations
               </div>
-              <ul className="list-disc pl-6 text-slate-700 space-y-1">
+              <ul className="list-disc pl-6 text-[#B8CCE8] space-y-1">
                 <li>Attend workshops/training sessions regularly.</li>
                 <li>Join photo walks/events when possible.</li>
                 <li>Contribute to club showcases and activities.</li>
@@ -710,7 +710,7 @@ export default function Login() {
                   checked={agreementAccepted}
                   onChange={(e) => setAgreementAccepted(e.target.checked)}
                 />
-                <span className="font-bold text-slate-900">
+                <span className="font-bold text-[#F4F8FF]">
                   I accept the Membership Agreement & Code of Conduct
                 </span>
               </label>
@@ -728,7 +728,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => setShowRulesPopup(false)}
-                className="app-card flex-1 p-3 font-bold text-slate-900 hover:bg-white/60 transition"
+                className="app-card flex-1 p-3 font-bold text-[#F4F8FF] hover:bg-[#153A68]/80 transition"
               >
                 Cancel
               </button>

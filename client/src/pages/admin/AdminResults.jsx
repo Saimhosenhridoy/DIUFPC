@@ -376,15 +376,15 @@ export default function AdminResults() {
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="app-card p-7">
-          <h1 className="text-3xl font-extrabold text-slate-900">Results</h1>
-          <p className="text-slate-700 mt-2">
+          <h1 className="text-3xl font-extrabold text-[#f4f8ff]">Results</h1>
+          <p className="text-[#b8cce8] mt-2">
             Add multiple categories & winners for one event in a single submit. You can also search, edit and delete.
           </p>
 
           {/* 🔍 Search Box (same style as public) */}
           <div className="mt-6 flex justify-center">
             <div className="w-full max-w-xl app-card p-2 rounded-full">
-              <div className="flex items-center gap-2 bg-white/70 border border-slate-900/10 rounded-full px-4 py-2">
+              <div className="flex items-center gap-2 bg-[#0a2441]/85 border border-[#348bff]/20 rounded-full px-4 py-2">
                 <svg
                   width="18"
                   height="18"
@@ -401,7 +401,7 @@ export default function AdminResults() {
                 </svg>
 
                 <input
-                  className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-500"
+                  className="w-full bg-transparent outline-none text-[#f4f8ff] placeholder:text-[#83a4cb]"
                   placeholder="Search event / category / winner / email / institute..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -411,7 +411,7 @@ export default function AdminResults() {
                   <button
                     type="button"
                     onClick={() => setQuery("")}
-                    className="text-xs font-bold px-3 py-1 rounded-full bg-white/70 hover:bg-white transition"
+                    className="text-xs font-bold px-3 py-1 rounded-full bg-[#0a2441]/85 hover:bg-[#123762] transition"
                     title="Clear"
                   >
                     Clear
@@ -422,7 +422,7 @@ export default function AdminResults() {
           </div>
 
           <div className="mt-4 flex gap-2 flex-wrap">
-            <button onClick={loadResults} className="app-card px-4 py-2 font-bold text-slate-900 hover:bg-white/60 transition">
+            <button onClick={loadResults} className="app-card px-4 py-2 font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition">
               ↻ Refresh List
             </button>
           </div>
@@ -433,10 +433,10 @@ export default function AdminResults() {
 
         {/* Create (batch add) */}
         <div className="app-card p-6 space-y-4">
-          <div className="text-xl font-extrabold text-slate-900">Add Results (Batch)</div>
+          <div className="text-xl font-extrabold text-[#f4f8ff]">Add Results (Batch)</div>
           <div className="contact-underline mt-2" />
 
-          <label className="font-bold text-slate-900 block mt-4">Event Title *</label>
+          <label className="font-bold text-[#f4f8ff] block mt-4">Event Title *</label>
           <input
             className="contact-input w-full"
             placeholder="e.g., DIUFPC Photo Contest 2026"
@@ -448,7 +448,7 @@ export default function AdminResults() {
             <div key={cidx} className="app-card p-6 space-y-4 mt-4">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex-1">
-                  <label className="font-bold text-slate-900">Category *</label>
+                  <label className="font-bold text-[#f4f8ff]">Category *</label>
                   <input
                     className="contact-input w-full mt-2"
                     placeholder="e.g., Street / Portrait / Wildlife"
@@ -460,7 +460,7 @@ export default function AdminResults() {
                 {categories.length > 1 && (
                   <button
                     onClick={() => removeCategory(cidx)}
-                    className="app-card px-4 py-2 font-bold text-slate-900 hover:bg-white/60 transition"
+                    className="app-card px-4 py-2 font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition"
                     type="button"
                   >
                     Remove Category
@@ -532,7 +532,7 @@ export default function AdminResults() {
                 </button>
                 <button
                   onClick={addCategory}
-                  className="app-card px-4 py-2 font-bold text-slate-900 hover:bg-white/60 transition"
+                  className="app-card px-4 py-2 font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition"
                   type="button"
                 >
                   + Add Category
@@ -553,40 +553,40 @@ export default function AdminResults() {
 
         {/* Existing results list (grouped like public) */}
         <div className="app-card p-6">
-          <div className="text-xl font-extrabold text-slate-900">Published Results</div>
+          <div className="text-xl font-extrabold text-[#f4f8ff]">Published Results</div>
           <div className="contact-underline mt-2" />
 
           {loadingList ? (
-            <div className="mt-4 text-slate-700">Loading results...</div>
+            <div className="mt-4 text-[#b8cce8]">Loading results...</div>
           ) : filteredGrouped.length === 0 ? (
-            <div className="mt-4 text-slate-700">No results found.</div>
+            <div className="mt-4 text-[#b8cce8]">No results found.</div>
           ) : (
             <div className="mt-5 space-y-4">
               {filteredGrouped.map((ev) => (
                 <div key={ev.eventTitle} className="app-card p-5">
-                  <div className="text-2xl font-extrabold text-slate-900">{ev.eventTitle}</div>
+                  <div className="text-2xl font-extrabold text-[#f4f8ff]">{ev.eventTitle}</div>
                   <div className="contact-underline mt-2" />
 
                   <div className="mt-4 space-y-4">
                     {ev.categories.map((c) => (
                       <div key={c.name} className="app-card p-4">
-                        <div className="font-extrabold text-slate-900">{c.name}</div>
+                        <div className="font-extrabold text-[#f4f8ff]">{c.name}</div>
 
                         <div className="mt-3 space-y-2">
                           {c.winners.map((w) => (
                             <div key={w.id} className="app-card p-4">
                               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                                 <div>
-                                  <div className="font-bold text-slate-900">
+                                  <div className="font-bold text-[#f4f8ff]">
                                     {w.position} — {w.winnerName}
                                   </div>
-                                  <div className="text-sm text-slate-700 mt-1">
+                                  <div className="text-sm text-[#b8cce8] mt-1">
                                     <span className="font-semibold">Email:</span> {w.winnerEmail || "—"}{" "}
                                     <span className="mx-2">•</span>
                                     <span className="font-semibold">Institute:</span> {w.institute || "—"}
                                   </div>
                                   {w.notes ? (
-                                    <div className="text-sm text-slate-700 mt-1">
+                                    <div className="text-sm text-[#b8cce8] mt-1">
                                       <span className="font-semibold">Notes:</span> {w.notes}
                                     </div>
                                   ) : null}
@@ -595,14 +595,14 @@ export default function AdminResults() {
                                 <div className="flex gap-2">
                                   <button
                                     type="button"
-                                    className="app-card px-4 py-2 font-bold text-slate-900 hover:bg-white/60 transition"
+                                    className="app-card px-4 py-2 font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition"
                                     onClick={() => openEdit(w)}
                                   >
                                     Edit
                                   </button>
                                   <button
                                     type="button"
-                                    className="app-card px-4 py-2 font-bold text-red-600 hover:bg-white/60 transition"
+                                    className="app-card px-4 py-2 font-bold text-red-600 hover:bg-[#123762]/85 transition"
                                     onClick={() => deleteRow(w.id)}
                                   >
                                     Delete
@@ -611,7 +611,7 @@ export default function AdminResults() {
                               </div>
 
                               {w.updatedAt ? (
-                                <div className="text-xs text-slate-600 mt-2">
+                                <div className="text-xs text-[#98b4d7] mt-2">
                                   Updated: {String(w.updatedAt)}
                                 </div>
                               ) : null}
@@ -632,9 +632,9 @@ export default function AdminResults() {
           <div className="fixed inset-0 z-[999] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="app-card w-full max-w-2xl p-6">
               <div className="flex items-center justify-between gap-3">
-                <div className="text-xl font-extrabold text-slate-900">Edit Winner</div>
+                <div className="text-xl font-extrabold text-[#f4f8ff]">Edit Winner</div>
                 <button
-                  className="app-card px-3 py-1 font-bold text-slate-900 hover:bg-white/60 transition"
+                  className="app-card px-3 py-1 font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition"
                   onClick={() => setEdit(null)}
                   type="button"
                 >
@@ -646,7 +646,7 @@ export default function AdminResults() {
 
               <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <div className="font-bold text-slate-900 mb-1">Winner Name *</div>
+                  <div className="font-bold text-[#f4f8ff] mb-1">Winner Name *</div>
                   <input
                     className="contact-input w-full"
                     value={edit.winnerName}
@@ -655,7 +655,7 @@ export default function AdminResults() {
                 </div>
 
                 <div>
-                  <div className="font-bold text-slate-900 mb-1">Position *</div>
+                  <div className="font-bold text-[#f4f8ff] mb-1">Position *</div>
                   <select
                     className="contact-input w-full"
                     value={edit.position}
@@ -670,7 +670,7 @@ export default function AdminResults() {
                 </div>
 
                 <div>
-                  <div className="font-bold text-slate-900 mb-1">Winner Email *</div>
+                  <div className="font-bold text-[#f4f8ff] mb-1">Winner Email *</div>
                   <input
                     className="contact-input w-full"
                     value={edit.winnerEmail}
@@ -679,7 +679,7 @@ export default function AdminResults() {
                 </div>
 
                 <div>
-                  <div className="font-bold text-slate-900 mb-1">Institute *</div>
+                  <div className="font-bold text-[#f4f8ff] mb-1">Institute *</div>
                   <input
                     className="contact-input w-full"
                     value={edit.institute}
@@ -688,7 +688,7 @@ export default function AdminResults() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <div className="font-bold text-slate-900 mb-1">Notes</div>
+                  <div className="font-bold text-[#f4f8ff] mb-1">Notes</div>
                   <input
                     className="contact-input w-full"
                     value={edit.notes}
@@ -708,14 +708,14 @@ export default function AdminResults() {
                 </button>
                 <button
                   type="button"
-                  className="app-card px-4 py-2 font-bold text-slate-900 hover:bg-white/60 transition"
+                  className="app-card px-4 py-2 font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition"
                   onClick={() => setEdit(null)}
                 >
                   Cancel
                 </button>
               </div>
 
-              <div className="mt-3 text-xs text-slate-600">
+              <div className="mt-3 text-xs text-[#98b4d7]">
                 Note: Apps Script must support actions: <b>listResults</b>, <b>batchAddResults</b>, <b>updateResult</b>, <b>deleteResult</b>.
               </div>
             </div>

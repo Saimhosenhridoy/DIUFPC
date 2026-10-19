@@ -39,11 +39,11 @@ ${msg}`;
       <div className="max-w-6xl mx-auto space-y-12">
         {/* HERO */}
         <div className="app-card p-8 md:p-10 text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-skyblue-600">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-blue-300">
             Contact Us
           </h1>
           <div className="contact-underline mx-auto mt-3" />
-          <p className="mt-4 text-slate-700">
+          <p className="mt-4 text-slate-300">
             Get in touch with{" "}
             <a
               href="https://www.facebook.com/diufpc/"
@@ -63,7 +63,7 @@ ${msg}`;
             {/* Follow */}
             <div className="app-card p-7 flex-1">
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-slate-900">
+                <h2 className="text-2xl font-bold text-slate-50">
                   Follow Us
                 </h2>
                 <div className="contact-underline mx-auto mt-2" />
@@ -77,9 +77,9 @@ ${msg}`;
                   className="contact-tile"
                 >
                   <div className="contact-tileIcon">
-                    <Facebook size={26} className="text-[#1877F2]" />
+                    <Facebook size={26} className="text-blue-400" />
                   </div>
-                  <div className="mt-2 text-sm font-medium text-slate-800">
+                  <div className="mt-2 text-sm font-medium text-blue-100">
                     Facebook
                   </div>
                 </a>
@@ -91,9 +91,9 @@ ${msg}`;
                   className="contact-tile"
                 >
                   <div className="contact-tileIcon">
-                    <Instagram size={26} className="text-[#E4405F]" />
+                    <Instagram size={26} className="text-blue-400" />
                   </div>
-                  <div className="mt-2 text-sm font-medium text-slate-800">
+                  <div className="mt-2 text-sm font-medium text-blue-100">
                     Instagram
                   </div>
                 </a>
@@ -105,9 +105,9 @@ ${msg}`;
                   className="contact-tile"
                 >
                   <div className="contact-tileIcon">
-                    <Linkedin size={26} className="text-[#0A66C2]" />
+                    <Linkedin size={26} className="text-blue-400" />
                   </div>
-                  <div className="mt-2 text-sm font-medium text-slate-800">
+                  <div className="mt-2 text-sm font-medium text-blue-100">
                     LinkedIn
                   </div>
                 </a>
@@ -121,14 +121,14 @@ ${msg}`;
                   <Mail size={20} />
                 </div>
                 <div>
-                  <div className="text-lg font-bold text-slate-900">
+                  <div className="text-lg font-bold text-slate-50">
                     Email
                   </div>
                   <a
                     href="https://mail.google.com/mail/?view=cm&fs=1&to=diufpc@gmail.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-1 inline-block text-slate-700 hover:underline underline-offset-4"
+                    className="mt-1 inline-block text-slate-300 hover:underline underline-offset-4"
                   >
                     diufpc@gmail.com
                   </a>
@@ -147,8 +147,8 @@ ${msg}`;
                 <div className="contact-badge">
                   <MapPin size={20} />
                 </div>
-                <div className="text-slate-700">
-                  <div className="text-lg font-bold text-slate-900">
+                <div className="text-slate-300">
+                  <div className="text-lg font-bold text-slate-50">
                     Location
                   </div>
                   <div className="mt-2 leading-relaxed">
@@ -164,7 +164,7 @@ ${msg}`;
           {/* RIGHT — FORM */}
           <div className="app-card p-8 flex flex-col">
             <div className="text-center">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-50">
                 Send us a Message
               </h2>
               <div className="contact-underline mx-auto mt-2" />
@@ -173,7 +173,7 @@ ${msg}`;
             <div className="mt-6 flex flex-col gap-5 flex-1">
               {/* Name */}
               <div className="app-card p-5 flex flex-col">
-                <label className="text-sm font-bold text-slate-900 mb-2">
+                <label className="text-sm font-bold text-slate-50 mb-2">
                   Name *
                 </label>
                 <input
@@ -185,7 +185,7 @@ ${msg}`;
 
               {/* Department / Batch */}
               <div className="app-card p-5 flex flex-col">
-                <label className="text-sm font-bold text-slate-900 mb-2">
+                <label className="text-sm font-bold text-slate-50 mb-2">
                   Department / Batch
                 </label>
                 <input
@@ -197,7 +197,7 @@ ${msg}`;
 
               {/* Message */}
               <div className="app-card p-5 flex flex-col flex-1">
-                <label className="text-sm font-bold text-slate-900 mb-2">
+                <label className="text-sm font-bold text-slate-50 mb-2">
                   Message *
                 </label>
                 <textarea
@@ -224,14 +224,14 @@ ${msg}`;
 
         {/* FIND US */}
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-slate-900">
+          <h2 className="text-3xl font-extrabold text-slate-50">
             Find Us at
           </h2>
           <div className="contact-underline mx-auto mt-3" />
         </div>
 
         <div className="app-card p-10 text-center">
-          <h3 className="mt-6 text-2xl md:text-3xl font-extrabold text-slate-900">
+          <h3 className="mt-6 text-2xl md:text-3xl font-extrabold text-slate-50">
             <a
               href="https://diu.ac/"
               target="_blank"
@@ -241,7 +241,7 @@ ${msg}`;
               Dhaka International University
             </a>
           </h3>
-          <p className="mt-3 text-slate-700">
+          <p className="mt-3 text-slate-300">
             Satarkul, Badda, Dhaka 1212, Bangladesh
           </p>
         </div>

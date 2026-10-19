@@ -1,4 +1,4 @@
- 
+  
  import { useEffect, useState } from "react";
 import { gsAdmin } from "../../api/admin.gs";
 import { useAuth } from "../../hooks/useAuth";
@@ -46,7 +46,7 @@ export default function AdminUsers() {
 
   return (
     <div className="app-card p-6">
-      <div className="text-xl font-extrabold text-slate-900">Users & Roles</div>
+      <div className="text-xl font-extrabold text-[#f4f8ff]">Users & Roles</div>
       <div className="contact-underline mt-2" />
       {err && <div className="mt-4 text-red-700 font-bold">{err}</div>}
 
@@ -59,7 +59,7 @@ export default function AdminUsers() {
         </select>
       </div>
 
-      <button onClick={addOrUpdate} className="mt-3 px-4 py-2 rounded-lg bg-slate-900 text-white font-bold hover:bg-slate-800 transition">
+      <button onClick={addOrUpdate} className="mt-3 px-4 py-2 rounded-lg bg-[#126de9] text-white font-bold hover:bg-[#2588ff] transition">
         Add/Update User
       </button>
 
@@ -67,8 +67,8 @@ export default function AdminUsers() {
         {items.map((x) => (
           <div key={x.id} className="app-card p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div>
-              <div className="font-extrabold text-slate-900">{x.email}</div>
-              <div className="text-sm text-slate-700">{x.name || "—"} • Role: <b>{x.role}</b></div>
+              <div className="font-extrabold text-[#f4f8ff]">{x.email}</div>
+              <div className="text-sm text-[#b8cce8]">{x.name || "—"} • Role: <b>{x.role}</b></div>
             </div>
             <div className="flex gap-2">
               <button onClick={() => setRoleFn(x.id, "ADMIN")} className="px-3 py-2 rounded-lg bg-green-600 text-white font-bold hover:bg-green-500">

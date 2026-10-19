@@ -26,12 +26,12 @@ function InfoCard({ icon: Icon, title, children }) {
   return (
     <div className="app-card p-5">
       <div className="flex items-start gap-3">
-        <div className="shrink-0 w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-200/60 flex items-center justify-center">
-          <Icon className="w-5 h-5 text-blue-700" />
+        <div className="shrink-0 w-10 h-10 rounded-2xl bg-blue-500/15 border border-blue-400/30 flex items-center justify-center">
+          <Icon className="w-5 h-5 text-blue-300" />
         </div>
         <div className="min-w-0">
-          <div className="text-[#112240] font-extrabold">{title}</div>
-          <div className="text-slate-700 text-sm mt-1 leading-relaxed">
+          <div className="text-slate-50 font-extrabold">{title}</div>
+          <div className="text-slate-300 text-sm mt-1 leading-relaxed">
             {children}
           </div>
         </div>
@@ -42,14 +42,14 @@ function InfoCard({ icon: Icon, title, children }) {
 
 function MiniItem({ icon: Icon, title, desc }) {
   return (
-    <div className="rounded-2xl border border-blue-200/70 bg-white/55 p-4">
+    <div className="rounded-2xl border border-blue-400/30 bg-[#102746]/80 p-4">
       <div className="flex items-start gap-3">
-        <div className="shrink-0 w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-200/60 flex items-center justify-center">
-          <Icon className="w-5 h-5 text-blue-700" />
+        <div className="shrink-0 w-9 h-9 rounded-xl bg-blue-500/15 border border-blue-400/30 flex items-center justify-center">
+          <Icon className="w-5 h-5 text-blue-300" />
         </div>
         <div className="min-w-0">
-          <div className="font-bold text-[#112240]">{title}</div>
-          <div className="text-slate-700 text-sm mt-1 leading-relaxed">
+          <div className="font-bold text-slate-50">{title}</div>
+          <div className="text-slate-300 text-sm mt-1 leading-relaxed">
             {desc}
           </div>
         </div>
@@ -64,23 +64,23 @@ function QuickLink({ to, icon: Icon, title, subtitle }) {
     <Link
       to={to}
       className="
-        group rounded-2xl border border-blue-200/70 bg-white/55 p-4
-        hover:bg-blue-50/70 hover:border-blue-300 transition
+        group rounded-2xl border border-blue-400/30 bg-[#102746]/80 p-4
+        hover:bg-blue-900/40 hover:border-blue-300/80 transition
         flex items-start gap-3
       "
     >
-      <div className="shrink-0 w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-200/60 flex items-center justify-center">
-        <Icon className="w-5 h-5 text-blue-700" />
+      <div className="shrink-0 w-10 h-10 rounded-2xl bg-blue-500/15 border border-blue-400/30 flex items-center justify-center">
+        <Icon className="w-5 h-5 text-blue-300" />
       </div>
       <div className="min-w-0">
-        <div className="font-extrabold text-[#112240] group-hover:text-blue-800">
+        <div className="font-extrabold text-slate-50 group-hover:text-blue-800">
           {title}
         </div>
-        <div className="text-slate-600 text-sm mt-0.5 leading-snug">
+        <div className="text-slate-300 text-sm mt-0.5 leading-snug">
           {subtitle}
         </div>
       </div>
-      <ArrowRight className="w-4 h-4 text-blue-700 ml-auto mt-1 opacity-70 group-hover:opacity-100 transition" />
+      <ArrowRight className="w-4 h-4 text-blue-300 ml-auto mt-1 opacity-70 group-hover:opacity-100 transition" />
     </Link>
   );
 }
@@ -91,19 +91,19 @@ export default function About() {
       <div className="max-w-6xl mx-auto space-y-6">
         {/* ===== Hero ===== */}
         <div className="app-card p-7 text-center">
-          <div className="inline-flex items-center gap-2 justify-center text-blue-700 font-bold text-sm">
+          <div className="inline-flex items-center gap-2 justify-center text-blue-300 font-bold text-sm">
             <Sparkles className="w-4 h-4" />
             About DIUFPC
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#112240] mt-2">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-50 mt-2">
             DIU Film & Photography Club
           </h1>
 
           <div className="contact-underline mx-auto mt-3" />
 
           {/* ✅ justify */}
-          <p className="text-slate-700 text-sm sm:text-base mt-4 max-w-3xl mx-auto leading-relaxed text-justify">
+          <p className="text-slate-300 text-sm sm:text-base mt-4 max-w-3xl mx-auto leading-relaxed text-justify">
             DIUFPC (Dhaka International University Film & Photography Club) is a
             creative community for DIU students who love filmmaking and
             photography. We bring together storytellers, creators, and visual
@@ -114,7 +114,7 @@ export default function About() {
           <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
             <Link
               to="/joinus"
-              className="px-5 py-2.5 rounded-full bg-blue-500/90 text-white font-bold hover:bg-blue-500 transition inline-flex items-center gap-2"
+              className="px-5 py-2.5 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-400 transition inline-flex items-center gap-2"
             >
               Join Us <ArrowRight className="w-4 h-4" />
             </Link>
@@ -123,17 +123,17 @@ export default function About() {
               href={FACEBOOK_URL}
               target="_blank"
               rel="noreferrer"
-              className="px-5 py-2.5 rounded-full border border-blue-200 bg-white/70 text-[#112240] font-bold hover:bg-blue-50 transition inline-flex items-center gap-2"
+              className="px-5 py-2.5 rounded-full border border-blue-400/30 bg-[#102746]/85 text-slate-50 font-bold hover:bg-blue-900/45 transition inline-flex items-center gap-2"
             >
-              <Facebook className="w-4 h-4 text-blue-700" />
+              <Facebook className="w-4 h-4 text-blue-300" />
               Facebook
             </a>
 
             <a
               href={`mailto:${EMAIL}`}
-              className="px-5 py-2.5 rounded-full border border-blue-200 bg-white/70 text-[#112240] font-bold hover:bg-blue-50 transition inline-flex items-center gap-2"
+              className="px-5 py-2.5 rounded-full border border-blue-400/30 bg-[#102746]/85 text-slate-50 font-bold hover:bg-blue-900/45 transition inline-flex items-center gap-2"
             >
-              <Mail className="w-4 h-4 text-blue-700" />
+              <Mail className="w-4 h-4 text-blue-300" />
               Email
             </a>
           </div>
@@ -153,11 +153,11 @@ export default function About() {
 
         {/* ===== What We Do ===== */}
         <div className="app-card p-6">
-          <div className="flex items-center gap-2 justify-center text-blue-700 font-bold text-sm">
+          <div className="flex items-center gap-2 justify-center text-blue-300 font-bold text-sm">
             <Megaphone className="w-4 h-4" />
             What We Do
           </div>
-          <h2 className="text-2xl font-extrabold text-[#112240] text-center mt-2">
+          <h2 className="text-2xl font-extrabold text-slate-50 text-center mt-2">
             Activities of DIUFPC
           </h2>
           <div className="contact-underline mx-auto mt-3" />
@@ -198,11 +198,11 @@ export default function About() {
 
         {/* ===== Why Join ===== */}
         <div className="app-card p-6">
-          <div className="flex items-center gap-2 justify-center text-blue-700 font-bold text-sm">
+          <div className="flex items-center gap-2 justify-center text-blue-300 font-bold text-sm">
             <Camera className="w-4 h-4" />
             Why Join DIUFPC
           </div>
-          <h2 className="text-2xl font-extrabold text-[#112240] text-center mt-2">
+          <h2 className="text-2xl font-extrabold text-slate-50 text-center mt-2">
             Benefits for Members
           </h2>
           <div className="contact-underline mx-auto mt-3" />
@@ -218,10 +218,10 @@ export default function About() {
             ].map((t) => (
               <div
                 key={t}
-                className="rounded-2xl border border-blue-200/70 bg-white/55 p-4 flex items-start gap-3"
+                className="rounded-2xl border border-blue-400/30 bg-[#102746]/80 p-4 flex items-start gap-3"
               >
-                <CheckCircle2 className="w-5 h-5 text-blue-700 mt-0.5 shrink-0" />
-                <div className="text-slate-800 text-sm font-semibold leading-relaxed">
+                <CheckCircle2 className="w-5 h-5 text-blue-300 mt-0.5 shrink-0" />
+                <div className="text-blue-100 text-sm font-semibold leading-relaxed">
                   {t}
                 </div>
               </div>
@@ -231,34 +231,34 @@ export default function About() {
 
         {/* ✅ Contact & Social ONLY (and delete below part completely) */}
         <div className="app-card p-6">
-          <h3 className="text-xl font-extrabold text-[#112240] text-center">
+          <h3 className="text-xl font-extrabold text-slate-50 text-center">
             Contact & Social
           </h3>
           <div className="contact-underline mx-auto mt-3" />
 
           <div className="mt-5 grid sm:grid-cols-2 gap-3">
-            <div className="rounded-2xl border border-blue-200/70 bg-white/55 p-4 flex items-start gap-3">
-              <Facebook className="w-5 h-5 text-blue-700 mt-0.5 shrink-0" />
+            <div className="rounded-2xl border border-blue-400/30 bg-[#102746]/80 p-4 flex items-start gap-3">
+              <Facebook className="w-5 h-5 text-blue-300 mt-0.5 shrink-0" />
               <div className="min-w-0">
-                <div className="font-bold text-[#112240]">Facebook Page</div>
+                <div className="font-bold text-slate-50">Facebook Page</div>
                 <a
                   href={FACEBOOK_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-sm text-slate-700 hover:underline break-all"
+                  className="text-sm text-slate-300 hover:underline break-all"
                 >
                   {FACEBOOK_URL}
                 </a>
               </div>
             </div>
 
-            <div className="rounded-2xl border border-blue-200/70 bg-white/55 p-4 flex items-start gap-3">
-              <Mail className="w-5 h-5 text-blue-700 mt-0.5 shrink-0" />
+            <div className="rounded-2xl border border-blue-400/30 bg-[#102746]/80 p-4 flex items-start gap-3">
+              <Mail className="w-5 h-5 text-blue-300 mt-0.5 shrink-0" />
               <div className="min-w-0">
-                <div className="font-bold text-[#112240]">Email</div>
+                <div className="font-bold text-slate-50">Email</div>
                 <a
                   href={`mailto:${EMAIL}`}
-                  className="text-sm text-slate-700 hover:underline break-all"
+                  className="text-sm text-slate-300 hover:underline break-all"
                 >
                   {EMAIL}
                 </a>
@@ -269,11 +269,11 @@ export default function About() {
 
         {/* ✅ Quick Links card = sobar nice (last) */}
         <div className="app-card p-6">
-          <div className="flex items-center gap-2 justify-center text-blue-700 font-bold text-sm">
+          <div className="flex items-center gap-2 justify-center text-blue-300 font-bold text-sm">
             <LayoutGrid className="w-4 h-4" />
             Quick Links
           </div>
-          <h2 className="text-2xl font-extrabold text-[#112240] text-center mt-2">
+          <h2 className="text-2xl font-extrabold text-slate-50 text-center mt-2">
             Explore DIUFPC
           </h2>
           <div className="contact-underline mx-auto mt-3" />

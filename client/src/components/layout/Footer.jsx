@@ -1,23 +1,41 @@
- import { Facebook, Instagram, Linkedin } from "lucide-react";
+// src/components/layout/Footer.jsx
+import { Facebook, Instagram, Linkedin } from "lucide-react";
+import photographerWatermark from "../../assets/watermarks/01_photographer_silhouette.png";
+import filmStripWatermark from "../../assets/watermarks/02_film_strip_top.png";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-[#112240]/95 backdrop-blur">
-      <div className="max-w-7xl mx-auto px-6 py-10">
+    <footer className="relative isolate overflow-hidden border-t border-blue-400/20 bg-[#020916]/95 backdrop-blur">
+      {/* Visual-only watermarks: never intercept links or clicks. */}
+      <img
+        src={photographerWatermark}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none select-none absolute -left-8 bottom-0 z-0 h-44 w-44 md:h-64 md:w-64 object-contain opacity-[0.10]"
+      />
+      <img
+        src={filmStripWatermark}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none select-none absolute -right-12 top-0 z-0 h-36 w-64 md:h-52 md:w-96 object-contain opacity-[0.08]"
+      />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_50%_100%,rgba(19,120,255,0.13),transparent_65%)]" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-10">
         <div className="text-center space-y-4">
           {/* Copyright */}
           <div className="text-sm text-slate-300">
             © {new Date().getFullYear()} DIU FILM & Photography Club
           </div>
 
-          {/* Developers */}
+          {/* Developers: links and text retained verbatim. */}
           <div className="text-sm text-slate-400">
             Developed by{" "}
             <a
               href="https://www.linkedin.com/in/saim-hosen-hridoy/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-blue-300 hover:text-blue-200 underline-offset-4 hover:underline transition"
+              className="font-medium text-sky-300 hover:text-sky-100 underline-offset-4 hover:underline transition"
             >
               Abu Saim Hossen Hridoy
             </a>{" "}
@@ -26,7 +44,7 @@ export default function Footer() {
               href="https://www.linkedin.com/in/nazmus-sakib-shohan/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-blue-300 hover:text-blue-200 underline-offset-4 hover:underline transition"
+              className="font-medium text-sky-300 hover:text-sky-100 underline-offset-4 hover:underline transition"
             >
               Nazmus Sakib Shohan
             </a>
@@ -38,7 +56,7 @@ export default function Footer() {
               href="https://www.facebook.com/diufpc/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-300 hover:text-blue-300 transition"
+              className="text-slate-300 hover:text-sky-300 transition"
             >
               <Facebook size={22} />
             </a>
@@ -47,7 +65,7 @@ export default function Footer() {
               href="https://www.instagram.com/diufpc"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-300 hover:text-pink-300 transition"
+              className="text-slate-300 hover:text-sky-300 transition"
             >
               <Instagram size={22} />
             </a>
@@ -56,7 +74,7 @@ export default function Footer() {
               href="https://www.linkedin.com/company/99019382/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-300 hover:text-blue-400 transition"
+              className="text-slate-300 hover:text-sky-300 transition"
             >
               <Linkedin size={22} />
             </a>

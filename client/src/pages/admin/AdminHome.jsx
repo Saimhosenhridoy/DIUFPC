@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 
 const navLinkClass = ({ isActive }) =>
   `w-full flex items-center justify-between px-3 py-2 rounded-xl font-bold transition
-   ${isActive ? "bg-slate-900 text-white" : "text-slate-900 hover:bg-white/60"}`;
+   ${isActive ? "bg-[#126de9] text-white" : "text-[#f4f8ff] hover:bg-[#123762]/85"}`;
 
 function TitleForPath(pathname) {
   if (pathname === "/admin") return "Dashboard";
@@ -77,24 +77,24 @@ export default function AdminHome() {
         {/* Topbar */}
         <div className="app-card p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div>
-            <div className="text-2xl font-extrabold text-slate-900">
+            <div className="text-2xl font-extrabold text-[#f4f8ff]">
               {pageTitle}
             </div>
-            <div className="text-sm text-slate-700 mt-1">
+            <div className="text-sm text-[#b8cce8] mt-1">
               Signed in as <b>{user?.email}</b>
             </div>
           </div>
 
           <div className="flex gap-2">
             <button
-              className="app-card px-4 py-2 font-bold text-slate-900 hover:bg-white/60 transition"
+              className="app-card px-4 py-2 font-bold text-[#f4f8ff] hover:bg-[#123762]/85 transition"
               onClick={() => nav("/")}
             >
               Go Home
             </button>
 
             <button
-              className="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition"
+              className="px-4 py-2 rounded-xl bg-[#126de9] text-white font-bold hover:bg-[#2588ff] transition"
               onClick={async () => {
                 await logout();
                 nav("/admin-login");
@@ -109,7 +109,7 @@ export default function AdminHome() {
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-4 gap-4">
           {/* Sidebar */}
           <aside className="app-card p-4 lg:sticky lg:top-6 h-fit">
-            <div className="text-sm font-extrabold text-slate-900 mb-3">
+            <div className="text-sm font-extrabold text-[#f4f8ff] mb-3">
               Admin Menu
             </div>
 
@@ -123,7 +123,7 @@ export default function AdminHome() {
                 >
                   <span>{m.label}</span>
                   {m.badge ? (
-                    <span className="text-xs px-2 py-1 rounded-full bg-white/40">
+                    <span className="text-xs px-2 py-1 rounded-full bg-[#164477]/55">
                       {m.badge}
                     </span>
                   ) : null}
@@ -131,7 +131,7 @@ export default function AdminHome() {
               ))}
             </div>
 
-            <div className="mt-4 text-xs text-slate-600">Admin Panel • DIUFPC</div>
+            <div className="mt-4 text-xs text-[#98b4d7]">Admin Panel • DIUFPC</div>
           </aside>
 
           {/* Main */}
@@ -143,7 +143,7 @@ export default function AdminHome() {
             {location.pathname === "/admin" && (
               <>
                 <section className="app-card p-6">
-                  <div className="text-xl font-extrabold text-slate-900">
+                  <div className="text-xl font-extrabold text-[#f4f8ff]">
                     Dashboard Overview
                   </div>
                   <div className="contact-underline mt-2" />
@@ -153,7 +153,7 @@ export default function AdminHome() {
                   )}
 
                   {!metrics || loading ? (
-                    <div className="mt-4 text-slate-700">Loading metrics...</div>
+                    <div className="mt-4 text-[#b8cce8]">Loading metrics...</div>
                   ) : (
                     <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                       <Stat title="Events" value={metrics.events} />
@@ -164,13 +164,13 @@ export default function AdminHome() {
                 </section>
 
                 <section className="app-card p-6">
-                  <div className="text-xl font-extrabold text-slate-900">
+                  <div className="text-xl font-extrabold text-[#f4f8ff]">
                     Recent Activity
                   </div>
                   <div className="contact-underline mt-2" />
 
                   {activity.length === 0 ? (
-                    <div className="mt-4 text-slate-700">No activity yet.</div>
+                    <div className="mt-4 text-[#b8cce8]">No activity yet.</div>
                   ) : (
                     <div className="mt-4 space-y-2">
                       {activity.slice(0, 12).map((a) => (
@@ -178,9 +178,9 @@ export default function AdminHome() {
                           key={a.id || `${a.createdAt}-${a.action}`}
                           className="app-card p-4"
                         >
-                          <div className="font-bold text-slate-900">{a.action}</div>
-                          <div className="text-sm text-slate-700">{a.details}</div>
-                          <div className="text-xs text-slate-600 mt-1">
+                          <div className="font-bold text-[#f4f8ff]">{a.action}</div>
+                          <div className="text-sm text-[#b8cce8]">{a.details}</div>
+                          <div className="text-xs text-[#98b4d7] mt-1">
                             by <b>{a.by}</b> • {String(a.createdAt)}
                           </div>
                         </div>
@@ -189,7 +189,7 @@ export default function AdminHome() {
                   )}
                 </section>
 
-                <div className="text-xs text-slate-600 text-center pb-6">
+                <div className="text-xs text-[#98b4d7] text-center pb-6">
                   DIUFPC Admin Panel
                 </div>
               </>
@@ -204,8 +204,8 @@ export default function AdminHome() {
 function Stat({ title, value }) {
   return (
     <div className="app-card p-4">
-      <div className="text-sm text-slate-700 font-semibold">{title}</div>
-      <div className="text-3xl font-extrabold text-slate-900 mt-1">
+      <div className="text-sm text-[#b8cce8] font-semibold">{title}</div>
+      <div className="text-3xl font-extrabold text-[#f4f8ff] mt-1">
         {value ?? 0}
       </div>
     </div>

@@ -38,11 +38,11 @@ export default function Team() {
       <div className="max-w-7xl mx-auto space-y-20">
         {/* HEADER */}
         <div className="text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-50">
             Our Team
           </h1>
           <div className="contact-underline mx-auto mt-4" />
-          <p className="mt-4 text-slate-600 max-w-2xl mx-auto">
+          <p className="mt-4 text-slate-300 max-w-2xl mx-auto">
             Advisors and Executive Committee of DIU Film & Photography Club
           </p>
         </div>
@@ -50,7 +50,7 @@ export default function Team() {
         {/* ADVISORS */}
         <section>
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-slate-900">Advisors</h2>
+            <h2 className="text-3xl font-bold text-slate-50">Advisors</h2>
             <div className="contact-underline mx-auto mt-3" />
           </div>
 
@@ -65,10 +65,10 @@ export default function Team() {
         {committeeSessions.map((group, idx) => (
           <section key={idx}>
             <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-slate-900">
+              <h2 className="text-3xl font-bold text-slate-50">
                 {group.title}
               </h2>
-              <p className="mt-1 text-slate-600 font-medium">
+              <p className="mt-1 text-slate-300 font-medium">
                 Session {group.session}
               </p>
               <div className="contact-underline mx-auto mt-3" />

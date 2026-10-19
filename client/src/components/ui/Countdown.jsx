@@ -55,7 +55,7 @@ export default function Countdown({
   activeText = "OPEN",
   theme = "blue",
   size = "sm",      // sm | md
-  compact = false,  // ✅ NEW: extra small mode
+  compact = false,  // extra small mode
   className = "",
 }) {
   const dt = useMemo(() => parseSmart(target, mode), [target, mode]);
@@ -71,12 +71,13 @@ export default function Countdown({
 
   const { done, days, hours, minutes, seconds } = diffParts(dt.getTime());
 
+  // Retain the original orange/blue theme choice, with cinematic blue shades.
   const numGrad =
     theme === "orange"
-      ? "text-transparent bg-clip-text bg-gradient-to-b from-orange-600 via-orange-500 to-amber-400"
-      : "text-transparent bg-clip-text bg-gradient-to-b from-slate-900 via-slate-800 to-sky-600";
+      ? "text-transparent bg-clip-text bg-gradient-to-b from-orange-400 via-orange-500 to-amber-300"
+      : "text-transparent bg-clip-text bg-gradient-to-b from-white via-sky-200 to-blue-500";
 
-  // ✅ size presets
+  // Original size presets and four-column layout retained.
   const shellPad = compact ? "p-2" : size === "sm" ? "p-2.5" : "p-4";
   const titleSize = compact ? "text-[10px]" : size === "sm" ? "text-[11px]" : "text-sm";
   const numSize = compact ? "text-base md:text-lg" : size === "sm" ? "text-lg md:text-xl" : "text-2xl md:text-3xl";
@@ -87,20 +88,22 @@ export default function Countdown({
   const mt = compact ? "mt-2" : "mt-2.5";
 
   return (
-    <div className={`rounded-2xl border border-slate-200 bg-white/55 ${className}`}>
+    <div
+      className={`rounded-2xl border border-blue-400/25 bg-[#06162e]/90 shadow-[0_10px_28px_rgba(0,0,0,0.26),0_0_24px_rgba(19,120,255,0.10)] backdrop-blur ${className}`}
+    >
       <div className={shellPad}>
         <div className="flex items-center justify-between gap-3 flex-wrap">
-          <div className={`${titleSize} font-extrabold text-slate-800`}>
+          <div className={`${titleSize} font-extrabold text-slate-100`}>
             {title}
             <span className="mx-2 opacity-40">•</span>
-            <span className="font-semibold text-slate-700">{String(target || "")}</span>
+            <span className="font-semibold text-blue-200/85">{String(target || "")}</span>
           </div>
 
           <span
             className={`${badgeSize} rounded-full font-extrabold border ${
               done
-                ? "bg-slate-900 text-white border-slate-900"
-                : "bg-white/70 text-slate-900 border-slate-200"
+                ? "bg-[#10213d] text-slate-300 border-slate-500/40"
+                : "bg-blue-500/15 text-sky-200 border-blue-400/45 shadow-[0_0_12px_rgba(19,120,255,0.16)]"
             }`}
           >
             {done ? doneText : activeText}
@@ -108,38 +111,10 @@ export default function Countdown({
         </div>
 
         <div className={`${mt} grid grid-cols-4 ${gap}`}>
-          <MiniBox
-            value={pad2(days)}
-            label="DAYS"
-            numGrad={numGrad}
-            numSize={numSize}
-            boxPad={boxPad}
-            labelSize={labelSize}
-          />
-          <MiniBox
-            value={pad2(hours)}
-            label="HRS"
-            numGrad={numGrad}
-            numSize={numSize}
-            boxPad={boxPad}
-            labelSize={labelSize}
-          />
-          <MiniBox
-            value={pad2(minutes)}
-            label="MIN"
-            numGrad={numGrad}
-            numSize={numSize}
-            boxPad={boxPad}
-            labelSize={labelSize}
-          />
-          <MiniBox
-            value={pad2(seconds)}
-            label="SEC"
-            numGrad={numGrad}
-            numSize={numSize}
-            boxPad={boxPad}
-            labelSize={labelSize}
-          />
+          <MiniBox value={pad2(days)} label="DAYS" numGrad={numGrad} numSize={numSize} boxPad={boxPad} labelSize={labelSize} />
+          <MiniBox value={pad2(hours)} label="HRS" numGrad={numGrad} numSize={numSize} boxPad={boxPad} labelSize={labelSize} />
+          <MiniBox value={pad2(minutes)} label="MIN" numGrad={numGrad} numSize={numSize} boxPad={boxPad} labelSize={labelSize} />
+          <MiniBox value={pad2(seconds)} label="SEC" numGrad={numGrad} numSize={numSize} boxPad={boxPad} labelSize={labelSize} />
         </div>
       </div>
     </div>
@@ -148,9 +123,9 @@ export default function Countdown({
 
 function MiniBox({ value, label, numGrad, numSize, boxPad, labelSize }) {
   return (
-    <div className={`rounded-xl border border-slate-200 bg-white/65 ${boxPad} text-center`}>
+    <div className={`rounded-xl border border-blue-400/20 bg-[#0c2343]/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] ${boxPad} text-center`}>
       <div className={`${numSize} font-extrabold ${numGrad} leading-none`}>{value}</div>
-      <div className={`mt-1 ${labelSize} tracking-[0.18em] font-extrabold text-slate-700 leading-none`}>
+      <div className={`mt-1 ${labelSize} tracking-[0.18em] font-extrabold text-blue-100/80 leading-none`}>
         {label}
       </div>
     </div>

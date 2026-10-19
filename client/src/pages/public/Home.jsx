@@ -1,4 +1,4 @@
- // src/pages/public/Home.jsx
+  // src/pages/public/Home.jsx
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
@@ -17,6 +17,12 @@ import hero9 from "../../assets/hero/hero_banner_9.jpeg";
 import botPic from "../../assets/bot.jpeg";
 import vcPic from "../../assets/vc.jpeg";
 
+// Decorative PNG assets only. These do not affect website functionality.
+import photographerWatermark from "../../assets/watermarks/01_photographer_silhouette.png";
+import filmStripWatermark from "../../assets/watermarks/02_film_strip_top.png";
+import cameraLensWatermark from "../../assets/watermarks/04_camera_lens.png";
+import showcaseWatermark from "../../assets/watermarks/18_showcase_your_vision.png";
+
 // ✅ public API
 import { gsPublic } from "../../api/public.gs";
 
@@ -34,7 +40,7 @@ function MessageCard({
   body,
 }) {
   return (
-    <div className="app-card p-6 md:p-8 relative z-[1]">
+    <div className="app-card p-6 md:p-8 relative z-[1] overflow-hidden">
       <div className="grid lg:grid-cols-12 gap-8 items-stretch">
         {/* IMAGE SIDE */}
         <div className={`lg:col-span-4 ${reverse ? "lg:order-2" : "lg:order-1"}`}>
@@ -52,7 +58,7 @@ function MessageCard({
                   {name}
                 </div>
 
-                <div className="mt-1 rounded-full bg-white/90 px-4 py-1 text-slate-900 text-xs font-semibold leading-tight">
+                <div className="mt-1 rounded-full bg-[#102b4f]/90 px-4 py-1 text-blue-100 text-xs font-semibold leading-tight">
                   <div>{designationLine1}</div>
                   <div>{designationLine2}</div>
                 </div>
@@ -63,13 +69,13 @@ function MessageCard({
 
         {/* TEXT SIDE */}
         <div className={`lg:col-span-8 ${reverse ? "lg:order-1" : "lg:order-2"}`}>
-          <div className="text-sm font-bold text-slate-700">{title}</div>
+          <div className="text-sm font-bold text-slate-300">{title}</div>
 
           <h3 className="mt-2 text-2xl md:text-3xl font-extrabold home-gradient-text">
             DIU Film & Photography Club
           </h3>
 
-          <p className="mt-4 text-slate-700 leading-relaxed text-justify">{body}</p>
+          <p className="mt-4 text-slate-300 leading-relaxed text-justify">{body}</p>
         </div>
       </div>
     </div>
@@ -143,7 +149,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="w-full relative">
+    <div className="diufpc-cinematic-home w-full relative text-slate-100">
       {/* ✅ Premium floating background */}
       <div className="home-floating-wrap">
         <div className="home-float bubble b1" />
@@ -159,7 +165,32 @@ export default function Home() {
       <section className="w-full pt-8 relative z-[1]">
         <div className="max-w-7xl mx-auto px-4">
           <div className="relative app-card overflow-hidden">
-            <div className="relative h-[360px] md:h-[520px]">
+            <div
+              className="relative h-[360px] md:h-[520px] cursor-pointer"
+              role="region"
+              aria-label="Hero slideshow: click left for previous, right for next; use keyboard arrow keys to navigate"
+              tabIndex={0}
+              onClick={(e) => {
+                // Keep existing CTA links and slide dots fully clickable.
+                if (e.target.closest("a, button")) return;
+                const bounds = e.currentTarget.getBoundingClientRect();
+                const isRightHalf = e.clientX - bounds.left >= bounds.width / 2;
+                setIndex((current) =>
+                  isRightHalf ? (current + 1) % total : (current - 1 + total) % total
+                );
+              }}
+              onKeyDown={(e) => {
+                if (e.target !== e.currentTarget) return;
+                if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+                  e.preventDefault();
+                  setIndex((current) =>
+                    e.key === "ArrowRight"
+                      ? (current + 1) % total
+                      : (current - 1 + total) % total
+                  );
+                }
+              }}
+            >
               <div
                 className="absolute inset-0 flex transition-transform duration-700"
                 style={{ transform: `translateX(-${index * 100}%)` }}
@@ -177,50 +208,38 @@ export default function Home() {
 <h1 className="text-4xl md:text-7xl font-black hero-slider-title leading-tight">                    Welcome to DIU Film &amp; Photography Club
                   </h1>
 
-                  <div className="mt-3 text-lg md:text-2xl font-semibold text-white drop-shadow">
+                  <div className="relative mt-3">
+                    <img src={showcaseWatermark} alt="" aria-hidden="true" draggable="false"
+                      className="absolute pointer-events-none select-none left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 md:w-96 h-16 object-contain opacity-[0.16]" />
+                  <div className="relative text-lg md:text-2xl font-semibold text-white drop-shadow">
                     Showcase Your Vision
+                  </div>
                   </div>
 
                   <div className="mt-7 flex items-center justify-center gap-3 flex-wrap">
                     <Link
                       to="/about"
-                      className="px-6 py-3 rounded-xl bg-white text-slate-900 font-extrabold hover:bg-white/90 transition"
+                      className="px-6 py-3 rounded-xl bg-[#1266d8] text-white font-extrabold hover:bg-[#17549d] transition"
                     >
                       About Us
                     </Link>
 
                     <Link
                       to="/team"
-                      className="px-6 py-3 rounded-xl border border-white/90 text-white font-extrabold hover:bg-white/10 transition"
+                      className="px-6 py-3 rounded-xl border border-blue-200/70 text-white font-extrabold hover:bg-blue-400/15 transition"
                     >
                       Team
                     </Link>
 
                     <Link
                       to="/joinus"
-                      className="px-6 py-3 rounded-xl bg-slate-900/90 text-white font-extrabold hover:bg-slate-900 transition"
+                      className="px-6 py-3 rounded-xl bg-[#09254a]/90 text-white font-extrabold hover:bg-[#123e73] transition"
                     >
                       Join Us
                     </Link>
                   </div>
                 </div>
               </div>
-
-              {/* ARROWS */}
-              <button
-                onClick={() => setIndex((index - 1 + total) % total)}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 px-3 py-2 rounded-full"
-                aria-label="Previous"
-              >
-                ‹
-              </button>
-              <button
-                onClick={() => setIndex((index + 1) % total)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 px-3 py-2 rounded-full"
-                aria-label="Next"
-              >
-                ›
-              </button>
 
               {/* DOTS */}
               <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
@@ -229,7 +248,7 @@ export default function Home() {
                     key={i}
                     onClick={() => setIndex(i)}
                     className={`h-2.5 rounded-full transition-all ${
-                      i === index ? "w-7 bg-white" : "w-2.5 bg-white/55 hover:bg-white/80"
+                      i === index ? "w-7 bg-white" : "w-2.5 bg-white/55 hover:bg-blue-100/80"
                     }`}
                     aria-label={`Go to slide ${i + 1}`}
                   />
@@ -244,13 +263,16 @@ export default function Home() {
       <section className="w-full relative z-[1]">
         <div className="max-w-7xl mx-auto px-4 py-14">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-7 app-card p-7">
-              <div className="text-sm font-bold text-slate-700">About</div>
+            <div className="lg:col-span-7 app-card p-7 relative overflow-hidden">
+              <img src={photographerWatermark} alt="" aria-hidden="true" draggable="false"
+                className="pointer-events-none select-none absolute right-[-25px] bottom-[-25px] w-48 md:w-64 max-w-none object-contain opacity-[0.12]"
+                style={{ filter: "drop-shadow(0 0 24px rgba(23,119,255,.7))" }} />
+              <div className="text-sm font-bold text-slate-300">About</div>
               <h2 className="mt-1 text-2xl md:text-3xl font-extrabold home-gradient-text">
                 DIU Film & Photography Club
               </h2>
               <div className="contact-underline mt-2" />
-              <p className="mt-4 text-slate-700 leading-relaxed text-justify">
+              <p className="mt-4 text-slate-300 leading-relaxed text-justify">
                 We are a creative community focused on photography, filmmaking, and visual storytelling.
                 Through workshops, photo-walks, competitions, exhibitions, and collaborative productions,
                 we help students build skills, confidence, and a strong artistic identity.
@@ -259,21 +281,23 @@ export default function Home() {
               <div className="mt-6 flex gap-3 flex-wrap">
                 <Link
                   to="/about"
-                  className="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-extrabold hover:bg-slate-800 transition"
+                  className="px-5 py-2.5 rounded-xl bg-[#0c3668] text-white font-extrabold hover:bg-[#174b87] transition"
                 >
                   Learn More →
                 </Link>
                 <Link
                   to="/gallery"
-                  className="px-5 py-2.5 rounded-xl border border-slate-900/15 hover:bg-white/60 font-extrabold text-slate-900 transition"
+                  className="px-5 py-2.5 rounded-xl border border-blue-400/30 hover:bg-[#1a3c69]/75 font-extrabold text-slate-50 transition"
                 >
                   Visit Gallery
                 </Link>
               </div>
             </div>
 
-            <div className="lg:col-span-5 app-card p-7">
-              <div className="text-sm font-bold text-slate-700">Our Impact</div>
+            <div className="lg:col-span-5 app-card p-7 relative overflow-hidden">
+              <img src={cameraLensWatermark} alt="" aria-hidden="true" draggable="false"
+                className="pointer-events-none select-none absolute right-[-50px] top-[-55px] w-48 md:w-56 max-w-none object-contain opacity-[0.12]" />
+              <div className="text-sm font-bold text-slate-300">Our Impact</div>
               <h3 className="mt-1 text-xl md:text-2xl font-extrabold home-gradient-text">
                 What We Do
               </h3>
@@ -287,8 +311,8 @@ export default function Home() {
                   { t: "Exhibitions", d: "Showcase student stories" },
                 ].map((x) => (
                   <div key={x.t} className="app-card p-4">
-                    <div className="font-extrabold text-slate-900">{x.t}</div>
-                    <div className="text-sm text-slate-700 mt-1">{x.d}</div>
+                    <div className="font-extrabold text-slate-50">{x.t}</div>
+                    <div className="text-sm text-slate-300 mt-1">{x.d}</div>
                   </div>
                 ))}
               </div>
@@ -296,7 +320,7 @@ export default function Home() {
               <div className="mt-6">
                 <Link
                   to="/events"
-                  className="inline-block px-5 py-2.5 rounded-xl bg-white/70 hover:bg-white font-extrabold text-slate-900 transition border border-slate-900/10"
+                  className="inline-block px-5 py-2.5 rounded-xl bg-[#102b4f]/80 hover:bg-[#17549d] font-extrabold text-slate-50 transition border border-blue-400/20"
                 >
                   Explore Events →
                 </Link>
@@ -309,10 +333,12 @@ export default function Home() {
       {/* ================= UPCOMING EVENTS (MOBILE like screenshot) ================= */}
       <section className="w-full relative z-[1]">
         <div className="max-w-7xl mx-auto px-4 pb-14">
-          <div className="app-card p-7">
+          <div className="app-card p-7 relative overflow-hidden">
+            <img src={filmStripWatermark} alt="" aria-hidden="true" draggable="false"
+              className="pointer-events-none select-none absolute right-[-30px] top-[-25px] w-56 md:w-80 max-w-none object-contain opacity-[0.10]" />
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <div>
-                <div className="text-sm font-bold text-slate-700">Latest Updates</div>
+                <div className="text-sm font-bold text-slate-300">Latest Updates</div>
                 <h2 className="mt-1 text-2xl md:text-3xl font-extrabold home-gradient-text">
                   Upcoming Events
                 </h2>
@@ -321,21 +347,21 @@ export default function Home() {
 
               <Link
                 to="/events"
-                className="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition self-start md:self-auto"
+                className="px-4 py-2 rounded-xl bg-[#0c3668] text-white font-bold hover:bg-[#174b87] transition self-start md:self-auto"
               >
                 View All Events →
               </Link>
             </div>
 
-            {eventsErr && <div className="mt-5 text-red-700 font-bold">{eventsErr}</div>}
+            {eventsErr && <div className="mt-5 text-red-300 font-bold">{eventsErr}</div>}
 
             {loadingEvents ? (
               <div className="mt-7 flex items-center justify-center gap-3">
                 <div className="home-spinner" />
-                <div className="font-extrabold text-slate-800">Loading events...</div>
+                <div className="font-extrabold text-slate-200">Loading events...</div>
               </div>
             ) : events.length === 0 ? (
-              <div className="mt-6 text-slate-700 font-semibold">No published events yet.</div>
+              <div className="mt-6 text-slate-300 font-semibold">No published events yet.</div>
             ) : (
               <div className="mt-7 space-y-8">
                 {events.map((e, idx) => {
@@ -351,7 +377,7 @@ export default function Home() {
                     <div
                       key={e.id || e.slug || idx}
                       className={`flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch ${
-                        idx !== 0 ? "pt-8 border-t border-slate-900/10" : ""
+                        idx !== 0 ? "pt-8 border-t border-blue-400/20" : ""
                       }`}
                     >
                       {/* COVER (only) */}
@@ -367,7 +393,7 @@ export default function Home() {
                               loading="lazy"
                             />
                           ) : (
-                            <div className="w-full h-[230px] sm:h-[300px] lg:h-[320px] bg-white/40 flex items-center justify-center text-slate-700 font-bold">
+                            <div className="w-full h-[230px] sm:h-[300px] lg:h-[320px] bg-[#0a2345]/65 flex items-center justify-center text-slate-300 font-bold">
                               No Cover Image
                             </div>
                           )}
@@ -377,8 +403,8 @@ export default function Home() {
                               <span
                                 className={`text-xs px-4 py-2 rounded-full font-extrabold border ${
                                   regClosed
-                                    ? "bg-slate-900/90 text-white border-slate-900/40"
-                                    : "bg-white/70 text-slate-900 border-slate-200"
+                                    ? "bg-[#09254a]/90 text-white border-blue-400/35"
+                                    : "bg-[#102b4f]/80 text-slate-50 border-blue-400/30"
                                 }`}
                               >
                                 {regClosed ? "Registration Closed" : "Registration Open"}
@@ -389,7 +415,7 @@ export default function Home() {
 
                         {/* ✅ Desktop only: desc under image */}
                         {descText ? (
-                          <p className="hidden lg:block mt-3 text-sm leading-relaxed text-slate-700 text-justify line-clamp-4">
+                          <p className="hidden lg:block mt-3 text-sm leading-relaxed text-slate-300 text-justify line-clamp-4">
                             {descText}
                           </p>
                         ) : null}
@@ -399,29 +425,29 @@ export default function Home() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-4">
                           <div className="min-w-0">
-                            <div className="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">
+                            <div className="text-2xl md:text-3xl font-extrabold text-slate-50 leading-tight">
                               {e.title || "Untitled Event"}
                             </div>
 
                             {e.subtitle ? (
-                              <div className="mt-1 text-slate-700 font-medium">{e.subtitle}</div>
+                              <div className="mt-1 text-slate-300 font-medium">{e.subtitle}</div>
                             ) : null}
                           </div>
 
-                          <span className="shrink-0 text-xs px-4 py-2 rounded-full border font-bold text-slate-800 bg-white/40">
+                          <span className="shrink-0 text-xs px-4 py-2 rounded-full border font-bold text-slate-200 bg-[#0a2345]/65">
                             {String(e.status || "PUBLISHED").toUpperCase()}
                           </span>
                         </div>
 
                         {/* ✅ Mobile only: desc under title (like screenshot) */}
                         {descText ? (
-                          <p className="mt-4 text-slate-700 leading-relaxed text-justify lg:hidden">
+                          <p className="mt-4 text-slate-300 leading-relaxed text-justify lg:hidden">
                             {descText}
                           </p>
                         ) : null}
 
                         {/* DEADLINE + VENUE */}
-                        <div className="mt-4 text-base text-slate-700 space-y-1">
+                        <div className="mt-4 text-base text-slate-300 space-y-1">
                           {deadlineStr ? (
                             <div>
                               <span className="font-extrabold">Deadline:</span>{" "}
@@ -465,7 +491,7 @@ export default function Home() {
                         <div className="mt-6 flex gap-3 flex-wrap">
                           <Link
                             to={`/events/${e.slug}`}
-                            className="px-6 py-3 rounded-2xl border border-slate-900/15 hover:bg-white/60 font-extrabold text-slate-900 transition"
+                            className="px-6 py-3 rounded-2xl border border-blue-400/30 hover:bg-[#1a3c69]/75 font-extrabold text-slate-50 transition"
                           >
                             Details
                           </Link>
@@ -473,7 +499,7 @@ export default function Home() {
                           {regClosed ? (
                             <button
                               disabled
-                              className="px-6 py-3 rounded-2xl bg-slate-300 text-slate-600 font-extrabold cursor-not-allowed"
+                              className="px-6 py-3 rounded-2xl bg-[#20324c] text-slate-400 font-extrabold cursor-not-allowed"
                               title="Registration closed"
                             >
                               Registration Closed
@@ -481,7 +507,7 @@ export default function Home() {
                           ) : (
                             <Link
                               to={`/register/${e.slug}`}
-                              className="px-6 py-3 rounded-2xl bg-slate-900 text-white hover:bg-slate-800 font-extrabold transition"
+                              className="px-6 py-3 rounded-2xl bg-[#0c3668] text-white hover:bg-[#174b87] font-extrabold transition"
                             >
                               Register
                             </Link>

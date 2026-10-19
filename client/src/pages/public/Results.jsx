@@ -103,18 +103,18 @@ export default function Results() {
     <div className="min-h-screen px-4 py-10">
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="app-card p-8 text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-slate-50">
             Results
           </h1>
           <div className="contact-underline mx-auto mt-3" />
-          <p className="mt-4 text-slate-700">
+          <p className="mt-4 text-slate-300">
             Event-wise published results of DIUFPC.
           </p>
 
           {/* Search */}
           <div className="mt-6 flex justify-center">
             <div className="w-full max-w-xl app-card p-2 rounded-full">
-              <div className="flex items-center gap-2 bg-white/70 border border-slate-900/10 rounded-full px-4 py-2">
+              <div className="flex items-center gap-2 bg-[#102746]/85 border border-slate-900/10 rounded-full px-4 py-2">
                 <svg
                   width="18"
                   height="18"
@@ -131,7 +131,7 @@ export default function Results() {
                 </svg>
 
                 <input
-                  className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-500"
+                  className="w-full bg-transparent outline-none text-slate-50 placeholder:text-slate-500"
                   placeholder="Search event / category / winner..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -141,7 +141,7 @@ export default function Results() {
                   <button
                     type="button"
                     onClick={() => setQuery("")}
-                    className="text-xs font-bold px-3 py-1 rounded-full bg-white/70 hover:bg-white transition"
+                    className="text-xs font-bold px-3 py-1 rounded-full bg-[#102746]/85 hover:bg-blue-700/35 transition"
                     title="Clear"
                   >
                     Clear
@@ -152,19 +152,19 @@ export default function Results() {
           </div>
         </div>
 
-        {err && <div className="app-card p-5 text-red-600 font-bold">{err}</div>}
+        {err && <div className="app-card p-5 text-red-300 font-bold">{err}</div>}
 
         {loading ? (
-          <div className="app-card p-6 text-slate-700">Loading results...</div>
+          <div className="app-card p-6 text-slate-300">Loading results...</div>
         ) : grouped.length === 0 ? (
-          <div className="app-card p-6 text-slate-700">
+          <div className="app-card p-6 text-slate-300">
             No published results yet.
           </div>
         ) : (
           <div className="space-y-6">
             {grouped.map((ev) => (
               <div key={ev.eventTitle} className="app-card p-7">
-                <div className="text-2xl font-extrabold text-slate-900">
+                <div className="text-2xl font-extrabold text-slate-50">
                   {ev.eventTitle}
                 </div>
                 <div className="contact-underline mt-2" />
@@ -172,7 +172,7 @@ export default function Results() {
                 <div className="mt-5 space-y-4">
                   {ev.categories.map((c) => (
                     <div key={c.category} className="app-card p-5">
-                      <div className="text-lg font-extrabold text-slate-900">
+                      <div className="text-lg font-extrabold text-slate-50">
                         {c.category}
                       </div>
 
@@ -187,7 +187,7 @@ export default function Results() {
 
                           return (
                             <div key={w.id} className="app-card p-4">
-                              <div className="text-sm md:text-base text-slate-800 leading-relaxed">
+                              <div className="text-sm md:text-base text-blue-100 leading-relaxed">
                                 <span>{parts.length ? parts.join(" • ") : "Winner"}</span>
 
                                 {w.position ? (
@@ -211,7 +211,7 @@ export default function Results() {
           </div>
         )}
 
-        <div className="text-xs text-slate-600 text-center pb-6">
+        <div className="text-xs text-slate-300 text-center pb-6">
           DIUFPC • Results
         </div>
       </div>

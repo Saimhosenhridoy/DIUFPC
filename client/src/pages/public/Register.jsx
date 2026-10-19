@@ -67,15 +67,15 @@ export default function Register() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
-      <div className="rounded-2xl border bg-white p-8">
+      <div className="rounded-2xl border bg-[#0B213E] p-8">
         <h2 className="text-2xl font-semibold">Registration</h2>
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-slate-300">
           Event: <span className="font-medium">{event.title}</span>
         </p>
 
         <form className="mt-6 space-y-4" onSubmit={onSubmit}>
           {error ? (
-            <div className="p-3 rounded-lg border border-red-200 bg-red-50 text-red-700 text-sm">
+            <div className="p-3 rounded-lg border border-red-500/40 bg-red-950/40 text-red-300 text-sm">
               {error}
             </div>
           ) : null}
@@ -122,7 +122,7 @@ export default function Register() {
           <div>
             <label className="text-sm font-medium">Category *</label>
             <select
-              className="mt-1 w-full px-3 py-2 border rounded-lg bg-white"
+              className="mt-1 w-full px-3 py-2 border rounded-lg bg-[#0B213E]"
               name="category"
               value={form.category}
               onChange={onChange}
@@ -164,19 +164,19 @@ export default function Register() {
               onChange={(e) => setFileName(e.target.files?.[0]?.name || "")}
             />
             {fileName ? (
-              <div className="text-sm text-gray-600 mt-1">Selected: {fileName}</div>
+              <div className="text-sm text-slate-300 mt-1">Selected: {fileName}</div>
             ) : null}
           </div>
 
           <button
             disabled={submitting}
-            className="w-full px-4 py-2 rounded-lg bg-black text-white hover:opacity-90 disabled:opacity-60"
+            className="w-full px-4 py-2 rounded-lg bg-blue-600 text-white hover:opacity-90 disabled:opacity-60"
           >
             {submitting ? "Submitting..." : "Submit Registration"}
           </button>
         </form>
 
-        <p className="mt-4 text-xs text-gray-500">
+        <p className="mt-4 text-xs text-slate-400">
           Note: File upload is mocked now. It will be stored in Cloudinary once backend is connected.
         </p>
       </div>
