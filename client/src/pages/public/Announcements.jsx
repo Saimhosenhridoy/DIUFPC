@@ -1,5 +1,15 @@
- import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { gsPublic } from "../../api/public.gs";
+
+const paragraphStyle = {
+  textAlign: "justify",
+  textJustify: "inter-word",
+  hyphens: "auto",
+  WebkitHyphens: "auto",
+  overflowWrap: "break-word",
+  wordBreak: "normal",
+  textAlignLast: "left",
+};
 
 export default function Announcements() {
   const [data, setData] = useState([]);
@@ -38,16 +48,30 @@ export default function Announcements() {
         )}
 
         {data.map((a) => (
-          <div key={a.id} className="app-card p-6">
+          <div key={a.id} className="app-card p-6 min-w-0">
             <div className="flex items-start justify-between gap-3">
-              <h2 className="text-xl font-extrabold text-slate-50">{a.title}</h2>
-
-              <span className="text-xs font-extrabold px-2 py-1 rounded-full bg-[#102746]/85 text-slate-50">
+              <h2 className="text-xl font-extrabold text-slate-50 min-w-0 break-words">{a.title}</h2>
+              <span className="text-xs font-extrabold px-2 py-1 rounded-full bg-[#102746]/85 text-slate-50 shrink-0">
                 {a.priority || "NORMAL"}
               </span>
             </div>
 
-            <p className="mt-2 text-slate-300 whitespace-pre-line">{a.message}</p>
+            {/^https?:\/\//i.test(String(a.imageUrl || "")) && (
+              <img src={a.imageUrl} alt={a.title || "Announcement image"}
+                loading="lazy" className="mt-4 w-full max-h-[420px] object-contain rounded-xl border border-blue-400/25 bg-[#07152D]"
+                onError={(e) => { e.currentTarget.style.display = "none"; }} />
+            )}
+
+            <p lang="en" style={paragraphStyle} className="mt-2 text-slate-300 whitespace-pre-line leading-relaxed">
+              {a.message}
+            </p>
+
+            {a.linkTitle && /^https?:\/\//i.test(String(a.linkUrl || "")) && (
+              <a href={a.linkUrl} target="_blank" rel="noopener noreferrer"
+                className="inline-flex mt-4 items-center gap-2 rounded-xl bg-[#126de9] px-5 py-2.5 font-bold text-white hover:bg-[#2588ff] transition break-all">
+                {a.linkTitle} ↗
+              </a>
+            )}
 
             <div className="mt-2 text-xs text-slate-400">
               {a.createdAt ? String(a.createdAt) : ""}

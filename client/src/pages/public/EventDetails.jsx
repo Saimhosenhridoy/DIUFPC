@@ -202,7 +202,13 @@ export default function EventDetails() {
         </div>
 
         {event.shortDescription ? (
-          <p className="mt-4 text-slate-300">{event.shortDescription}</p>
+          <p
+            lang="en"
+            className="mt-4 text-slate-300 leading-relaxed whitespace-pre-line text-justify [hyphens:auto] [overflow-wrap:break-word]"
+            style={{ WebkitHyphens: "auto", textAlignLast: "left" }}
+          >
+            {event.shortDescription}
+          </p>
         ) : null}
 
         <div className="mt-6 flex gap-3 flex-wrap">
@@ -235,7 +241,11 @@ export default function EventDetails() {
         <div className="app-card p-7">
           <div className="text-xl font-extrabold text-slate-50">About</div>
           <div className="contact-underline mt-2" />
-          <p className="mt-4 text-slate-300 leading-relaxed whitespace-pre-line text-justify">
+          <p
+            lang="en"
+            className="mt-4 text-slate-300 leading-relaxed whitespace-pre-line text-justify [hyphens:auto] [overflow-wrap:break-word]"
+            style={{ WebkitHyphens: "auto", textAlignLast: "left" }}
+          >
             {event.fullDescription}
           </p>
         </div>
