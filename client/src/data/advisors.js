@@ -1,11 +1,12 @@
- // src/data/advisors.js
+// src/data/advisors.js
 
 import mili from "../assets/mili-rahman.jpg";
-import rakib from "../assets/rakib-mahmud.jpg";
-import ayon from "../assets/ayon-mia.jpg";
-import fahid from "../assets/fahid-hasan-mojumder.jpg";
-import mujahidul from "../assets/mujahidul-islam.jpg";
+import fazlul from "../assets/fazlul-haque.jpg";
+import azmir from "../assets/azmir-hossain.jpg";
+import shamim from "../assets/shamim-hamide.jpg";
 import sazzad from "../assets/as-sazzad-mahmud.jpg";
+import mujahidul from "../assets/mujahidul-islam.jpg";
+import fahid from "../assets/fahid-hasan-mojumder.jpg";
 
 export const advisors = [
   {
@@ -13,42 +14,52 @@ export const advisors = [
     role: "Chief Adviser",
     dept: "English",
     designation:
-      "Associate Professor, Dept. of English; Joint Director of Research and Publications Cell",
+      "Associate Professor & Additional Director (CRED), Department of English",
     photo: mili,
   },
   {
-    name: "Rakib Mahmud",
-    role: "Associate Adviser",
-    dept: "CSE",
-    designation: "Lecturer, Department of CSE",
-    photo: rakib,
-  },
-  {
-    name: "Md. Ayon Mia",
-    role: "Adviser",
-    dept: "CSE",
-    designation: "Lecturer, Dept. of CSE",
-    photo: ayon,
-  },
-  {
-    name: "Md. Fahid Hasan",
-    role: "Adviser",
-    dept: "EEE",
-    designation: "Lecturer, Department of EEE",
-    photo: fahid,
-  },
-  {
-    name: "Mujahidul Islam",
-    role: "Adviser",
+    name: "Md. Fazlul Haque",
+    role: "Assistant Chief Adviser",
     dept: "Political Science",
-    designation: "Lecturer, Dept. of Political Science",
-    photo: mujahidul,
+    designation:
+      "Associate Professor & Chairman, Department of Political Science",
+    photo: fazlul,
+  },
+  {
+    name: "Md. Azmir Hossain",
+    role: "Adviser",
+    dept: "Business Administration",
+    designation:
+      "Dean (Acting), Faculty of Business Studies, Department of Business Administration",
+    photo: azmir,
+  },
+  {
+    name: "Dr. Shamim Hamide",
+    role: "Adviser",
+    dept: "Development Studies",
+    designation:
+      "Assistant Professor & Chairman, Department of Development Studies",
+    photo: shamim,
   },
   {
     name: "As-Sazzad Mahmud",
     role: "Adviser",
     dept: "Pharmacy",
-    designation: "Lecturer, Dept. of Pharmacy",
+    designation: "Assistant Professor, Department of Pharmacy",
     photo: sazzad,
+  },
+  {
+    name: "Mujahidul Islam",
+    role: "Adviser",
+    dept: "Political Science",
+    designation: "Lecturer, Department of Political Science",
+    photo: mujahidul,
+  },
+  {
+    name: "Md. Fahid Hasan Mojumder",
+    role: "Adviser",
+    dept: "EEE",
+    designation: "Lecturer, Department of EEE",
+    photo: fahid,
   },
 ];
