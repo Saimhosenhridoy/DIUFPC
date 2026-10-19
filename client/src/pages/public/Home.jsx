@@ -1,4 +1,4 @@
- // src/pages/public/Home.jsx
+  // src/pages/public/Home.jsx
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
@@ -21,7 +21,6 @@ import vcPic from "../../assets/vc.jpeg";
 import photographerWatermark from "../../assets/watermarks/01_photographer_silhouette.png";
 import filmStripWatermark from "../../assets/watermarks/02_film_strip_top.png";
 import cameraLensWatermark from "../../assets/watermarks/04_camera_lens.png";
-import showcaseWatermark from "../../assets/watermarks/18_showcase_your_vision.png";
 
 // ✅ public API
 import { gsPublic } from "../../api/public.gs";
@@ -75,7 +74,7 @@ function MessageCard({
             DIU Film & Photography Club
           </h3>
 
-          <p className="mt-4 text-slate-300 leading-relaxed text-justify">{body}</p>
+          <p lang="en" className="mt-4 text-slate-300 leading-relaxed text-left sm:text-justify [hyphens:auto] [overflow-wrap:break-word]">{body}</p>
         </div>
       </div>
     </div>
@@ -211,14 +210,14 @@ export default function Home() {
           {/* Content stays LEFT aligned, as in reference image. */}
           <div className="pointer-events-none absolute inset-0 z-[2] flex items-center">
             <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-14">
-              <div className="pointer-events-auto max-w-[680px] pt-4 sm:pt-0">
+              <div className="pointer-events-auto max-w-[620px] pt-4 sm:pt-0">
                 <p className="mb-4 text-[10px] sm:text-xs font-extrabold uppercase tracking-[.35em] text-[#73b5ff] drop-shadow-[0_0_12px_rgba(35,120,255,.9)]">
                   DIU Film &amp; Photography Club
                 </p>
-                <p className="mb-1 text-xl sm:text-2xl md:text-3xl font-light uppercase tracking-[.18em] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,.85)]">
+                <p className="mb-1 text-lg sm:text-xl md:text-2xl font-light uppercase tracking-[.18em] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,.85)]">
                   Welcome to
                 </p>
-                <h1 className="font-black uppercase leading-[.96] tracking-[-.035em] text-[clamp(2.7rem,6.6vw,6.1rem)] drop-shadow-[0_4px_14px_rgba(0,0,0,.75)]">
+                <h1 className="font-black uppercase leading-[.96] tracking-[-.035em] text-[clamp(2.15rem,5.2vw,4.7rem)] drop-shadow-[0_4px_14px_rgba(0,0,0,.75)]">
                   <span className="block text-white">DIU Film &amp;</span>
                   <span className="block text-[#1b82ff] drop-shadow-[0_0_19px_rgba(13,105,255,.65)]">Photography</span>
                   <span className="flex items-center gap-5 text-white">Club <span className="mt-2 h-[3px] w-14 sm:w-20 rounded-full bg-[#1886ff] shadow-[0_0_14px_3px_rgba(20,124,255,.8)]" /></span>
@@ -234,21 +233,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          {/* Right-side visual branding. Decorative; no text overlay covering CTA. */}
-          <img
-            src={showcaseWatermark}
-            alt=""
-            aria-hidden="true"
-            draggable="false"
-            className="pointer-events-none select-none absolute right-[3%] top-[14%] z-[2] hidden w-[205px] opacity-95 md:block lg:right-[8%] lg:w-[275px]"
-            style={{
-              mixBlendMode: "screen",
-              filter: "brightness(1.3) contrast(1.26) drop-shadow(0 0 20px rgba(39,135,255,.65))",
-              WebkitMaskImage: "radial-gradient(ellipse 68% 72% at 50% 50%, black 38%, transparent 100%)",
-              maskImage: "radial-gradient(ellipse 68% 72% at 50% 50%, black 38%, transparent 100%)",
-            }}
-          />
 
           {/* Pagination: active slide is a glowing electric-blue line. */}
           <div className="absolute bottom-5 inset-x-0 z-[3] flex justify-center gap-2.5" aria-label="Slideshow pagination">
@@ -283,7 +267,7 @@ export default function Home() {
                 DIU Film & Photography Club
               </h2>
               <div className="contact-underline mt-2" />
-              <p className="mt-4 text-slate-300 leading-relaxed text-justify">
+              <p lang="en" className="mt-4 text-slate-300 leading-relaxed text-left sm:text-justify [hyphens:auto] [overflow-wrap:break-word]">
                 We are a creative community focused on photography, filmmaking, and visual storytelling.
                 Through workshops, photo-walks, competitions, exhibitions, and collaborative productions,
                 we help students build skills, confidence, and a strong artistic identity.
@@ -426,7 +410,7 @@ export default function Home() {
 
                         {/* ✅ Desktop only: desc under image */}
                         {descText ? (
-                          <p className="hidden lg:block mt-3 text-sm leading-relaxed text-slate-300 text-justify line-clamp-4">
+                          <p lang="en" className="hidden lg:block mt-3 text-sm leading-relaxed text-slate-300 text-left sm:text-justify [hyphens:auto] [overflow-wrap:break-word] line-clamp-4">
                             {descText}
                           </p>
                         ) : null}
@@ -452,7 +436,7 @@ export default function Home() {
 
                         {/* ✅ Mobile only: desc under title (like screenshot) */}
                         {descText ? (
-                          <p className="mt-4 text-slate-300 leading-relaxed text-justify lg:hidden">
+                          <p lang="en" className="mt-4 text-slate-300 leading-relaxed text-left sm:text-justify [hyphens:auto] [overflow-wrap:break-word] lg:hidden">
                             {descText}
                           </p>
                         ) : null}
