@@ -1,4 +1,4 @@
-  // src/pages/public/Home.jsx
+ // src/pages/public/Home.jsx
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
@@ -74,7 +74,7 @@ function MessageCard({
             DIU Film & Photography Club
           </h3>
 
-          <p lang="en" className="mt-4 text-slate-300 leading-relaxed text-left sm:text-justify [hyphens:auto] [overflow-wrap:break-word]">{body}</p>
+          <p lang="en" className="mt-4 text-slate-300 leading-relaxed text-justify [text-align-last:left] [hyphens:auto] [overflow-wrap:break-word] [word-break:normal]">{body}</p>
         </div>
       </div>
     </div>
@@ -267,7 +267,7 @@ export default function Home() {
                 DIU Film & Photography Club
               </h2>
               <div className="contact-underline mt-2" />
-              <p lang="en" className="mt-4 text-slate-300 leading-relaxed text-left sm:text-justify [hyphens:auto] [overflow-wrap:break-word]">
+              <p lang="en" className="mt-4 text-slate-300 leading-relaxed text-justify [text-align-last:left] [hyphens:auto] [overflow-wrap:break-word] [word-break:normal]">
                 We are a creative community focused on photography, filmmaking, and visual storytelling.
                 Through workshops, photo-walks, competitions, exhibitions, and collaborative productions,
                 we help students build skills, confidence, and a strong artistic identity.
@@ -410,7 +410,7 @@ export default function Home() {
 
                         {/* ✅ Desktop only: desc under image */}
                         {descText ? (
-                          <p lang="en" className="hidden lg:block mt-3 text-sm leading-relaxed text-slate-300 text-left sm:text-justify [hyphens:auto] [overflow-wrap:break-word] line-clamp-4">
+                          <p lang="en" className="hidden lg:block mt-3 text-sm leading-relaxed text-slate-300 text-justify [text-align-last:left] [hyphens:auto] [overflow-wrap:break-word] [word-break:normal] line-clamp-4">
                             {descText}
                           </p>
                         ) : null}
@@ -436,7 +436,7 @@ export default function Home() {
 
                         {/* ✅ Mobile only: desc under title (like screenshot) */}
                         {descText ? (
-                          <p lang="en" className="mt-4 text-slate-300 leading-relaxed text-left sm:text-justify [hyphens:auto] [overflow-wrap:break-word] lg:hidden">
+                          <p lang="en" className="mt-4 text-slate-300 leading-relaxed text-justify [text-align-last:left] [hyphens:auto] [overflow-wrap:break-word] [word-break:normal] lg:hidden">
                             {descText}
                           </p>
                         ) : null}
