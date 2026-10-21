@@ -191,7 +191,7 @@ export default function Frame() {
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-400/30 bg-blue-500/10 text-blue-300 text-xs font-bold tracking-wide">
             <img
-              src="/logo.svg"
+              src="/diufpc.svg"
               alt="DIUFPC"
               className="w-4 h-4 rounded-full object-contain"
             />
