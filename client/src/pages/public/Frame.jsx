@@ -16,11 +16,11 @@ export default function Frame() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Find frame from URL param (/frame/:id) or default to the first frame
+  // Match frame from URL path (/frame/:id) or default to the first frame
   const selectedFrame =
     FRAMES.find((f) => f.id === id) || FRAMES[0] || null;
 
-  // If user visits "/frame" directly without an ID, navigate to the first frame's URL
+  // Redirect /frame to /frame/:id automatically without any query marks
   useEffect(() => {
     if (!id && selectedFrame?.id) {
       navigate(`/frame/${selectedFrame.id}`, { replace: true });
@@ -52,7 +52,7 @@ export default function Frame() {
     };
   }, [selectedFrame]);
 
-  // Handle user photo file selection
+  // Handle user photo upload
   const handlePhotoUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -110,7 +110,7 @@ export default function Frame() {
     if (frameImgObj) {
       ctx.drawImage(frameImgObj, 0, 0, size, size);
     } else {
-      // Clean fallback frame until the PNG file is uploaded
+      // Fallback frame preview if PNG is not yet loaded
       ctx.strokeStyle = "#1378ff";
       ctx.lineWidth = 40;
       ctx.strokeRect(20, 20, size - 40, size - 40);
@@ -220,7 +220,6 @@ export default function Frame() {
             <select
               value={selectedFrame?.id}
               onChange={(e) => {
-                // ড্রপডাউন পরিবর্তন করলেই ব্রাউজারের লিঙ্ক স্বয়ংক্রিয়ভাবে /frame/:id হয়ে যাবে
                 navigate(`/frame/${e.target.value}`);
               }}
               className="w-full bg-[#102746] border border-blue-400/40 text-white rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sky-400 cursor-pointer"
