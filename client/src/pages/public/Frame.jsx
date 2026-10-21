@@ -1,6 +1,6 @@
 // src/pages/public/Frame.jsx
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Upload,
   Download,
@@ -13,20 +13,19 @@ import {
 import { FRAMES } from "../../data/frames";
 
 export default function Frame() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const eventParam = searchParams.get("event");
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  // Select frame based on URL param or default to the first frame
-  const initialFrame =
-    FRAMES.find((f) => f.id === eventParam) || FRAMES[0] || null;
-  const [selectedFrame, setSelectedFrame] = useState(initialFrame);
+  // Find frame from URL param (/frame/:id) or default to the first frame
+  const selectedFrame =
+    FRAMES.find((f) => f.id === id) || FRAMES[0] || null;
 
-  // Automatically sync browser URL with the selected frame
+  // If user visits "/frame" directly without an ID, navigate to the first frame's URL
   useEffect(() => {
-    if (selectedFrame?.id) {
-      setSearchParams({ event: selectedFrame.id }, { replace: true });
+    if (!id && selectedFrame?.id) {
+      navigate(`/frame/${selectedFrame.id}`, { replace: true });
     }
-  }, [selectedFrame, setSearchParams]);
+  }, [id, selectedFrame, navigate]);
 
   // Editor states
   const [userImage, setUserImage] = useState(null);
@@ -191,9 +190,8 @@ export default function Frame() {
         {/* Header section */}
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-400/30 bg-blue-500/10 text-blue-300 text-xs font-bold tracking-wide">
-            {/* Public ফোল্ডারে থাকা SVG লোগো */}
             <img
-              src="/diufpc.svg"
+              src="/logo.svg"
               alt="DIUFPC"
               className="w-4 h-4 rounded-full object-contain"
             />
@@ -222,11 +220,8 @@ export default function Frame() {
             <select
               value={selectedFrame?.id}
               onChange={(e) => {
-                const found = FRAMES.find((f) => f.id === e.target.value);
-                if (found) {
-                  setSelectedFrame(found);
-                  setSearchParams({ event: found.id }, { replace: true });
-                }
+                // ড্রপডাউন পরিবর্তন করলেই ব্রাউজারের লিঙ্ক স্বয়ংক্রিয়ভাবে /frame/:id হয়ে যাবে
+                navigate(`/frame/${e.target.value}`);
               }}
               className="w-full bg-[#102746] border border-blue-400/40 text-white rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sky-400 cursor-pointer"
             >
