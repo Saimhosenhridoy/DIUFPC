@@ -37,7 +37,7 @@ export default function AppRoutes() {
       {/* Public */}
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
-
+      <Route path="/frame" element={<Frame />} />
       <Route path="/events" element={<Events />} />
       <Route path="/events/:slug" element={<EventDetails />} />
 
@@ -89,7 +89,7 @@ export default function AppRoutes() {
         <Route path="announcements" element={<AdminAnnouncements />} />
         <Route path="results" element={<AdminResults />} />
         <Route path="users" element={<AdminUsers />} />
-        <Route path="frame" element={<Frame />} />
+        
       </Route>
 
       {/* Not Found */}
