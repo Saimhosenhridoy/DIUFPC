@@ -451,7 +451,7 @@ export default function RegisterEvent() {
 
                   <div className="md:col-span-2">
                     <label className="join-subcardLabel text-slate-50">
-                      Category*
+                      Category *
                     </label>
 
                     <select
