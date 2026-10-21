@@ -451,7 +451,7 @@ export default function RegisterEvent() {
 
                   <div className="md:col-span-2">
                     <label className="join-subcardLabel text-slate-50">
-                      Category (Optional)
+                      Category*
                     </label>
 
                     <select
@@ -460,7 +460,8 @@ export default function RegisterEvent() {
                       onChange={(e) => setCategory(e.target.value)}
                       disabled={submitting}
                     >
-                      <option value="">Select category optional</option>
+                      <option value="">Select category </option>
+                      
 
                       {categories.map((categoryItem) => (
                         <option key={categoryItem} value={categoryItem}>
