@@ -7,21 +7,26 @@ import {
   RotateCw,
   RefreshCw,
   ZoomOut,
-  Sparkles,
   Image as ImageIcon,
   Move,
-  Info,
 } from "lucide-react";
 import { FRAMES } from "../../data/frames";
 
 export default function Frame() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const eventParam = searchParams.get("event");
 
   // Select frame based on URL param or default to the first frame
   const initialFrame =
     FRAMES.find((f) => f.id === eventParam) || FRAMES[0] || null;
   const [selectedFrame, setSelectedFrame] = useState(initialFrame);
+
+  // Automatically sync browser URL with the selected frame
+  useEffect(() => {
+    if (selectedFrame?.id) {
+      setSearchParams({ event: selectedFrame.id }, { replace: true });
+    }
+  }, [selectedFrame, setSearchParams]);
 
   // Editor states
   const [userImage, setUserImage] = useState(null);
@@ -44,7 +49,6 @@ export default function Frame() {
     img.src = selectedFrame.frameUrl;
     img.onload = () => setFrameImgObj(img);
     img.onerror = () => {
-      // Fallback if the PNG file has not yet been placed in public/frames/
       setFrameImgObj(null);
     };
   }, [selectedFrame]);
@@ -186,8 +190,13 @@ export default function Frame() {
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Header section */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/30 bg-blue-500/10 text-blue-300 text-xs font-bold tracking-wide">
-            <Sparkles className="w-4 h-4 text-sky-400" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-400/30 bg-blue-500/10 text-blue-300 text-xs font-bold tracking-wide">
+            {/* Public ফোল্ডারে থাকা SVG লোগো */}
+            <img
+              src="/diufpc.svg"
+              alt="DIUFPC"
+              className="w-4 h-4 rounded-full object-contain"
+            />
             DIUFPC CAMPAIGN FRAME
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
@@ -214,7 +223,10 @@ export default function Frame() {
               value={selectedFrame?.id}
               onChange={(e) => {
                 const found = FRAMES.find((f) => f.id === e.target.value);
-                if (found) setSelectedFrame(found);
+                if (found) {
+                  setSelectedFrame(found);
+                  setSearchParams({ event: found.id }, { replace: true });
+                }
               }}
               className="w-full bg-[#102746] border border-blue-400/40 text-white rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sky-400 cursor-pointer"
             >
@@ -354,7 +366,6 @@ export default function Frame() {
               <Download className="w-5 h-5" />
               {isDownloading ? "Generating Image..." : "Download Framed Photo"}
             </button>
-
           </div>
         </div>
       </div>
