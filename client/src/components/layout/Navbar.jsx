@@ -1,4 +1,4 @@
-// src/components/layout/Navbar.jsx
+ // src/components/layout/Navbar.jsx
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
@@ -99,6 +99,7 @@ export default function Navbar() {
           <NavLink to="/gallery" className={linkClass}>Gallery</NavLink>
           <NavLink to="/announcements" className={linkClass}>Announcements</NavLink>
           <NavLink to="/results" className={linkClass}>Results</NavLink>
+          <NavLink to="/frame" className={linkClass}>Frame</NavLink>
           <NavLink to="/contact" className={linkClass}>Contact</NavLink>
 
           <NavLink to="/joinus" className={joinClass}>Join Us</NavLink>
@@ -143,6 +144,7 @@ export default function Navbar() {
                     <NavLink to="/gallery" className={mobileItemClass} onClick={() => setOpen(false)}>Gallery</NavLink>
                     <NavLink to="/announcements" className={mobileItemClass} onClick={() => setOpen(false)}>Announcements</NavLink>
                     <NavLink to="/results" className={mobileItemClass} onClick={() => setOpen(false)}>Results</NavLink>
+                    <NavLink to="/frame" className={mobileItemClass} onClick={() => setOpen(false)}>Frame</NavLink>
                     <NavLink to="/contact" className={mobileItemClass} onClick={() => setOpen(false)}>Contact</NavLink>
 
                     <div className="w-full h-px bg-blue-300/15 my-1" />

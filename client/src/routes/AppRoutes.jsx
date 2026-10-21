@@ -11,6 +11,7 @@ import Contact from "../pages/public/Contact";
 import Results from "../pages/public/Results";
 import NotFound from "../pages/public/NotFound";
 import Announcements from "../pages/public/Announcements";
+import Frame from "../pages/public/Frame";
 
 import Joinus from "../pages/auth/Joinus";
 import AdminLogin from "../pages/auth/AdminLogin";
@@ -88,6 +89,7 @@ export default function AppRoutes() {
         <Route path="announcements" element={<AdminAnnouncements />} />
         <Route path="results" element={<AdminResults />} />
         <Route path="users" element={<AdminUsers />} />
+        <Route path="frame" element={<Frame />} />
       </Route>
 
       {/* Not Found */}
