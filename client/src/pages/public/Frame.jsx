@@ -355,13 +355,6 @@ export default function Frame() {
               {isDownloading ? "Generating Image..." : "Download Framed Photo"}
             </button>
 
-            {/* Quality info */}
-            <div className="p-3.5 rounded-xl border border-blue-400/15 bg-blue-900/10 text-xs text-slate-300 flex items-start gap-2.5">
-              <Info className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
-              <span>
-                Exported at 1080x1080 resolution in PNG format, optimized for Facebook, Instagram, and WhatsApp profiles.
-              </span>
-            </div>
           </div>
         </div>
       </div>
