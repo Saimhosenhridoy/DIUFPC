@@ -1,4 +1,5 @@
- import { useEffect, useMemo, useState } from "react";
+// src/pages/public/RegisterEvent.jsx
+import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { gsPublic } from "../../api/public.gs";
 import {
@@ -96,7 +97,6 @@ export default function RegisterEvent() {
   const convertToBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
-
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = reject;
@@ -147,6 +147,43 @@ export default function RegisterEvent() {
     setPhotos((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Validation function: Category is required only if event has categories; Photo title is mandatory
+  const validateForm = () => {
+    if (!name.trim() || !email.trim() || !phone.trim() || !institute.trim()) {
+      setSubmitStatus("error");
+      setSubmitMessage(
+        "Please fill required fields (Name, Email, Phone (WhatsApp), Institution Name / Freelancer)."
+      );
+      return false;
+    }
+
+    // Required only if the event was created with categories
+    if (categories.length > 0 && !category.trim()) {
+      setSubmitStatus("error");
+      setSubmitMessage("Please select a Category.");
+      return false;
+    }
+
+    // At least 1 photo is required
+    if (!photos[0]?.file) {
+      setSubmitStatus("error");
+      setSubmitMessage("Please upload at least 1 photo.");
+      return false;
+    }
+
+    // Photo title is mandatory for every uploaded photo
+    const missingTitle = photos.some(
+      (photo) => photo.file && !photo.title.trim()
+    );
+    if (missingTitle) {
+      setSubmitStatus("error");
+      setSubmitMessage("Please provide a Photo Title for each uploaded photo.");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -155,6 +192,9 @@ export default function RegisterEvent() {
       setSubmitMessage("Registration is closed (deadline passed).");
       return;
     }
+
+    // Validate inputs before showing rules popup
+    if (!validateForm()) return;
 
     setSubmitStatus(null);
     setSubmitMessage("");
@@ -174,18 +214,7 @@ export default function RegisterEvent() {
       return;
     }
 
-    if (!name.trim() || !email.trim() || !phone.trim() || !institute.trim()) {
-      setSubmitStatus("error");
-      setSubmitMessage(
-        "Please fill required fields (Name, Email, Phone (WhatsApp), Institution Name / Freelancer)."
-      );
-      setShowRulesPopup(false);
-      return;
-    }
-
-    if (!photos[0]?.file) {
-      setSubmitStatus("error");
-      setSubmitMessage("Please upload at least 1 photo.");
+    if (!validateForm()) {
       setShowRulesPopup(false);
       return;
     }
@@ -449,27 +478,28 @@ export default function RegisterEvent() {
                     />
                   </div>
 
-                  <div className="md:col-span-2">
-                    <label className="join-subcardLabel text-slate-50">
-                      Category *
-                    </label>
+                  {/* Render category dropdown only if categories exist for this event */}
+                  {categories.length > 0 && (
+                    <div className="md:col-span-2">
+                      <label className="join-subcardLabel text-slate-50">
+                        Category *
+                      </label>
 
-                    <select
-                      className={inputClass}
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                      disabled={submitting}
-                    >
-                      <option value="">Select category </option>
-                      
-
-                      {categories.map((categoryItem) => (
-                        <option key={categoryItem} value={categoryItem}>
-                          {categoryItem}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                      <select
+                        className={inputClass}
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        disabled={submitting}
+                      >
+                        <option value="">Select category</option>
+                        {categories.map((categoryItem) => (
+                          <option key={categoryItem} value={categoryItem}>
+                            {categoryItem}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
 
                   <div className="md:col-span-2">
                     <div className="flex items-center justify-between gap-3 mb-3">
@@ -515,7 +545,7 @@ export default function RegisterEvent() {
                           <div className="space-y-3">
                             <input
                               className={inputClass}
-                              placeholder="Photo title (Optional)"
+                              placeholder="Photo title * (Required)"
                               value={photo.title}
                               onChange={(e) =>
                                 updatePhotoField(index, "title", e.target.value)
