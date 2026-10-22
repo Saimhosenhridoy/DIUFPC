@@ -20,7 +20,7 @@ export default function Frame() {
   const selectedFrame =
     FRAMES.find((f) => f.id === id) || FRAMES[0] || null;
 
-  // Redirect /frame to /frame/:id automatically without any query marks
+  // Redirect /frame to /frame/:id automatically
   useEffect(() => {
     if (!id && selectedFrame?.id) {
       navigate(`/frame/${selectedFrame.id}`, { replace: true });
@@ -110,7 +110,6 @@ export default function Frame() {
     if (frameImgObj) {
       ctx.drawImage(frameImgObj, 0, 0, size, size);
     } else {
-      // Fallback frame preview if PNG is not yet loaded
       ctx.strokeStyle = "#1378ff";
       ctx.lineWidth = 40;
       ctx.strokeRect(20, 20, size - 40, size - 40);
@@ -169,19 +168,58 @@ export default function Frame() {
     setRotation(0);
   };
 
-  // Export and download merged photo
-  const handleDownload = () => {
+  // Export and download merged photo directly
+  const handleDownload = async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     setIsDownloading(true);
-    setTimeout(() => {
-      const link = document.createElement("a");
-      link.download = `${selectedFrame?.id || "diufpc"}-frame.png`;
-      link.href = canvas.toDataURL("image/png", 1.0);
-      link.click();
+
+    try {
+      const fileName = `${selectedFrame?.id || "diufpc"}-frame.png`;
+
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          setIsDownloading(false);
+          return;
+        }
+
+        const file = new File([blob], fileName, { type: "image/png" });
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || "");
+
+        // Mobile direct system save (Saves to device in Messenger, FB, Chrome, Safari)
+        if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: selectedFrame?.title || "DIUFPC Frame",
+            });
+            setIsDownloading(false);
+            return;
+          } catch (err) {
+            if (err.name === "AbortError") {
+              setIsDownloading(false);
+              return;
+            }
+          }
+        }
+
+        // Standard direct download for PC and desktop browsers
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+        setIsDownloading(false);
+      }, "image/png", 1.0);
+    } catch (error) {
+      console.error("Download failed:", error);
       setIsDownloading(false);
-    }, 200);
+    }
   };
 
   return (
@@ -358,7 +396,7 @@ export default function Frame() {
               className="w-full py-4 px-6 rounded-2xl font-extrabold text-base bg-emerald-600 hover:bg-emerald-500 text-white shadow-xl flex items-center justify-center gap-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <Download className="w-5 h-5" />
-              {isDownloading ? "Generating Image..." : "Download Framed Photo"}
+              {isDownloading ? "Processing..." : "Download Framed Photo"}
             </button>
           </div>
         </div>
