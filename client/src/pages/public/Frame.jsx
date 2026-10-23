@@ -1,4 +1,4 @@
- // src/pages/public/Frame.jsx
+// src/pages/public/Frame.jsx
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -9,6 +9,8 @@ import {
   ZoomOut,
   Image as ImageIcon,
   Move,
+  X,
+  Check,
   ExternalLink,
 } from "lucide-react";
 import { FRAMES } from "../../data/frames";
@@ -21,29 +23,12 @@ export default function Frame() {
   const selectedFrame =
     FRAMES.find((f) => f.id === id) || FRAMES[0] || null;
 
-  // Detect Facebook, Messenger or Instagram in-app browser
-  const isFbOrMessenger =
-    typeof navigator !== "undefined" &&
-    /FBAN|FBAV|Instagram|Messenger|Orca/i.test(navigator.userAgent || "");
-
   // Auto-redirect /frame to /frame/:id
   useEffect(() => {
     if (!id && selectedFrame?.id) {
       navigate(`/frame/${selectedFrame.id}`, { replace: true });
     }
   }, [id, selectedFrame, navigate]);
-
-  // Auto-open in the phone's DEFAULT browser when visiting inside Messenger on Android
-  useEffect(() => {
-    const ua = navigator.userAgent || "";
-    const isAndroid = /Android/i.test(ua);
-    const inApp = /FBAN|FBAV|Instagram|Messenger|Orca/i.test(ua);
-
-    if (isAndroid && inApp) {
-      const cleanUrl = window.location.href.replace(/^https?:\/\//, "");
-      window.location.href = `intent://${cleanUrl}#Intent;scheme=https;action=android.intent.action.VIEW;end`;
-    }
-  }, []);
 
   // Editor states
   const [userImage, setUserImage] = useState(null);
@@ -55,10 +40,14 @@ export default function Frame() {
   const [frameImgObj, setFrameImgObj] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
+  // Popup states for Messenger / Facebook in-app browser only
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const [previewDataUrl, setPreviewDataUrl] = useState("");
+
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  // Open in the phone's default browser (Safari, Samsung Internet, Chrome, etc.)
+  // Open in default phone browser
   const openExternalBrowser = () => {
     const isAndroid = /Android/i.test(navigator.userAgent || "");
     const cleanUrl = window.location.href.replace(/^https?:\/\//, "");
@@ -197,7 +186,7 @@ export default function Frame() {
     setRotation(0);
   };
 
-  // Direct file download: 1-click save to phone/PC storage
+  // Direct file download for regular browsers
   const directDownload = (dataUrl, fileName) => {
     const arr = dataUrl.split(",");
     const mime = arr[0].match(/:(.*?);/)[1];
@@ -231,7 +220,18 @@ export default function Frame() {
       const fileName = `${selectedFrame?.id || "diufpc"}-frame.png`;
       const dataUrl = canvas.toDataURL("image/png", 1.0);
 
-      // Instant 1-click direct download
+      const ua = navigator.userAgent || "";
+      const isFbOrMessenger = /FBAN|FBAV|Instagram|Messenger|Orca/i.test(ua);
+
+      // ONLY for Facebook & Messenger: Show save guide popup
+      if (isFbOrMessenger) {
+        setPreviewDataUrl(dataUrl);
+        setPreviewModalOpen(true);
+        setIsDownloading(false);
+        return;
+      }
+
+      // ALL OTHER BROWSERS (Chrome, Safari, PC, etc.): 1-Click Instant Download
       directDownload(dataUrl, fileName);
     } catch (error) {
       console.error("Download failed:", error);
@@ -240,27 +240,16 @@ export default function Frame() {
     }
   };
 
+  // Auto-close modal after user long-presses to save
+  const handleImageLongPress = () => {
+    setTimeout(() => {
+      setPreviewModalOpen(false);
+    }, 3500);
+  };
+
   return (
     <div className="min-h-screen bg-[#020916] text-white py-10 px-4">
       <div className="max-w-4xl mx-auto space-y-8">
-        {/* Banner only for Facebook / Messenger in-app browser */}
-        {isFbOrMessenger && (
-          <div className="bg-gradient-to-r from-blue-900/40 via-sky-900/30 to-blue-900/40 border border-blue-400/40 rounded-2xl p-4 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-200">
-            <div className="flex items-center gap-2.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-sky-400 animate-ping shrink-0" />
-              <span>
-                For automatic 1-click download to your phone gallery, open this frame in your default browser.
-              </span>
-            </div>
-            <button
-              onClick={openExternalBrowser}
-              className="shrink-0 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-white flex items-center gap-2 shadow transition"
-            >
-              <ExternalLink className="w-4 h-4" /> Open in Browser
-            </button>
-          </div>
-        )}
-
         {/* Header section */}
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-400/30 bg-blue-500/10 text-blue-300 text-xs font-bold tracking-wide">
@@ -425,7 +414,7 @@ export default function Frame() {
               </div>
             </div>
 
-            {/* Download button: 1-click instant direct download */}
+            {/* Download button: 1-click instant direct download for regular browsers */}
             <button
               disabled={!userImage || isDownloading}
               onClick={handleDownload}
@@ -437,6 +426,68 @@ export default function Frame() {
           </div>
         </div>
       </div>
+
+      {/* Save Modal ONLY for Facebook & Messenger in-app browser */}
+      {previewModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-[#06162e] border border-blue-400/40 rounded-3xl max-w-sm w-full p-5 space-y-4 text-center shadow-2xl relative">
+            <button
+              onClick={() => setPreviewModalOpen(false)}
+              className="absolute top-3 right-3 text-slate-400 hover:text-white p-2 rounded-full hover:bg-blue-900/40"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="text-white font-extrabold text-lg">
+              Save Your Framed Photo
+            </div>
+
+            {/* Instruction Box */}
+            <div className="bg-sky-500/10 border border-sky-400/30 rounded-2xl p-3 text-xs text-sky-200 text-left space-y-1">
+              <div className="font-bold text-white flex items-center gap-1.5">
+                <span>📌</span> কীভাবে সেভ করবেন:
+              </div>
+              <div>
+                ১. নিচের ছবির উপর ১-২ সেকেন্ড <b>আঙুল দিয়ে চেপে ধরুন</b>।
+              </div>
+              <div>
+                ২. <b>"Save image"</b> বা <b>"ছবি সেভ করুন"</b> সিলেক্ট করুন।
+              </div>
+            </div>
+
+            {/* Image Preview with Auto-Close on Long-Press */}
+            <div className="relative rounded-2xl overflow-hidden border border-blue-400/30 shadow-lg bg-black">
+              <img
+                src={previewDataUrl}
+                alt="Framed Result"
+                onContextMenu={handleImageLongPress}
+                className="w-full h-auto object-contain max-h-[48vh] mx-auto select-auto"
+              />
+
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur px-3 py-1.5 rounded-full text-[11px] font-bold text-sky-300 border border-sky-400/40 shadow-lg flex items-center gap-1.5 animate-bounce pointer-events-none">
+                👆 ছবিতে চেপে ধরুন (Touch & Hold)
+              </div>
+            </div>
+
+            {/* Actions: Open in Browser & Done */}
+            <div className="space-y-2 pt-1">
+              <button
+                onClick={openExternalBrowser}
+                className="w-full py-2.5 rounded-xl border border-blue-400/40 bg-blue-500/15 hover:bg-blue-500/25 font-bold text-xs text-sky-200 flex items-center justify-center gap-2 transition"
+              >
+                <ExternalLink className="w-4 h-4" /> Open in Phone Browser
+              </button>
+
+              <button
+                onClick={() => setPreviewModalOpen(false)}
+                className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-extrabold text-sm text-white shadow-lg transition flex items-center justify-center gap-2"
+              >
+                <Check className="w-4 h-4" /> Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
