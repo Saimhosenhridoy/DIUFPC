@@ -1,4 +1,4 @@
- // src/pages/public/Frame.jsx
+// src/pages/public/Frame.jsx
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -45,7 +45,6 @@ export default function Frame() {
 
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
-  const touchTimerRef = useRef(null);
 
   // Load the frame image overlay
   useEffect(() => {
@@ -229,25 +228,11 @@ export default function Frame() {
     }
   };
 
-  // Auto-close modal after user long-presses to save
+  // Auto-close modal 4 seconds after user triggers long-press context menu
   const handleImageLongPress = () => {
     setTimeout(() => {
       setPreviewModalOpen(false);
-    }, 2500);
-  };
-
-  const handleTouchStartImg = () => {
-    touchTimerRef.current = setTimeout(() => {
-      setTimeout(() => {
-        setPreviewModalOpen(false);
-      }, 2500);
-    }, 700);
-  };
-
-  const handleTouchEndImg = () => {
-    if (touchTimerRef.current) {
-      clearTimeout(touchTimerRef.current);
-    }
+    }, 4000);
   };
 
   return (
@@ -458,15 +443,14 @@ export default function Frame() {
               </div>
             </div>
 
-            {/* Image Preview with Auto-Close */}
+            {/* Image Preview with Auto-Close on Long-Press */}
             <div className="relative rounded-2xl overflow-hidden border border-blue-400/30 shadow-lg bg-black">
               <img
                 src={previewDataUrl}
                 alt="Framed Result"
                 onContextMenu={handleImageLongPress}
-                onTouchStart={handleTouchStartImg}
-                onTouchEnd={handleTouchEndImg}
                 className="w-full h-auto object-contain max-h-[50vh] mx-auto select-auto"
+                style={{ WebkitTouchCallout: "default" }}
               />
 
               <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur px-3 py-1.5 rounded-full text-[11px] font-bold text-sky-300 border border-sky-400/40 shadow-lg flex items-center gap-1.5 animate-bounce pointer-events-none">
