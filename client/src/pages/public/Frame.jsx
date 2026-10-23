@@ -1,4 +1,4 @@
-// src/pages/public/Frame.jsx
+ // src/pages/public/Frame.jsx
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -9,6 +9,7 @@ import {
   ZoomOut,
   Image as ImageIcon,
   Move,
+  ExternalLink,
 } from "lucide-react";
 import { FRAMES } from "../../data/frames";
 
@@ -20,12 +21,29 @@ export default function Frame() {
   const selectedFrame =
     FRAMES.find((f) => f.id === id) || FRAMES[0] || null;
 
-  // Redirect /frame to /frame/:id automatically without query marks
+  // Detect Facebook, Messenger or Instagram in-app browser
+  const isFbOrMessenger =
+    typeof navigator !== "undefined" &&
+    /FBAN|FBAV|Instagram|Messenger|Orca/i.test(navigator.userAgent || "");
+
+  // Auto-redirect /frame to /frame/:id
   useEffect(() => {
     if (!id && selectedFrame?.id) {
       navigate(`/frame/${selectedFrame.id}`, { replace: true });
     }
   }, [id, selectedFrame, navigate]);
+
+  // Auto-open in the phone's DEFAULT browser when visiting inside Messenger on Android
+  useEffect(() => {
+    const ua = navigator.userAgent || "";
+    const isAndroid = /Android/i.test(ua);
+    const inApp = /FBAN|FBAV|Instagram|Messenger|Orca/i.test(ua);
+
+    if (isAndroid && inApp) {
+      const cleanUrl = window.location.href.replace(/^https?:\/\//, "");
+      window.location.href = `intent://${cleanUrl}#Intent;scheme=https;action=android.intent.action.VIEW;end`;
+    }
+  }, []);
 
   // Editor states
   const [userImage, setUserImage] = useState(null);
@@ -39,6 +57,17 @@ export default function Frame() {
 
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
+
+  // Open in the phone's default browser (Safari, Samsung Internet, Chrome, etc.)
+  const openExternalBrowser = () => {
+    const isAndroid = /Android/i.test(navigator.userAgent || "");
+    const cleanUrl = window.location.href.replace(/^https?:\/\//, "");
+    if (isAndroid) {
+      window.location.href = `intent://${cleanUrl}#Intent;scheme=https;action=android.intent.action.VIEW;end`;
+    } else {
+      window.open(window.location.href, "_blank");
+    }
+  };
 
   // Load the frame image overlay
   useEffect(() => {
@@ -168,9 +197,9 @@ export default function Frame() {
     setRotation(0);
   };
 
-  // Synchronous conversion to preserve user gesture on Android and iOS
-  const dataURLtoFile = (dataurl, filename) => {
-    const arr = dataurl.split(",");
+  // Direct file download: 1-click save to phone/PC storage
+  const directDownload = (dataUrl, fileName) => {
+    const arr = dataUrl.split(",");
     const mime = arr[0].match(/:(.*?);/)[1];
     const bstr = atob(arr[1]);
     let n = bstr.length;
@@ -178,11 +207,21 @@ export default function Frame() {
     while (n--) {
       u8arr[n] = bstr.charCodeAt(n);
     }
-    return new File([u8arr], filename, { type: mime, lastModified: Date.now() });
+    const blob = new Blob([u8arr], { type: mime });
+    const blobUrl = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
   };
 
-  // Export and download merged photo (Instant Native Save for Android & iOS)
-  const handleDownload = async () => {
+  // Export and download merged photo
+  const handleDownload = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -190,38 +229,10 @@ export default function Frame() {
 
     try {
       const fileName = `${selectedFrame?.id || "diufpc"}-frame.png`;
-
-      // 1. Generate synchronously to keep user gesture valid on Android
       const dataUrl = canvas.toDataURL("image/png", 1.0);
-      const file = dataURLtoFile(dataUrl, fileName);
 
-      // 2. Native System Save Sheet (Works on iOS AND Android without long-press)
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-          });
-          setIsDownloading(false);
-          return;
-        } catch (err) {
-          if (err.name === "AbortError") {
-            setIsDownloading(false);
-            return;
-          }
-        }
-      }
-
-      // 3. Fallback: Direct download for PC and desktop browsers
-      const blob = new Blob([file], { type: "image/png" });
-      const blobUrl = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+      // Instant 1-click direct download
+      directDownload(dataUrl, fileName);
     } catch (error) {
       console.error("Download failed:", error);
     } finally {
@@ -232,6 +243,24 @@ export default function Frame() {
   return (
     <div className="min-h-screen bg-[#020916] text-white py-10 px-4">
       <div className="max-w-4xl mx-auto space-y-8">
+        {/* Banner only for Facebook / Messenger in-app browser */}
+        {isFbOrMessenger && (
+          <div className="bg-gradient-to-r from-blue-900/40 via-sky-900/30 to-blue-900/40 border border-blue-400/40 rounded-2xl p-4 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-200">
+            <div className="flex items-center gap-2.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-sky-400 animate-ping shrink-0" />
+              <span>
+                For automatic 1-click download to your phone gallery, open this frame in your default browser.
+              </span>
+            </div>
+            <button
+              onClick={openExternalBrowser}
+              className="shrink-0 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-white flex items-center gap-2 shadow transition"
+            >
+              <ExternalLink className="w-4 h-4" /> Open in Browser
+            </button>
+          </div>
+        )}
+
         {/* Header section */}
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-400/30 bg-blue-500/10 text-blue-300 text-xs font-bold tracking-wide">
@@ -396,7 +425,7 @@ export default function Frame() {
               </div>
             </div>
 
-            {/* Download button */}
+            {/* Download button: 1-click instant direct download */}
             <button
               disabled={!userImage || isDownloading}
               onClick={handleDownload}
