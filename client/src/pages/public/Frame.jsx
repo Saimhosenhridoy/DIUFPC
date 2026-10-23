@@ -1,4 +1,4 @@
-// src/pages/public/Frame.jsx
+ // src/pages/public/Frame.jsx
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -11,7 +11,6 @@ import {
   Move,
   X,
   Check,
-  ExternalLink,
 } from "lucide-react";
 import { FRAMES } from "../../data/frames";
 
@@ -46,17 +45,7 @@ export default function Frame() {
 
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
-
-  // Open in default phone browser
-  const openExternalBrowser = () => {
-    const isAndroid = /Android/i.test(navigator.userAgent || "");
-    const cleanUrl = window.location.href.replace(/^https?:\/\//, "");
-    if (isAndroid) {
-      window.location.href = `intent://${cleanUrl}#Intent;scheme=https;action=android.intent.action.VIEW;end`;
-    } else {
-      window.open(window.location.href, "_blank");
-    }
-  };
+  const touchTimerRef = useRef(null);
 
   // Load the frame image overlay
   useEffect(() => {
@@ -223,7 +212,7 @@ export default function Frame() {
       const ua = navigator.userAgent || "";
       const isFbOrMessenger = /FBAN|FBAV|Instagram|Messenger|Orca/i.test(ua);
 
-      // ONLY for Facebook & Messenger: Show save guide popup
+      // In Facebook / Messenger: Show save guide popup
       if (isFbOrMessenger) {
         setPreviewDataUrl(dataUrl);
         setPreviewModalOpen(true);
@@ -231,7 +220,7 @@ export default function Frame() {
         return;
       }
 
-      // ALL OTHER BROWSERS (Chrome, Safari, PC, etc.): 1-Click Instant Download
+      // Regular browsers (Chrome, Safari, PC, etc.): 1-Click Instant Download
       directDownload(dataUrl, fileName);
     } catch (error) {
       console.error("Download failed:", error);
@@ -244,7 +233,21 @@ export default function Frame() {
   const handleImageLongPress = () => {
     setTimeout(() => {
       setPreviewModalOpen(false);
-    }, 3500);
+    }, 2500);
+  };
+
+  const handleTouchStartImg = () => {
+    touchTimerRef.current = setTimeout(() => {
+      setTimeout(() => {
+        setPreviewModalOpen(false);
+      }, 2500);
+    }, 700);
+  };
+
+  const handleTouchEndImg = () => {
+    if (touchTimerRef.current) {
+      clearTimeout(touchTimerRef.current);
+    }
   };
 
   return (
@@ -442,45 +445,40 @@ export default function Frame() {
               Save Your Framed Photo
             </div>
 
-            {/* Instruction Box */}
+            {/* Instruction Box in English */}
             <div className="bg-sky-500/10 border border-sky-400/30 rounded-2xl p-3 text-xs text-sky-200 text-left space-y-1">
               <div className="font-bold text-white flex items-center gap-1.5">
-                <span>📌</span> কীভাবে সেভ করবেন:
+                <span>📌</span> How to save:
               </div>
               <div>
-                ১. নিচের ছবির উপর ১-২ সেকেন্ড <b>আঙুল দিয়ে চেপে ধরুন</b>।
+                1. <b>Tap and hold (long-press)</b> on the photo below.
               </div>
               <div>
-                ২. <b>"Save image"</b> বা <b>"ছবি সেভ করুন"</b> সিলেক্ট করুন।
+                2. Select <b>"Save image"</b> or <b>"Download image"</b>.
               </div>
             </div>
 
-            {/* Image Preview with Auto-Close on Long-Press */}
+            {/* Image Preview with Auto-Close */}
             <div className="relative rounded-2xl overflow-hidden border border-blue-400/30 shadow-lg bg-black">
               <img
                 src={previewDataUrl}
                 alt="Framed Result"
                 onContextMenu={handleImageLongPress}
-                className="w-full h-auto object-contain max-h-[48vh] mx-auto select-auto"
+                onTouchStart={handleTouchStartImg}
+                onTouchEnd={handleTouchEndImg}
+                className="w-full h-auto object-contain max-h-[50vh] mx-auto select-auto"
               />
 
               <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur px-3 py-1.5 rounded-full text-[11px] font-bold text-sky-300 border border-sky-400/40 shadow-lg flex items-center gap-1.5 animate-bounce pointer-events-none">
-                👆 ছবিতে চেপে ধরুন (Touch & Hold)
+                👆 Touch & Hold to Save
               </div>
             </div>
 
-            {/* Actions: Open in Browser & Done */}
-            <div className="space-y-2 pt-1">
-              <button
-                onClick={openExternalBrowser}
-                className="w-full py-2.5 rounded-xl border border-blue-400/40 bg-blue-500/15 hover:bg-blue-500/25 font-bold text-xs text-sky-200 flex items-center justify-center gap-2 transition"
-              >
-                <ExternalLink className="w-4 h-4" /> Open in Phone Browser
-              </button>
-
+            {/* Done button only */}
+            <div className="pt-1">
               <button
                 onClick={() => setPreviewModalOpen(false)}
-                className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-extrabold text-sm text-white shadow-lg transition flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 font-extrabold text-sm text-white shadow-lg transition flex items-center justify-center gap-2"
               >
                 <Check className="w-4 h-4" /> Done
               </button>
