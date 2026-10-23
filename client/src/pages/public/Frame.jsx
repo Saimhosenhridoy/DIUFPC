@@ -20,7 +20,7 @@ export default function Frame() {
   const selectedFrame =
     FRAMES.find((f) => f.id === id) || FRAMES[0] || null;
 
-  // Redirect /frame to /frame/:id automatically
+  // Redirect /frame to /frame/:id automatically without query marks
   useEffect(() => {
     if (!id && selectedFrame?.id) {
       navigate(`/frame/${selectedFrame.id}`, { replace: true });
@@ -168,7 +168,20 @@ export default function Frame() {
     setRotation(0);
   };
 
-  // Export and download merged photo directly
+  // Synchronous conversion to preserve user gesture on Android and iOS
+  const dataURLtoFile = (dataurl, filename) => {
+    const arr = dataurl.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime, lastModified: Date.now() });
+  };
+
+  // Export and download merged photo (Instant Native Save for Android & iOS)
   const handleDownload = async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -178,46 +191,40 @@ export default function Frame() {
     try {
       const fileName = `${selectedFrame?.id || "diufpc"}-frame.png`;
 
-      canvas.toBlob(async (blob) => {
-        if (!blob) {
+      // 1. Generate synchronously to keep user gesture valid on Android
+      const dataUrl = canvas.toDataURL("image/png", 1.0);
+      const file = dataURLtoFile(dataUrl, fileName);
+
+      // 2. Native System Save Sheet (Works on iOS AND Android without long-press)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+          });
           setIsDownloading(false);
           return;
-        }
-
-        const file = new File([blob], fileName, { type: "image/png" });
-        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || "");
-
-        // Mobile direct system save (Saves to device in Messenger, FB, Chrome, Safari)
-        if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
-          try {
-            await navigator.share({
-              files: [file],
-              title: selectedFrame?.title || "DIUFPC Frame",
-            });
+        } catch (err) {
+          if (err.name === "AbortError") {
             setIsDownloading(false);
             return;
-          } catch (err) {
-            if (err.name === "AbortError") {
-              setIsDownloading(false);
-              return;
-            }
           }
         }
+      }
 
-        // Standard direct download for PC and desktop browsers
-        const blobUrl = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = blobUrl;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      // 3. Fallback: Direct download for PC and desktop browsers
+      const blob = new Blob([file], { type: "image/png" });
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
-        setIsDownloading(false);
-      }, "image/png", 1.0);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
     } catch (error) {
       console.error("Download failed:", error);
+    } finally {
       setIsDownloading(false);
     }
   };
