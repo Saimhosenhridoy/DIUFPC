@@ -8,12 +8,15 @@ import {
   Send,
   FileSignature,
   Image as ImageIcon,
+  Loader2,
 } from "lucide-react";
 
 import Countdown, { isPast, dateOnly } from "../../components/ui/Countdown";
 
 const inputClass =
   "contact-input w-full bg-[#0B213E] border-2 border-blue-400/35 rounded-xl px-4 py-3 shadow-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-500/25 outline-none text-slate-50";
+
+const GS_BASE_URL = import.meta.env.VITE_ADMIN_GS_URL;
 
 export default function RegisterEvent() {
   const { slug } = useParams();
@@ -25,6 +28,7 @@ export default function RegisterEvent() {
   const [submitting, setSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMessage, setSubmitMessage] = useState("");
+  const [uploadProgressText, setUploadProgressText] = useState("");
 
   const [showRulesPopup, setShowRulesPopup] = useState(false);
   const [agreementAccepted, setAgreementAccepted] = useState(false);
@@ -64,7 +68,7 @@ export default function RegisterEvent() {
     const timer = setTimeout(() => {
       setSubmitStatus(null);
       setSubmitMessage("");
-    }, 5000);
+    }, 6000);
 
     return () => clearTimeout(timer);
   }, [submitStatus]);
@@ -102,6 +106,31 @@ export default function RegisterEvent() {
       reader.onerror = reject;
     });
 
+  // Upload a single photo individually to Google Drive
+  const uploadSinglePhoto = async ({ eventSlug, name, phone, photoNo, file, fileData }) => {
+    const qs = new URLSearchParams({ action: "uploadEventPhoto" }).toString();
+    const body = new URLSearchParams();
+    body.append("eventSlug", eventSlug);
+    body.append("name", name);
+    body.append("phone", phone);
+    body.append("photoNo", String(photoNo));
+    body.append("fileData", fileData);
+    body.append("fileName", file.name);
+    body.append("fileType", file.type || "image/jpeg");
+
+    const res = await fetch(`${GS_BASE_URL}?${qs}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      },
+      body: body.toString(),
+    });
+
+    const json = await res.json();
+    if (!json?.success) throw new Error(json?.message || "Failed to upload photo");
+    return json.data;
+  };
+
   const handlePhotoFileChange = (index, e) => {
     const selectedFile = e.target.files?.[0];
 
@@ -112,6 +141,7 @@ export default function RegisterEvent() {
       return;
     }
 
+    // Max 10MB per photo
     if (selectedFile.size > 10 * 1024 * 1024) {
       alert("Please select an image smaller than 10MB.");
       return;
@@ -147,7 +177,6 @@ export default function RegisterEvent() {
     setPhotos((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Validation function: Category is required only if event has categories; Photo title is mandatory
   const validateForm = () => {
     if (!name.trim() || !email.trim() || !phone.trim() || !institute.trim()) {
       setSubmitStatus("error");
@@ -157,21 +186,18 @@ export default function RegisterEvent() {
       return false;
     }
 
-    // Required only if the event was created with categories
     if (categories.length > 0 && !category.trim()) {
       setSubmitStatus("error");
       setSubmitMessage("Please select a Category.");
       return false;
     }
 
-    // At least 1 photo is required
     if (!photos[0]?.file) {
       setSubmitStatus("error");
       setSubmitMessage("Please upload at least 1 photo.");
       return false;
     }
 
-    // Photo title is mandatory for every uploaded photo
     const missingTitle = photos.some(
       (photo) => photo.file && !photo.title.trim()
     );
@@ -193,7 +219,6 @@ export default function RegisterEvent() {
       return;
     }
 
-    // Validate inputs before showing rules popup
     if (!validateForm()) return;
 
     setSubmitStatus(null);
@@ -223,18 +248,38 @@ export default function RegisterEvent() {
     setShowRulesPopup(false);
 
     try {
-      const photoUploads = await Promise.all(
-        photos
-          .filter((photo) => photo.file)
-          .map(async (photo) => ({
-            fileData: await convertToBase64(photo.file),
-            fileName: photo.file.name,
-            fileType: photo.file.type,
-            title: photo.title.trim(),
-            caption: photo.caption.trim(),
-          }))
-      );
+      const activePhotos = photos.filter((photo) => photo.file);
+      const totalPhotos = activePhotos.length;
+      const uploadedPhotosMeta = [];
 
+      // Upload each photo one by one sequentially
+      for (let i = 0; i < totalPhotos; i++) {
+        const photo = activePhotos[i];
+        setUploadProgressText(`Uploading photo ${i + 1} of ${totalPhotos}...`);
+
+        const base64Data = await convertToBase64(photo.file);
+
+        const uploadRes = await uploadSinglePhoto({
+          eventSlug: slug,
+          name,
+          phone,
+          photoNo: i + 1,
+          file: photo.file,
+          fileData: base64Data,
+        });
+
+        uploadedPhotosMeta.push({
+          fileUrl: uploadRes.fileUrl,
+          fileName: uploadRes.fileName,
+          fileType: uploadRes.fileType,
+          title: photo.title.trim(),
+          caption: photo.caption.trim(),
+        });
+      }
+
+      setUploadProgressText("Finalizing registration...");
+
+      // Final registration metadata submission
       await gsPublic.registerEvent({
         eventSlug: slug,
         category,
@@ -244,7 +289,7 @@ export default function RegisterEvent() {
         phone,
         institute,
         agreementAccepted: "true",
-        photos: JSON.stringify(photoUploads),
+        photos: JSON.stringify(uploadedPhotosMeta),
       });
 
       setSubmitStatus("success");
@@ -254,6 +299,7 @@ export default function RegisterEvent() {
         }\nWe will contact you soon.`
       );
 
+      // Reset form
       setName("");
       setStudentId("");
       setEmail("");
@@ -267,11 +313,12 @@ export default function RegisterEvent() {
       setSubmitMessage(e.message || "Registration failed");
     } finally {
       setSubmitting(false);
+      setUploadProgressText("");
     }
   };
 
   if (loading) {
-    return <div className="min-h-screen px-4 py-10">Loading...</div>;
+    return <div className="min-h-screen px-4 py-10 text-white text-center">Loading...</div>;
   }
 
   if (err) {
@@ -279,10 +326,8 @@ export default function RegisterEvent() {
       <div className="min-h-screen px-4 py-10 max-w-4xl mx-auto">
         <div className="app-card p-6">
           <div className="text-xl font-extrabold text-red-300">Error</div>
-
           <div className="mt-2 text-slate-300">{err}</div>
-
-          <Link to="/events" className="inline-block mt-4 underline">
+          <Link to="/events" className="inline-block mt-4 underline text-sky-400">
             Back to Events
           </Link>
         </div>
@@ -297,8 +342,7 @@ export default function RegisterEvent() {
           <div className="text-xl font-extrabold text-slate-50">
             Event not found
           </div>
-
-          <Link to="/events" className="inline-block mt-4 underline">
+          <Link to="/events" className="inline-block mt-4 underline text-sky-400">
             Back to Events
           </Link>
         </div>
@@ -308,6 +352,7 @@ export default function RegisterEvent() {
 
   return (
     <div className="min-h-screen px-4 py-10">
+      {/* Toast popup */}
       {submitStatus && (
         <div className={`toast-center ${submitStatus}`}>
           <div className="toast-center-content">
@@ -316,8 +361,30 @@ export default function RegisterEvent() {
             ) : (
               <AlertTriangle size={26} />
             )}
-
             <span className="whitespace-pre-line">{submitMessage}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Live Uploading Progress Overlay */}
+      {submitting && (
+        <div className="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 select-none">
+          <div className="bg-[#06162e] border-2 border-blue-400/50 rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+            <div className="w-12 h-12 mx-auto rounded-full border-4 border-sky-400 border-t-transparent animate-spin flex items-center justify-center">
+              <Loader2 className="w-6 h-6 text-sky-400 animate-spin" />
+            </div>
+
+            <div className="text-white font-extrabold text-lg">
+              Submitting Registration
+            </div>
+
+            <div className="bg-sky-500/15 border border-sky-400/40 rounded-2xl py-3 px-4 text-sky-200 font-bold text-sm tracking-wide">
+              {uploadProgressText || "Processing..."}
+            </div>
+
+            <p className="text-xs text-slate-400">
+              Please do not close or refresh this page while your photos are being uploaded.
+            </p>
           </div>
         </div>
       )}
@@ -381,11 +448,9 @@ export default function RegisterEvent() {
         {regClosed ? (
           <div className="app-card p-7 text-center text-slate-50">
             <div className="text-2xl font-extrabold">Registration Closed</div>
-
             <p className="mt-2 text-slate-300 font-semibold">
               The deadline has passed. You can still view event details.
             </p>
-
             <div className="mt-5 flex justify-center gap-3 flex-wrap">
               <Link
                 to={`/events/${event.slug}`}
@@ -393,7 +458,6 @@ export default function RegisterEvent() {
               >
                 View Details
               </Link>
-
               <Link
                 to="/events"
                 className="px-5 py-3 rounded-xl bg-blue-600 text-white font-extrabold hover:bg-blue-500 transition"
@@ -417,7 +481,6 @@ export default function RegisterEvent() {
                     <label className="join-subcardLabel text-slate-50">
                       Full Name *
                     </label>
-
                     <input
                       className={inputClass}
                       value={name}
@@ -430,7 +493,6 @@ export default function RegisterEvent() {
                     <label className="join-subcardLabel text-slate-50">
                       Student ID (Optional)
                     </label>
-
                     <input
                       className={inputClass}
                       value={studentId}
@@ -443,7 +505,6 @@ export default function RegisterEvent() {
                     <label className="join-subcardLabel text-slate-50">
                       Email *
                     </label>
-
                     <input
                       className={inputClass}
                       value={email}
@@ -456,7 +517,6 @@ export default function RegisterEvent() {
                     <label className="join-subcardLabel text-slate-50">
                       Phone (WhatsApp) *
                     </label>
-
                     <input
                       className={inputClass}
                       value={phone}
@@ -469,7 +529,6 @@ export default function RegisterEvent() {
                     <label className="join-subcardLabel text-slate-50">
                       Institution Name / Freelancer *
                     </label>
-
                     <input
                       className={inputClass}
                       value={institute}
@@ -478,13 +537,11 @@ export default function RegisterEvent() {
                     />
                   </div>
 
-                  {/* Render category dropdown only if categories exist for this event */}
                   {categories.length > 0 && (
                     <div className="md:col-span-2">
                       <label className="join-subcardLabel text-slate-50">
                         Category *
                       </label>
-
                       <select
                         className={inputClass}
                         value={category}
@@ -604,7 +661,6 @@ export default function RegisterEvent() {
                   className="w-full app-card p-4 bg-[#0B213E] text-white border-2 border-blue-400/35 font-extrabold flex items-center justify-center gap-2 hover:bg-blue-700/30 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send size={18} />
-
                   <span>
                     {submitting ? "Submitting..." : "Submit Registration"}
                   </span>
@@ -626,7 +682,6 @@ export default function RegisterEvent() {
               <div className="contact-badge">
                 <FileSignature size={18} />
               </div>
-
               <div className="text-xl font-extrabold">
                 Submission Agreement
               </div>
@@ -634,7 +689,6 @@ export default function RegisterEvent() {
 
             <div className="mt-4 app-card p-5 max-h-[50vh] overflow-y-auto text-slate-50">
               <div className="font-bold mb-2">General Rules</div>
-
               <ul className="list-disc pl-6 text-slate-300 space-y-1">
                 <li>Submitted work must be original.</li>
                 <li>No watermark/signature.</li>
@@ -650,7 +704,6 @@ export default function RegisterEvent() {
                   checked={agreementAccepted}
                   onChange={(e) => setAgreementAccepted(e.target.checked)}
                 />
-
                 <span className="font-bold text-slate-50">
                   I accept the agreement and terms
                 </span>
