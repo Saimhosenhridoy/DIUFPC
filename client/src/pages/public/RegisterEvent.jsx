@@ -34,7 +34,7 @@ export default function RegisterEvent() {
   const [agreementAccepted, setAgreementAccepted] = useState(false);
 
   const [photos, setPhotos] = useState([
-    { file: null, title: "", caption: "" },
+    { file: null, fileData: "", title: "", caption: "", fileName: "", fileType: "" },
   ]);
 
   const [name, setName] = useState("");
@@ -68,7 +68,7 @@ export default function RegisterEvent() {
     const timer = setTimeout(() => {
       setSubmitStatus(null);
       setSubmitMessage("");
-    }, 6000);
+    }, 7000);
 
     return () => clearTimeout(timer);
   }, [submitStatus]);
@@ -103,7 +103,7 @@ export default function RegisterEvent() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
+      reader.onerror = (e) => reject(reader.error || e || new Error("Failed to read file"));
     });
 
   // Upload a single photo individually to Google Drive
@@ -131,7 +131,8 @@ export default function RegisterEvent() {
     return json.data;
   };
 
-  const handlePhotoFileChange = (index, e) => {
+  // Pre-cache photo into memory immediately upon selection to prevent mobile file expiration
+  const handlePhotoFileChange = async (index, e) => {
     const selectedFile = e.target.files?.[0];
 
     if (!selectedFile) return;
@@ -147,11 +148,29 @@ export default function RegisterEvent() {
       return;
     }
 
-    setPhotos((prev) =>
-      prev.map((photo, i) =>
-        i === index ? { ...photo, file: selectedFile } : photo
-      )
-    );
+    try {
+      // Pre-read into memory immediately (prevents mobile cache revoking)
+      const base64Data = await convertToBase64(selectedFile);
+
+      setPhotos((prev) =>
+        prev.map((photo, i) =>
+          i === index
+            ? {
+                ...photo,
+                file: selectedFile,
+                fileData: base64Data,
+                fileName: selectedFile.name,
+                fileType: selectedFile.type || "image/jpeg",
+              }
+            : photo
+        )
+      );
+    } catch (readErr) {
+      console.error("File read error on selection:", readErr);
+      alert(
+        "Could not load the photo from your device. If it is stored in iCloud or cloud storage, please make sure it is downloaded locally and try again."
+      );
+    }
   };
 
   const updatePhotoField = (index, field, value) => {
@@ -169,7 +188,10 @@ export default function RegisterEvent() {
         return prev;
       }
 
-      return [...prev, { file: null, title: "", caption: "" }];
+      return [
+        ...prev,
+        { file: null, fileData: "", title: "", caption: "", fileName: "", fileType: "" },
+      ];
     });
   };
 
@@ -192,14 +214,14 @@ export default function RegisterEvent() {
       return false;
     }
 
-    if (!photos[0]?.file) {
+    if (!photos[0]?.file && !photos[0]?.fileData) {
       setSubmitStatus("error");
       setSubmitMessage("Please upload at least 1 photo.");
       return false;
     }
 
     const missingTitle = photos.some(
-      (photo) => photo.file && !photo.title.trim()
+      (photo) => (photo.file || photo.fileData) && !photo.title.trim()
     );
     if (missingTitle) {
       setSubmitStatus("error");
@@ -248,7 +270,7 @@ export default function RegisterEvent() {
     setShowRulesPopup(false);
 
     try {
-      const activePhotos = photos.filter((photo) => photo.file);
+      const activePhotos = photos.filter((photo) => photo.file || photo.fileData);
       const totalPhotos = activePhotos.length;
       const uploadedPhotosMeta = [];
 
@@ -257,16 +279,52 @@ export default function RegisterEvent() {
         const photo = activePhotos[i];
         setUploadProgressText(`Uploading photo ${i + 1} of ${totalPhotos}...`);
 
-        const base64Data = await convertToBase64(photo.file);
+        let base64Data = photo.fileData;
+        if (!base64Data && photo.file) {
+          base64Data = await convertToBase64(photo.file);
+        }
 
-        const uploadRes = await uploadSinglePhoto({
-          eventSlug: slug,
-          name,
-          phone,
-          photoNo: i + 1,
-          file: photo.file,
-          fileData: base64Data,
-        });
+        if (!base64Data) {
+          throw new Error(
+            `Could not read photo ${i + 1}. Please re-select the photo and try again.`
+          );
+        }
+
+        // Upload with automatic retry on temporary network glitch
+        let uploadRes = null;
+        let lastUploadErr = null;
+
+        for (let attempt = 1; attempt <= 2; attempt++) {
+          try {
+            uploadRes = await uploadSinglePhoto({
+              eventSlug: slug,
+              name,
+              phone,
+              photoNo: i + 1,
+              file: {
+                name: photo.fileName || photo.file?.name || `photo_${i + 1}.jpg`,
+                type: photo.fileType || photo.file?.type || "image/jpeg",
+              },
+              fileData: base64Data,
+            });
+            break; // Success!
+          } catch (err) {
+            lastUploadErr = err;
+            if (attempt < 2) {
+              setUploadProgressText(
+                `Reconnecting photo ${i + 1} of ${totalPhotos}...`
+              );
+              await new Promise((resolve) => setTimeout(resolve, 1500));
+            }
+          }
+        }
+
+        if (!uploadRes) {
+          throw (
+            lastUploadErr ||
+            new Error(`Failed to upload photo ${i + 1}. Please try again.`)
+          );
+        }
 
         uploadedPhotosMeta.push({
           fileUrl: uploadRes.fileUrl,
@@ -306,11 +364,30 @@ export default function RegisterEvent() {
       setPhone("");
       setInstitute("");
       setCategory("");
-      setPhotos([{ file: null, title: "", caption: "" }]);
+      setPhotos([
+        { file: null, fileData: "", title: "", caption: "", fileName: "", fileType: "" },
+      ]);
       setAgreementAccepted(false);
     } catch (e) {
+      console.error("Registration submission error:", e);
+      let errMsg = e?.message || "Registration failed";
+
+      if (
+        errMsg.includes("Failed to fetch") ||
+        errMsg.includes("NetworkError") ||
+        errMsg.includes("network")
+      ) {
+        errMsg = "Network connection error. Please check your internet connection and try again.";
+      } else if (
+        errMsg.includes("NotReadableError") ||
+        errMsg.includes("could not be read")
+      ) {
+        errMsg =
+          "Could not read the photo file from your device. Please re-select the photo and try again.";
+      }
+
       setSubmitStatus("error");
-      setSubmitMessage(e.message || "Registration failed");
+      setSubmitMessage(errMsg);
     } finally {
       setSubmitting(false);
       setUploadProgressText("");
@@ -641,8 +718,8 @@ export default function RegisterEvent() {
                               </label>
 
                               <div className="join-fileMeta">
-                                {photo.file
-                                  ? `Selected: ${photo.file.name}`
+                                {photo.file || photo.fileData
+                                  ? `Selected: ${photo.fileName || photo.file?.name}`
                                   : "No file selected"}
                               </div>
                             </div>
