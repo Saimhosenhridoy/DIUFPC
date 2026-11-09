@@ -131,8 +131,8 @@ export default function RegisterEvent() {
     return json.data;
   };
 
-  // Pre-cache photo into memory immediately upon selection to prevent mobile file expiration
-  const handlePhotoFileChange = async (index, e) => {
+  // Cache selected photo reference lightly without bloating memory
+  const handlePhotoFileChange = (index, e) => {
     const selectedFile = e.target.files?.[0];
 
     if (!selectedFile) return;
@@ -148,29 +148,19 @@ export default function RegisterEvent() {
       return;
     }
 
-    try {
-      // Pre-read into memory immediately (prevents mobile cache revoking)
-      const base64Data = await convertToBase64(selectedFile);
-
-      setPhotos((prev) =>
-        prev.map((photo, i) =>
-          i === index
-            ? {
-                ...photo,
-                file: selectedFile,
-                fileData: base64Data,
-                fileName: selectedFile.name,
-                fileType: selectedFile.type || "image/jpeg",
-              }
-            : photo
-        )
-      );
-    } catch (readErr) {
-      console.error("File read error on selection:", readErr);
-      alert(
-        "Could not load the photo from your device. If it is stored in iCloud or cloud storage, please make sure it is downloaded locally and try again."
-      );
-    }
+    // Store file metadata and File pointer (tiny memory footprint, prevents mobile OOM)
+    setPhotos((prev) =>
+      prev.map((photo, i) =>
+        i === index
+          ? {
+              ...photo,
+              file: selectedFile,
+              fileName: selectedFile.name,
+              fileType: selectedFile.type || "image/jpeg",
+            }
+          : photo
+      )
+    );
   };
 
   const updatePhotoField = (index, field, value) => {
@@ -220,12 +210,14 @@ export default function RegisterEvent() {
       return false;
     }
 
-    const missingTitle = photos.some(
+    const missingTitleIndex = photos.findIndex(
       (photo) => (photo.file || photo.fileData) && !photo.title.trim()
     );
-    if (missingTitle) {
+    if (missingTitleIndex !== -1) {
       setSubmitStatus("error");
-      setSubmitMessage("Please provide a Photo Title for each uploaded photo.");
+      setSubmitMessage(
+        `Please provide a Photo Title for Photo ${missingTitleIndex + 1}.`
+      );
       return false;
     }
 
@@ -333,6 +325,7 @@ export default function RegisterEvent() {
           title: photo.title.trim(),
           caption: photo.caption.trim(),
         });
+        base64Data = null;
       }
 
       setUploadProgressText("Finalizing registration...");
@@ -370,20 +363,23 @@ export default function RegisterEvent() {
       setAgreementAccepted(false);
     } catch (e) {
       console.error("Registration submission error:", e);
-      let errMsg = e?.message || "Registration failed";
+      const rawMsg = e?.message || "";
+      let errMsg = rawMsg || "Registration failed";
 
       if (
-        errMsg.includes("Failed to fetch") ||
-        errMsg.includes("NetworkError") ||
-        errMsg.includes("network")
+        rawMsg.includes("Failed to fetch") ||
+        rawMsg.includes("NetworkError") ||
+        rawMsg.includes("network")
       ) {
         errMsg = "Network connection error. Please check your internet connection and try again.";
       } else if (
-        errMsg.includes("NotReadableError") ||
-        errMsg.includes("could not be read")
+        rawMsg.includes("NotReadableError") ||
+        rawMsg.includes("could not be read")
       ) {
         errMsg =
           "Could not read the photo file from your device. Please re-select the photo and try again.";
+      } else if (rawMsg) {
+        errMsg = `Registration failed: ${rawMsg}`;
       }
 
       setSubmitStatus("error");
